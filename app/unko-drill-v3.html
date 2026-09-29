@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#173b67">
+<title>運行管理者ドリル v2｜貨物・旅客</title>
+<style>
+:root{--blue:#173b67;--cyan:#1d7ea8;--bg:#f4f7fa;--card:#fff;--text:#182331;--muted:#687482;--line:#d9e0e7;--ok:#157347;--ng:#b42318;--warn:#fff6cf}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;line-height:1.65}
+header{background:linear-gradient(135deg,#173b67,#246c94);color:white;padding:28px 18px} header h1{margin:0;font-size:30px} header p{margin:6px 0 0;font-size:16px}
+main{max-width:900px;margin:auto;padding:16px} .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;margin:14px 0;box-shadow:0 3px 12px rgba(0,0,0,.04)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap} button{border:1px solid var(--line);background:white;color:#147fc1;border-radius:999px;padding:11px 16px;font-size:16px;font-weight:700;min-height:44px} button.active,button.primary{background:var(--blue);color:white;border-color:var(--blue)} button:disabled{opacity:.45}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px} .lesson{border:1px solid var(--line);border-radius:16px;padding:16px} .lesson h3{margin:0 0 5px;color:#1680c2} .small{color:var(--muted);font-size:14px}
+.progress{height:12px;background:#e6ebf0;border-radius:999px;overflow:hidden} .progress>i{display:block;height:100%;background:#1d7ea8;width:0}
+.badge{display:inline-block;border-radius:999px;background:#eef3f7;padding:4px 9px;font-size:13px;color:#53606c}
+.notice{background:var(--warn);border:1px solid #e4cf75;border-radius:16px;padding:15px}
+.hidden{display:none!important} .choice{display:block;width:100%;text-align:left;margin:9px 0;border-radius:14px;color:var(--text)} .choice.selected{border-color:#1680c2;background:#eef7fb}
+.feedback{padding:15px;border-radius:14px;margin-top:14px} .correct{background:#e9f7ef;color:#125c38} .wrong{background:#fff0ef;color:#8d2118}
+.timer{font-variant-numeric:tabular-nums;font-size:22px;font-weight:800} .source{font-size:13px;color:var(--muted);margin-top:12px}
+footer{color:var(--muted);font-size:13px;padding:20px 4px}
+@media(max-width:520px){header h1{font-size:26px} main{padding:10px} .card{padding:16px;border-radius:16px}}
+
+/* v3 game layer */
+#fxCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9999}
+#gameHud{position:fixed;top:max(12px,env(safe-area-inset-top));left:50%;transform:translateX(-50%) translateY(-120px);z-index:10000;display:flex;gap:8px;align-items:center;pointer-events:none;opacity:0;transition:transform .25s cubic-bezier(.2,1.5,.3,1),opacity .2s}
+#gameHud.show{transform:translateX(-50%) translateY(0);opacity:1}
+.hudPill{background:#182331;color:#fff;border:2px solid #fff;border-radius:999px;padding:7px 13px;font-weight:900;box-shadow:0 5px 18px rgba(0,0,0,.22);font-variant-numeric:tabular-nums}
+.hudCombo{background:#ff4f9a}
+.hudXp{background:#246c94}
+#toastFX{position:fixed;left:50%;top:46%;transform:translate(-50%,-50%) scale(.65);z-index:10001;pointer-events:none;opacity:0;font-weight:1000;font-size:clamp(32px,10vw,72px);color:#fff;text-shadow:0 5px 0 #182331,0 0 20px rgba(255,255,255,.7);white-space:nowrap}
+#toastFX.show{animation:toastPop .8s cubic-bezier(.2,1.4,.3,1) both}
+#toastFX.bad{color:#ff6673}
+@keyframes toastPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.45) rotate(-7deg)}22%{opacity:1;transform:translate(-50%,-50%) scale(1.12) rotate(2deg)}55%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)}100%{opacity:0;transform:translate(-50%,-65%) scale(.92)}}
+@keyframes answerGood{0%{transform:scale(1)}35%{transform:scale(1.025);box-shadow:0 0 0 8px rgba(21,115,71,.16)}100%{transform:scale(1)}}
+@keyframes answerBad{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.fx-good{animation:answerGood .45s ease}
+.fx-bad{animation:answerBad .38s ease}
+.choice.fx-correct{background:#d9f7e6!important;border-color:#157347!important;box-shadow:0 0 0 3px rgba(21,115,71,.12)}
+.choice.fx-wrong{background:#ffe0dd!important;border-color:#b42318!important}
+.xpFloat{position:fixed;z-index:10002;pointer-events:none;font-weight:1000;font-size:25px;color:#157347;text-shadow:2px 2px 0 #fff;animation:xpFloat .9s ease-out both}
+@keyframes xpFloat{0%{opacity:0;transform:translate(-50%,0) scale(.7)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-75px) scale(1.1)}}
+.resultHero{border-radius:20px;padding:18px;background:linear-gradient(135deg,#fff5fb,#eef7ff);border:2px solid #d9e0e7;text-align:center}
+.resultXP{font-size:36px;font-weight:1000;color:#246c94}
+.resultRank{font-size:20px;font-weight:900}
+.masteryRow{display:grid;grid-template-columns:100px 1fr 45px;gap:8px;align-items:center;margin:7px 0;font-size:13px}
+.masteryBar{height:10px;background:#e6ebf0;border-radius:99px;overflow:hidden}.masteryBar i{display:block;height:100%;background:linear-gradient(90deg,#1d7ea8,#ff7ab6)}
+@media(prefers-reduced-motion:reduce){#gameHud{transition:none}#toastFX.show{animation:none;opacity:1}.fx-good,.fx-bad{animation:none}}
+body.game-shake{animation:bodyShake .28s linear}
+@keyframes bodyShake{0%,100%{transform:translate(0)}25%{transform:translate(-3px,1px)}50%{transform:translate(3px,-1px)}75%{transform:translate(-2px,0)}}
+</style>
+</head>
+<body>
+<header><h1>運行管理者ドリル</h1><p>v3｜ゲーム演出＋基礎から本試験レベルへ・貨物／旅客</p></header>
+<canvas id="fxCanvas" aria-hidden="true"></canvas>
+<div id="gameHud"><span class="hudPill hudCombo" id="hudCombo">🔥 0 COMBO</span><span class="hudPill hudXp" id="hudXp">XP 0</span></div>
+<div id="toastFX" aria-live="polite"></div>
+<main>
+<section class="card">
+  <div class="small">現在の学習モード</div>
+  <div class="tabs" id="modeTabs">
+    <button class="active" data-mode="common">共通</button>
+    <button data-mode="cargo">貨物</button>
+    <button data-mode="passenger">旅客</button>
+  </div>
+  <div class="notice" style="margin-top:14px"><b>学習方針</b><br>「何も知らないところから始める」→用語→法令→実務→本試験。法令・数値は公式資料を基準に更新します。</div>
+</section>
+
+<section class="card">
+<h2>学習状況</h2>
+<div id="stats">回答 0問・正解 0問</div>
+<div class="progress"><i id="bar"></i></div>
+<div class="small" id="wrongStat">間違い 0問</div>
+</section>
+
+<section class="card" id="home">
+<h2 id="currTitle">共通基礎</h2>
+<div class="grid" id="lessons"></div>
+</section>
+
+<section class="card">
+<h2>演習</h2>
+<div class="grid">
+<button class="primary" id="practice">分野別 10問</button>
+<button id="mock">本試験モード 30問・90分</button>
+<button id="wrongBtn">間違えた問題</button>
+</div>
+<p class="small">本試験は現行の公式出題構成に合わせ、30問。合格基準も判定します。</p>
+</section>
+
+<section class="card hidden" id="quiz">
+<div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><b id="qNo"></b><span class="timer hidden" id="timer">90:00</span></div>
+<div class="badge" id="qField"></div>
+<h2 id="qText"></h2>
+<div id="choices"></div>
+<button class="primary" id="answerBtn">回答する</button>
+<div id="feedback" class="hidden"></div>
+<div style="display:flex;justify-content:space-between;margin-top:14px"><button id="nextBtn" class="hidden">次の問題</button><button id="quitBtn">終了</button></div>
+</section>
+
+<section class="card hidden" id="result"></section>
+
+<section class="card">
+<h2>本試験の構成</h2>
+<div class="grid">
+<div class="lesson"><b>貨物</b><br>貨物自動車運送事業法 8問<br>車両法 4問<br>道路交通法 5問<br>労基法 6問<br>実務 7問</div>
+<div class="lesson"><b>旅客</b><br>道路運送法 8問<br>車両法 4問<br>道路交通法 5問<br>労基法 6問<br>実務 7問</div>
+</div>
+<p class="small">合格基準：原則30問中18問以上。さらに(1)〜(4)は各1問以上、(5)は2問以上が必要。citeturn1view0</p>
+</section>
+<footer>
+公式確認先：運行管理者試験センター／厚生労働省「自動車運転者の労働時間等の改善のための基準」。このv3はv2の学習用問題にゲーム演出を追加したプロトタイプで、実際の過去問そのものではありません。
+</footer>
+</main>
+<script>
+const BANK=[{"id": "v1", "field": "車両法", "q": "道路運送車両法の目的として、最も適切なものはどれか。", "choices": ["道路運送車両の安全性の確保と公害防止などを図ること", "運送事業者の運賃を一律に決めること", "運転者の賃金を全国一律にすること", "道路交通信号を管理すること"], "a": 0, "exp": "道路運送車両法は、自動車の安全性の確保、公害防止などを目的とする車両関係の基本法です。", "src": "e-Gov法令検索（道路運送車両法）"}, {"id": "v2", "field": "車両法", "q": "日常点検について、運行管理の学習でまず押さえるべき考え方はどれか。", "choices": ["運行前に車両の状態を確認し、安全に運行できる状態を確保する", "車検を受けていれば日常点検は不要である", "点検は整備工場だけが行うものなので運転者は関与しない", "異常があっても運行終了後にまとめて確認すればよい"], "a": 0, "exp": "日常点検は、運行前の車両状態を確認し、安全運行につなげる基本行為です。具体的な点検項目は車種・法令・事業者の規程等に沿って学習します。", "src": "国土交通省 自動車総合安全情報"}, {"id": "v3", "field": "車両法", "q": "自動車の検査制度を学ぶ際、運行管理者が意識すべきことはどれか。", "choices": ["車両が法令上必要な検査・整備の状態にあることを確認し、異常を放置しない", "検査済みなら故障しても運行できる", "検査は運転者の免許更新と同じ制度である", "検査の有無は安全運行とは無関係である"], "a": 0, "exp": "検査と日常の点検・整備は別の管理事項です。検査済みであることだけを理由に異常を放置してはいけません。", "src": "国土交通省 自動車総合安全情報"}, {"id": "v4", "field": "車両法", "q": "運行管理の実務で車両の異常を把握した場合、基本的な対応として適切なのはどれか。", "choices": ["安全上問題がないかを確認し、必要な整備等につなげる", "運転者に黙って運行させる", "次回の車検まで記録しない", "燃料を補給すれば必ず解決する"], "a": 0, "exp": "車両異常は安全運行に直結するため、状態を確認し、必要な整備・修理等につなげる管理が必要です。", "src": "国土交通省 自動車総合安全情報"}, {"id": "t1", "field": "道路交通法", "q": "道路交通法上、交差点で右左折する際の合図について正しいものはどれか。", "choices": ["右左折しようとする地点から30メートル手前で合図する", "右左折後に合図する", "交差点では合図は不要である", "速度に関係なく5メートル手前で合図する"], "a": 0, "exp": "右左折の合図は、その行為をしようとする地点の30メートル手前に達したときに行うのが基本です。", "src": "道路交通法 第53条"}, {"id": "t2", "field": "道路交通法", "q": "道路交通法の学習で「車間距離」を考える際、最も重要な考え方はどれか。", "choices": ["前車が急停止した場合でも追突を避けられる程度の安全な距離を確保する", "前車との距離は常に1メートルでよい", "大型車だけが車間距離を確保する", "渋滞時は安全距離を確保してはいけない"], "a": 0, "exp": "前車の急な減速・停止に対応できる安全な車間距離を確保することが基本です。", "src": "道路交通法 第26条"}, {"id": "t3", "field": "道路交通法", "q": "酒気を帯びた状態で自動車を運転することについて正しいものはどれか。", "choices": ["禁止されている", "夜間だけ禁止される", "事業用自動車だけ禁止される", "運行管理者が許可すれば可能である"], "a": 0, "exp": "酒気帯び運転は禁止されています。運行管理者の許可で合法になるものではありません。", "src": "道路交通法 第65条"}, {"id": "t4", "field": "道路交通法", "q": "運転者の安全運転管理で、運行管理者が学ぶべき基本姿勢はどれか。", "choices": ["道路・天候・運転者の状態などを踏まえ、安全側に判断する", "予定時刻を守るためなら安全を後回しにする", "事故防止は運転者個人だけの責任とする", "道路状況は運行計画に影響しない"], "a": 0, "exp": "安全運行は、道路・気象・運転者の状態など複数の要素を踏まえて管理します。", "src": "運行管理者試験センター 出題分野"}, {"id": "t5", "field": "道路交通法", "q": "道路交通法上の信号・標識等に従うことについて、適切な説明はどれか。", "choices": ["運転者は道路交通法上の交通方法等を守って運転する必要がある", "事業用自動車なら信号を無視できる", "運行管理者の指示があれば信号に優先できる", "大型車は標識の対象外である"], "a": 0, "exp": "事業用自動車であっても道路交通法上の交通方法を守る必要があります。", "src": "道路交通法"}, {"id": "l1", "field": "労働基準法", "q": "改善基準告示が自動車運転者の管理で定めている中心的な事項はどれか。", "choices": ["拘束時間・休息期間などの基準", "自動車の購入価格", "道路の舗装仕様", "旅客運賃"], "a": 0, "exp": "自動車運転者の改善基準告示は、拘束時間、休息期間、運転時間など労働時間等に関する基準を定めています。", "src": "厚生労働省 改善基準告示"}, {"id": "l2", "field": "労働基準法", "q": "現行の改善基準告示はいつから適用されたか。", "choices": ["2024年4月1日", "2020年4月1日", "2022年12月23日", "2026年4月1日"], "a": 0, "exp": "改正された改善基準告示は2024年4月1日から適用されています。2022年12月23日は改正告示の公布日です。", "src": "厚生労働省 改善基準告示"}, {"id": "l3", "field": "労働基準法", "q": "現行のトラック運転者の1日の休息期間について、原則として正しいものはどれか。", "choices": ["継続11時間を与えるよう努めることを基本とし、9時間を下回らない", "必ず4時間以上あればよい", "旧基準どおり継続8時間以上だけでよい", "休息期間の基準はない"], "a": 0, "exp": "厚生労働省の現行資料では、トラック運転者の休息期間は継続11時間を与えるよう努めることを基本とし、9時間を下回らないとされています。", "src": "厚生労働省 トラック運転者の改善基準告示"}, {"id": "l4", "field": "労働基準法", "q": "現行のトラック運転者の1年の拘束時間について、原則として正しいものはどれか。", "choices": ["3,300時間以内", "3,516時間以内", "4,000時間以内", "2,400時間以内"], "a": 0, "exp": "2024年4月適用の現行基準では、1年の拘束時間は原則3,300時間以内です。", "src": "厚生労働省 トラック運転者の改善基準告示"}, {"id": "l5", "field": "労働基準法", "q": "現行のトラック運転者の1か月の拘束時間について、原則として正しいものはどれか。", "choices": ["284時間以内", "293時間以内", "320時間以内", "250時間以内"], "a": 0, "exp": "現行基準では、1か月の拘束時間は原則284時間以内。一定の条件を満たす場合の例外があります。", "src": "厚生労働省 トラック運転者の改善基準告示"}, {"id": "l6", "field": "労働基準法", "q": "運行管理者が労働時間関係を学ぶ理由として最も適切なのはどれか。", "choices": ["過労による事故リスクを抑え、安全運行につなげるため", "運賃を決めるため", "車両重量を測るため", "道路標識を設置するため"], "a": 0, "exp": "運転者の過労は安全運行に関係します。運行計画や勤務管理を考える上で労働時間関係の知識が必要です。", "src": "厚生労働省 改善基準告示"}, {"id": "p1", "field": "実務知識", "q": "運行管理者試験の「その他運行管理者の業務に関し、必要な実務上の知識及び能力」は何問出題されるか。", "choices": ["7問", "4問", "5問", "8問"], "a": 0, "exp": "現行の試験案内では、貨物・旅客ともこの分野は7問です。", "src": "運行管理者試験センター 出題分野"}, {"id": "p2", "field": "実務知識", "q": "貨物試験と旅客試験で共通して出題される分野はどれか。", "choices": ["道路運送車両法関係・道路交通法関係・労働基準法関係・実務知識", "貨物自動車運送事業法関係だけ", "道路運送法関係だけ", "旅客自動車運送事業だけ"], "a": 0, "exp": "第1分野だけが貨物では貨物自動車運送事業法、旅客では道路運送法となり、それ以外の4分野は共通です。", "src": "運行管理者試験センター 出題分野"}, {"id": "p3", "field": "実務知識", "q": "運行管理者試験の合格基準として原則必要な総得点はどれか。", "choices": ["30問中18問以上", "30問中15問以上", "30問中20問以上", "30問中24問以上"], "a": 0, "exp": "原則として総得点が満点の60%、つまり30問中18問以上が必要です。ただし分野別最低正解数もあります。", "src": "運行管理者試験センター 合格基準"}, {"id": "p4", "field": "実務知識", "q": "合格基準の分野別条件として、(1)〜(4)はそれぞれ何問以上正解する必要があるか。", "choices": ["各1問以上", "各2問以上", "各3問以上", "条件なし"], "a": 0, "exp": "(1)〜(4)の各分野について1問以上の正解が必要です。", "src": "運行管理者試験センター 合格基準"}, {"id": "p5", "field": "実務知識", "q": "合格基準の分野別条件として、(5)「その他運行管理者の業務に関し、必要な実務上の知識及び能力」は何問以上必要か。", "choices": ["2問以上", "1問以上", "3問以上", "4問以上"], "a": 0, "exp": "(5)は2問以上の正解が必要です。", "src": "運行管理者試験センター 合格基準"}, {"id": "p6", "field": "実務知識", "q": "法令改正と試験問題の関係について、現行の試験センター案内はどう説明しているか。", "choices": ["改正法令の施行後6か月間は、改正前後で解答が異なる問題を原則出題しない", "改正された翌日から必ず出題する", "改正は試験に一切影響しない", "旧法令だけを永続的に出題する"], "a": 0, "exp": "試験センターは、法令等の改正があった場合、原則として改正後の施行から6か月間は、改正前後で解答が異なる問題を出題しないとしています。", "src": "運行管理者試験センター 出題分野"}, {"id": "p7", "field": "実務知識", "q": "運行管理者試験は現在どの方式で実施されているか。", "choices": ["CBT（Computer Based Testing）", "すべて紙の筆記試験", "口述試験のみ", "実技試験のみ"], "a": 0, "exp": "現在の受験案内ではCBT試験が案内されています。", "src": "運行管理者試験センター 受験概要"}, {"id": "c1", "field": "貨物法令", "q": "貨物試験の第1分野は何に関する法令か。", "choices": ["貨物自動車運送事業法関係", "道路運送法関係", "道路交通法関係", "労働基準法関係"], "a": 0, "exp": "貨物試験の第1分野は貨物自動車運送事業法関係です。", "src": "運行管理者試験センター 出題分野"}, {"id": "c2", "field": "貨物法令", "q": "貨物試験の第1分野の出題数は何問か。", "choices": ["8問", "4問", "5問", "7問"], "a": 0, "exp": "貨物自動車運送事業法関係は8問です。", "src": "運行管理者試験センター 出題分野"}, {"id": "c3", "field": "貨物法令", "q": "貨物自動車運送事業法関係を学ぶ際、運行管理者の中心的テーマとして適切なのはどれか。", "choices": ["輸送の安全確保に関する管理", "旅客運賃の認可", "鉄道の信号操作", "航空機の整備"], "a": 0, "exp": "貨物自動車運送事業では輸送の安全確保が重要な管理テーマです。", "src": "貨物自動車運送事業法"}, {"id": "c4", "field": "貨物法令", "q": "貨物自動車運送事業の安全管理を学ぶとき、まず意識すべき対象はどれか。", "choices": ["事業用自動車・運転者・運行計画などを一体として管理すること", "車両価格だけを管理すること", "荷主の広告だけを管理すること", "道路工事だけを管理すること"], "a": 0, "exp": "運行管理は車両だけでなく、運転者や運行計画等を含めて安全を確保する業務です。", "src": "貨物自動車運送事業法・輸送安全規則"}, {"id": "c5", "field": "貨物法令", "q": "貨物試験で第1分野以外の共通4分野に含まれないものはどれか。", "choices": ["旅客自動車運送事業法関係", "道路運送車両法関係", "道路交通法関係", "労働基準法関係"], "a": 0, "exp": "貨物試験の第1分野は貨物自動車運送事業法関係です。旅客自動車運送事業法関係は貨物試験の出題分野ではありません。", "src": "運行管理者試験センター 出題分野"}, {"id": "c6", "field": "貨物法令", "q": "貨物試験では、車両法関係は何問出題されるか。", "choices": ["4問", "8問", "5問", "6問"], "a": 0, "exp": "道路運送車両法関係は4問です。", "src": "運行管理者試験センター 出題分野"}, {"id": "c7", "field": "貨物法令", "q": "貨物試験では、道路交通法関係は何問出題されるか。", "choices": ["5問", "4問", "6問", "7問"], "a": 0, "exp": "道路交通法関係は5問です。", "src": "運行管理者試験センター 出題分野"}, {"id": "c8", "field": "貨物法令", "q": "貨物試験では、労働基準法関係は何問出題されるか。", "choices": ["6問", "5問", "7問", "8問"], "a": 0, "exp": "労働基準法関係は6問です。", "src": "運行管理者試験センター 出題分野"}, {"id": "r1", "field": "旅客法令", "q": "旅客試験の第1分野は何に関する法令か。", "choices": ["道路運送法関係", "貨物自動車運送事業法関係", "道路交通法関係", "労働基準法関係"], "a": 0, "exp": "旅客試験の第1分野は道路運送法関係です。", "src": "運行管理者試験センター 出題分野"}, {"id": "r2", "field": "旅客法令", "q": "旅客試験の第1分野の出題数は何問か。", "choices": ["8問", "4問", "5問", "7問"], "a": 0, "exp": "道路運送法関係は8問です。", "src": "運行管理者試験センター 出題分野"}, {"id": "r3", "field": "旅客法令", "q": "道路運送法上の旅客自動車運送事業とは、基本的にどのような事業か。", "choices": ["他人の需要に応じ、有償で、自動車を使用して旅客を運送する事業", "自家用車で無償送迎すること", "鉄道で旅客を運送する事業", "貨物だけを運ぶ事業"], "a": 0, "exp": "道路運送法上の旅客自動車運送事業の定義を学ぶ基本問題です。", "src": "道路運送法 第2条"}, {"id": "r4", "field": "旅客法令", "q": "旅客自動車運送事業の区分を学ぶ際、基本となるものはどれか。", "choices": ["一般旅客自動車運送事業と特定旅客自動車運送事業などの区分", "トラックとバスだけの区分", "自家用車とレンタカーだけの区分", "二輪車と四輪車だけの区分"], "a": 0, "exp": "旅客自動車運送事業には法令上の事業区分があり、試験では定義・区分を問う問題が出題されます。", "src": "道路運送法"}, {"id": "r5", "field": "旅客法令", "q": "旅客試験で第1分野以外の共通分野に含まれるものはどれか。", "choices": ["道路運送車両法関係", "貨物自動車運送事業法関係", "旅客運賃だけ", "航空法関係"], "a": 0, "exp": "旅客試験の第2分野は道路運送車両法関係です。", "src": "運行管理者試験センター 出題分野"}, {"id": "r6", "field": "旅客法令", "q": "旅客試験では、道路交通法関係は何問出題されるか。", "choices": ["5問", "4問", "6問", "8問"], "a": 0, "exp": "道路交通法関係は5問です。", "src": "運行管理者試験センター 出題分野"}, {"id": "r7", "field": "旅客法令", "q": "旅客試験では、労働基準法関係は何問出題されるか。", "choices": ["6問", "5問", "7問", "8問"], "a": 0, "exp": "労働基準法関係は6問です。", "src": "運行管理者試験センター 出題分野"}, {"id": "r8", "field": "旅客法令", "q": "旅客試験では、実務上の知識及び能力は何問出題されるか。", "choices": ["7問", "8問", "4問", "5問"], "a": 0, "exp": "その他運行管理者の業務に関し、必要な実務上の知識及び能力は7問です。", "src": "運行管理者試験センター 出題分野"}];
+const LESSONS={
+ common:[
+  ["運行管理者とは","事業用自動車の輸送の安全を管理する役割から理解する。"],
+  ["試験の全体像","30問・5分野。合格基準は総得点だけでなく分野別条件もある。"],
+  ["車両と日常点検","車両法、検査、点検・整備を安全運行と結び付ける。"],
+  ["道路交通法","交通方法、安全運転、道路状況などを体系的に学ぶ。"],
+  ["労働時間","改善基準告示の現行ルールを旧基準と区別して学ぶ。"],
+  ["実務知識","運行管理者として判断する場面を問題形式で練習する。"]
+ ],
+ cargo:[
+  ["貨物自動車運送事業法","貨物試験の第1分野。8問を占める。"],
+  ["貨物の安全管理","運転者・車両・運行計画を一体で管理する。"],
+  ["貨物の労務管理","現行の改善基準告示を基礎から学ぶ。"],
+  ["貨物・本試験","8/4/5/6/7の構成で30問を解く。"]
+ ],
+ passenger:[
+  ["道路運送法","旅客試験の第1分野。8問を占める。"],
+  ["旅客運送事業の区分","一般・特定などの定義と区分を整理する。"],
+  ["旅客の安全管理","運転者・車両・運行を一体として考える。"],
+  ["旅客・本試験","8/4/5/6/7の構成で30問を解く。"]
+ ]
+};
+let mode="common", current=[], idx=0, score=0, answered=0, selected=null, mock=false, started=0, timerId=null;
+let combo=0, bestCombo=0, xpRun=0, xpTotal=Number(localStorage.getItem("unkoV3XP")||0), audioCtx=null;
+const fxCanvas=$("fxCanvas"), fxCtx=fxCanvas.getContext("2d"); let particles=[]; let fxRAF=0;
+const gameHud=$("gameHud"), hudCombo=$("hudCombo"), hudXp=$("hudXp"), toastFX=$("toastFX");
+function resizeFX(){const d=Math.min(2,devicePixelRatio||1);fxCanvas.width=Math.round(innerWidth*d);fxCanvas.height=Math.round(innerHeight*d);fxCtx.setTransform(d,0,0,d,0,0)}
+addEventListener("resize",resizeFX); resizeFX();
+function fxLoop(t){fxCtx.clearRect(0,0,innerWidth,innerHeight);particles=particles.filter(p=>p.life>0);for(const p of particles){p.life-=.016;p.vy+=p.g*.016;p.x+=p.vx*.016;p.y+=p.vy*.016;p.r+=p.vr*.016;const a=Math.max(0,p.life/(p.max||1));fxCtx.save();fxCtx.globalAlpha=a;fxCtx.translate(p.x,p.y);fxCtx.rotate(p.r);fxCtx.fillStyle=p.c;if(p.star){fxCtx.beginPath();for(let i=0;i<10;i++){const rr=i%2?3:9,aa=i*Math.PI/5-Math.PI/2;fxCtx.lineTo(Math.cos(aa)*rr,Math.sin(aa)*rr)}fxCtx.closePath();fxCtx.fill()}else fxCtx.fillRect(-p.s/2,-p.s/2,p.s,p.s);fxCtx.restore()}fxRAF=requestAnimationFrame(fxLoop)}
+fxRAF=requestAnimationFrame(fxLoop);
+function burst(x,y,n=45){const cols=["#ff7ab6","#3b6bff","#ffd23f","#3fdcb0","#a77bff","#fff"];for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,v=180+Math.random()*420;particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-180,vy0:0,g:620,r:Math.random()*6,vr:(Math.random()-.5)*10,s:5+Math.random()*8,c:cols[Math.floor(Math.random()*cols.length)],life:1.2+Math.random()*1.2,max:2.4})}}
+function sound(kind){try{audioCtx??=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();const o=audioCtx.createOscillator(),g=audioCtx.createGain(),t=audioCtx.currentTime;const good=kind==="good",bad=kind==="bad";o.type=good?"triangle":"sawtooth";o.frequency.setValueAtTime(good?620:170,t);o.frequency.exponentialRampToValueAtTime(good?980:90,t+.16);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(good?.16:.08,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+.22);o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+.24)}catch(e){}}
+function showToast(text,bad=false){toastFX.textContent=text;toastFX.className=bad?"bad show":"show";clearTimeout(showToast.t);showToast.t=setTimeout(()=>toastFX.className=bad?"bad":"",850)}
+function updateHud(){hudCombo.textContent=`🔥 ${combo} COMBO`;hudXp.textContent=`XP ${xpRun}`;gameHud.classList.add("show")}
+function hideHud(){gameHud.classList.remove("show")}
+function floatXP(n){const el=document.createElement("div");el.className="xpFloat";el.textContent=`+${n} XP`;el.style.left="50%";el.style.top="42%";document.body.appendChild(el);setTimeout(()=>el.remove(),900)}
+function gameGood(){combo++;bestCombo=Math.max(bestCombo,combo);const gain=10+Math.min(20,combo*2);xpRun+=gain;xpTotal+=gain;localStorage.setItem("unkoV3XP",xpTotal);updateHud();floatXP(gain);showToast(combo>=3?`正解！ ${combo} COMBO`:"正解！");sound("good");burst(innerWidth/2,innerHeight*.42,combo%5===0?80:32);$("quiz").classList.remove("fx-bad");$("quiz").classList.add("fx-good");setTimeout(()=>$("quiz").classList.remove("fx-good"),450);if(combo>=5&&combo%5===0)showToast(`🔥 ${combo} COMBO！`)}
+function gameBad(){combo=0;updateHud();showToast("不正解…",true);sound("bad");document.body.classList.add("game-shake");setTimeout(()=>document.body.classList.remove("game-shake"),300);$("quiz").classList.remove("fx-good");$("quiz").classList.add("fx-bad");setTimeout(()=>$("quiz").classList.remove("fx-bad"),400)}
+function choiceFX(ok){document.querySelectorAll(".choice").forEach((b,i)=>{if(i===current[idx].a)b.classList.add("fx-correct");if(selected===i&&!ok)b.classList.add("fx-wrong")})}
+function masteryHTML(){const m={};current.forEach(q=>m[q.field]=(m[q.field]||0)+(state.c?0:0));const rows=Object.entries(m);return rows.map(([k,v])=>`<div class="masteryRow"><span>${k}</span><div class="masteryBar"><i style="width:${Math.round((v/current.filter(q=>q.field===k).length)*100)}%"></i></div><b>${v}/${current.filter(q=>q.field===k).length}</b></div>`).join("")}
+function gameStart(){combo=0;bestCombo=0;xpRun=0;updateHud();setTimeout(()=>gameHud.classList.add("show"),80)}
+
+let state=JSON.parse(localStorage.getItem("unkoV2")||'{"a":0,"c":0,"wrong":[]}');
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem("unkoV2",JSON.stringify(state));renderStats();}
+function renderStats(){$("stats").textContent=`回答 ${state.a}問・正解 ${state.c}問`; $("wrongStat").textContent=`間違い ${state.wrong.length}問`; $("bar").style.width=Math.min(100,state.a?state.c/state.a*100:0)+"%";}
+function renderLessons(){const key=mode; $("currTitle").textContent=mode==="common"?"共通基礎":mode==="cargo"?"貨物基礎":"旅客基礎"; $("lessons").innerHTML=LESSONS[key].map((x,i)=>`<div class="lesson"><h3>${i+1}. ${x[0]}</h3><div>${x[1]}</div></div>`).join("");}
+document.querySelectorAll("#modeTabs button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#modeTabs button").forEach(x=>x.classList.remove("active"));b.classList.add("active");mode=b.dataset.mode;renderLessons();}));
+function poolForMode(){if(mode==="cargo")return BANK.filter(q=>["貨物法令","車両法","道路交通法","労働基準法","実務知識"].includes(q.field)); if(mode==="passenger")return BANK.filter(q=>["旅客法令","車両法","道路交通法","労働基準法","実務知識"].includes(q.field)); return BANK.filter(q=>q.field!=="貨物法令"&&q.field!=="旅客法令");}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function startPractice(){mock=false;current=shuffle(poolForMode()).slice(0,10);startQuiz();}
+function startWrong(){mock=false;const ids=new Set(state.wrong);current=shuffle(BANK.filter(q=>ids.has(q.id)));if(!current.length){alert("まだ間違えた問題はありません。");return}startQuiz();}
+function startMock(){mock=true;let p=mode==="cargo"?["貨物法令","車両法","道路交通法","労働基準法","実務知識"]:mode==="passenger"?["旅客法令","車両法","道路交通法","労働基準法","実務知識"]:["車両法","道路交通法","労働基準法","実務知識"];let counts=[8,4,5,6,7];current=[];p.forEach((f,i)=>current.push(...shuffle(BANK.filter(q=>q.field===f)).slice(0,counts[i])));current=shuffle(current);if(current.length<30){alert("現在の問題バンクは本試験30問を完全に満たすまで増強中です。現時点では一部の問題が不足しています。");return}startQuiz();}
+function startQuiz(){idx=0;score=0;answered=0;selected=null;started=Date.now();gameStart();$("quiz").classList.remove("hidden");$("result").classList.add("hidden");$("timer").classList.toggle("hidden",!mock);if(mock){clearInterval(timerId);timerId=setInterval(()=>{let left=Math.max(0,5400000-(Date.now()-started));$("timer").textContent=`${String(Math.floor(left/60000)).padStart(2,"0")}:${String(Math.floor(left/1000)%60).padStart(2,"0")}`;if(left<=0)finish();},250);}showQuestion();$("quiz").scrollIntoView({behavior:"smooth"});}
+function showQuestion(){const q=current[idx];selected=null;$("qNo").textContent=`問 ${idx+1} / ${current.length}`;$("qField").textContent=q.field;$("qText").textContent=q.q;$("choices").innerHTML=q.choices.map((c,i)=>`<button class="choice" data-i="${i}">${i+1}．${c}</button>`).join("");document.querySelectorAll(".choice").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".choice").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");selected=Number(b.dataset.i);}));$("answerBtn").disabled=false;$("feedback").className="hidden";$("feedback").innerHTML="";$("nextBtn").classList.add("hidden");}
+$("answerBtn").addEventListener("click",()=>{if(selected===null){alert("選択肢を1つ選んでください");return}const q=current[idx];const ok=selected===q.a;answered++;score+=ok?1:0;state.a++;if(ok){state.c++;state.wrong=state.wrong.filter(x=>x!==q.id);gameGood()}else{if(!state.wrong.includes(q.id))state.wrong.push(q.id);gameBad()}choiceFX(ok);save();$("feedback").className="feedback "+(ok?"correct":"wrong");$("feedback").innerHTML=`<b>${ok?"正解":"不正解"}</b><br>${q.exp}<div class="source">根拠：${q.src}</div>`;$("answerBtn").disabled=true;$("nextBtn").classList.remove("hidden");});
+$("nextBtn").addEventListener("click",()=>{idx++;if(idx>=current.length)finish();else showQuestion();});
+$("quitBtn").addEventListener("click",finish);
+function finish(){clearInterval(timerId);$("quiz").classList.add("hidden");$("result").classList.remove("hidden");hideHud();let pct=Math.round(score/current.length*100);let pass=mock && score>=18;let rank=pct>=90?"S":pct>=80?"A":pct>=70?"B":pct>=60?"C":"D";let msg=mock?(pass?"総得点条件は18問以上。分野別最低正解数も確認してください。":"総得点条件は18問未満。分野別条件も含めて復習しましょう。"):"今回の演習は終了。間違えた問題は「間違えた問題」から復習できます。";$("result").innerHTML=`<div class="resultHero"><div class="resultRank">今回のランク <b>${rank}</b></div><div class="resultXP">+${xpRun} XP</div><h2>${score} / ${current.length} 正解</h2><p><b>正解率 ${pct}%</b>　🔥最高 ${bestCombo} COMBO</p><p>${msg}</p><div style="margin:12px 0">累計XP <b>${xpTotal}</b></div><button class="primary" onclick="document.getElementById('result').classList.add('hidden')">戻る</button></div>`;if(pct>=80){setTimeout(()=>{burst(innerWidth/2,innerHeight*.35,120);sound("good")},120)}}
+$("practice").addEventListener("click",startPractice);$("mock").addEventListener("click",startMock);$("wrongBtn").addEventListener("click",startWrong);renderStats();renderLessons();
+</script>
+</body></html>
