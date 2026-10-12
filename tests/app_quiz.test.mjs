@@ -77,3 +77,19 @@ test('the final mix draws from every field', () => {
   for (let i = 0; i < 300; i++) titles.add(makeProblem('mix-final', rng).title);
   assert.deepEqual([...titles].sort(), ['実務', '旅客', '労働', '貨物', '車両法', '道交法'].sort());
 });
+
+test('the correct choice is not given away by its length', () => {
+  // The correct answer used to be the longest choice in ~58% of the bank (chance is 25%),
+  // so length alone told the player which one to pick. Keep it near chance in both directions.
+  const len = (s) => [...s].length;
+  let total = 0, longest = 0, shortest = 0;
+  for (const list of Object.values(POOLS)) for (const it of list) {
+    const l = it.c.map(len);
+    const rest = l.slice(1);
+    total++;
+    if (l[0] > Math.max(...rest)) longest++;
+    if (l[0] < Math.min(...rest)) shortest++;
+  }
+  assert.ok(longest / total < 0.30, `correct is strictly the longest in ${(longest / total * 100).toFixed(1)}% of questions`);
+  assert.ok(shortest / total < 0.30, `correct is strictly the shortest in ${(shortest / total * 100).toFixed(1)}% of questions`);
+});
