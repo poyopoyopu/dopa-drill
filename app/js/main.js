@@ -2062,7 +2062,6 @@ function closeBonus() {
 }
 function checkLoginBonus() {
   if (S.demo || S.screen !== 'title' || S.guideOpen || params.has('capture') || S.hammerOpen || S.scene) return;
-  if (!store.hasSeenGuide() && !params.has('skill') && !params.has('demo')) { openGuide(); return; }
   // The hammer comes first: using it keeps the login card's run going too.
   const offer = store.hammerOffer();
   if (offer) { scheduleTitleReward(() => openHammer(offer)); return; }
