@@ -22,6 +22,7 @@
 | 2 | 車両・道交 | 酒気と免許 (`tr-alcohol`) | `tr_alcohol` | tr-basic |
 | 2 | 貨物・旅客 | 運行管理者 (`cg-manager`) | `cg_manager` | cg-basic |
 | 2 | 貨物・旅客 | 貨物の許可と手続き (`cg-permit`) | `cg_permit` | cg-basic |
+| 2 | 貨物・旅客 | 旅客の運行管理者 (`ps-duty`) | `ps_duty` | ps-basic |
 | 2 | 実務 | 速度とカガク (`pr-physics`) | `pr_physics` | pr-body |
 | 3 | 労働時間 | 運転時間 (`lb-drive`) | `lb_drive` | lb-truck |
 | 3 | 労働時間 | バスの基準 (`lb-bus`) | `lb_bus` | lb-truck |
@@ -34,11 +35,13 @@
 | 3 | 貨物・旅客 | 積載と点検整備 (`cg-load`) | `cg_load` | cg-manager |
 | 3 | 貨物・旅客 | 旅客の点呼 (`ps-tenko`) | `ps_tenko` | ps-basic |
 | 3 | 貨物・旅客 | 旅客の過労防止 (`ps-care`) | `ps_care` | ps-basic |
+| 3 | 実務 | 距離と時間の計算 (`pr-calc`) | `pr_calc` | pr-physics |
 | 3 | 実務 | 健康と運転 (`pr-health`) | `pr_health` | pr-body |
 | 3 | 実務 | 事故と対応 (`pr-accident`) | `pr_accident` | pr-physics |
 | 4 | 労働時間 | 36協定と上限 (`lb-36`) | `lb_36` | lb-pay, lb-truck |
 | 4 | 労働時間 | 特例のきまり (`lb-special`) | `lb_special` | lb-drive |
 | 4 | 貨物・旅客 | 記録と保存 (`cg-record`) | `cg_record` | cg-tenko |
+| 4 | 貨物・旅客 | 貸切バスの交替運転者 (`ps-relief`) | `ps_relief` | ps-care |
 | 4 | 実務 | 事故をふせぐ (`pr-prevent`) | `pr_prevent` | pr-accident, pr-health |
 | 5 | 貨物・旅客 | 指導と健康管理 (`cg-guide`) | `cg_guide` | cg-record |
 | 6 | 実務 | 総まとめ (`mix-final`) | 全分野 | cg-guide, lb-36, lb-bus, lb-drive, vh-shaken, tr-speed, tr-alcohol, ps-tenko, ps-care, pr-prevent |

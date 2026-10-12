@@ -29,6 +29,7 @@ export const SKILLS = [
   { id: 'tr-alcohol', name: '酒気と免許', grade: 2, lane: 2, side: 1, req: ['tr-basic'], gen: q('tr_alcohol') },
   { id: 'cg-manager', name: '運行管理者', grade: 2, lane: 0, req: ['cg-basic'], gen: q('cg_manager') },
   { id: 'cg-permit', name: '貨物の許可と手続き', grade: 2, lane: 0, side: 1, req: ['cg-basic'], gen: q('cg_permit') },
+  { id: 'ps-duty', name: '旅客の運行管理者', grade: 2, lane: 0, side: 1, req: ['ps-basic'], gen: q('ps_duty') },
   { id: 'pr-physics', name: '速度とカガク', grade: 2, lane: 3, req: ['pr-body'], gen: q('pr_physics') },
 
   // ---------------------------------------------------------------- stage 3
@@ -43,12 +44,14 @@ export const SKILLS = [
   { id: 'cg-load', name: '積載と点検整備', grade: 3, lane: 0, req: ['cg-manager'], gen: q('cg_load') },
   { id: 'ps-tenko', name: '旅客の点呼', grade: 3, lane: 0, side: 1, req: ['ps-basic'], gen: q('ps_tenko') },
   { id: 'ps-care', name: '旅客の過労防止', grade: 3, lane: 0, side: 1, req: ['ps-basic'], gen: q('ps_care') },
+  { id: 'pr-calc', name: '距離と時間の計算', grade: 3, lane: 3, side: 1, req: ['pr-physics'], gen: q('pr_calc') },
   { id: 'pr-health', name: '健康と運転', grade: 3, lane: 3, req: ['pr-body'], gen: q('pr_health') },
   { id: 'pr-accident', name: '事故と対応', grade: 3, lane: 3, side: 1, req: ['pr-physics'], gen: q('pr_accident') },
 
   // ---------------------------------------------------------------- stage 4
   { id: 'lb-36', name: '36協定と上限', grade: 4, lane: 1, side: 1, req: ['lb-pay', 'lb-truck'], gen: q('lb_36') },
   { id: 'lb-special', name: '特例のきまり', grade: 4, lane: 1, req: ['lb-drive'], gen: q('lb_special') },
+  { id: 'ps-relief', name: '貸切バスの交替運転者', grade: 4, lane: 0, side: 1, req: ['ps-care'], gen: q('ps_relief') },
   { id: 'cg-record', name: '記録と保存', grade: 4, lane: 0, req: ['cg-tenko'], gen: q('cg_record') },
   { id: 'pr-prevent', name: '事故をふせぐ', grade: 4, lane: 3, req: ['pr-accident', 'pr-health'], gen: q('pr_prevent') },
 
