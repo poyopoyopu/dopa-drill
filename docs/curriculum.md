@@ -18,6 +18,7 @@
 | 2 | 労働時間 | トラックの拘束 (`lb-truck`) | `lb_truck` | lb-words |
 | 2 | 労働時間 | 労働時間と休日 (`lb-law32`) | `lb_law32` | lb-words |
 | 2 | 車両・道交 | 点検と整備 (`vh-check`) | `vh_check` | vh-basic |
+| 2 | 車両・道交 | 通行区分と進入禁止 (`tr-lane`) | `tr_lane` | tr-basic |
 | 2 | 車両・道交 | 駐停車と追越し (`tr-stop`) | `tr_stop` | tr-basic |
 | 2 | 車両・道交 | 酒気と免許 (`tr-alcohol`) | `tr_alcohol` | tr-basic |
 | 2 | 貨物・旅客 | 運行管理者 (`cg-manager`) | `cg_manager` | cg-basic |
@@ -29,6 +30,8 @@
 | 3 | 労働時間 | タクシーの基準 (`lb-taxi`) | `lb_taxi` | lb-truck |
 | 3 | 労働時間 | 割増賃金と年休 (`lb-pay`) | `lb_pay` | lb-law32 |
 | 3 | 車両・道交 | 車検と検査証 (`vh-shaken`) | `vh_shaken` | vh-check |
+| 3 | 車両・道交 | 保安基準 (`vh-standard`) | `vh_standard` | vh-check |
+| 3 | 車両・道交 | 運転者の心得 (`tr-driver`) | `tr_driver` | tr-alcohol |
 | 3 | 車両・道交 | 速度と積載 (`tr-speed`) | `tr_speed` | tr-stop |
 | 3 | 貨物・旅客 | 貨物の点呼 (`cg-tenko`) | `cg_tenko` | cg-manager |
 | 3 | 貨物・旅客 | 貨物の過労防止 (`cg-care`) | `cg_care` | cg-manager |
@@ -41,6 +44,7 @@
 | 4 | 労働時間 | 36協定と上限 (`lb-36`) | `lb_36` | lb-pay, lb-truck |
 | 4 | 労働時間 | 特例のきまり (`lb-special`) | `lb_special` | lb-drive |
 | 4 | 貨物・旅客 | 記録と保存 (`cg-record`) | `cg_record` | cg-tenko |
+| 4 | 車両・道交 | 高速道路のきまり (`tr-highway`) | `tr_highway` | tr-speed |
 | 4 | 貨物・旅客 | 貸切バスの交替運転者 (`ps-relief`) | `ps_relief` | ps-care |
 | 4 | 実務 | 事故をふせぐ (`pr-prevent`) | `pr_prevent` | pr-accident, pr-health |
 | 5 | 貨物・旅客 | 指導と健康管理 (`cg-guide`) | `cg_guide` | cg-record |
