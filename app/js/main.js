@@ -970,7 +970,7 @@ function showCombo() {
   if (!on) return;
   $('#combo').textContent = S.combo;
   const max = comboMaxed(S.combo);
-  $('#combo-mult').textContent = max ? 'ドパ×2 MAX' : `ドパ×${comboMult(S.combo).toFixed(2)}`;
+  $('#combo-mult').textContent = max ? 'スコア×2 MAX' : `スコア×${comboMult(S.combo).toFixed(2)}`;
   box.classList.toggle('hot', max);
 }
 function tickCombo(t) {

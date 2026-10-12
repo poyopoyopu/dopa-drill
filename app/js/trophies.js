@@ -7,7 +7,7 @@
 import { SKILLS, LANES } from './skills.js';
 import { isUnlocked, isMastered, starsOf } from './session.js';
 
-export const CATS = ['つづける', 'たくさん', 'スキル', 'せいちょう', 'エクストラ', 'コンボ', 'せいかく', 'ドパ', 'ふくしゅう', 'ステージ', 'コレクション', 'ひみつ'];
+export const CATS = ['つづける', 'たくさん', 'スキル', 'せいちょう', 'エクストラ', 'コンボ', 'せいかく', 'スコア', 'ふくしゅう', 'ステージ', 'コレクション', 'ひみつ'];
 
 const fmt = (n) => (n >= 10000 && n % 10000 === 0 ? `${n / 10000}万` : n.toLocaleString('ja-JP'));
 const DOPA_LABEL = { 2: '100', 3: '1000', 4: '1万', 5: '10万', 6: '100万', 7: '1000万', 8: '1億', 9: '10億' };
@@ -41,7 +41,7 @@ const SERIES_DEFS = [
   { key: 'combo', cat: 'コンボ', title: 'コンボ', metric: 'maxCombo', steps: [5, 10, 15, 20, 30, 40, 50, 75, 100, 150, 200, 300], name: (v) => `${v}コンボ`, desc: (v) => `${v}コンボを だす` },
   { key: 'perfects', cat: 'せいかく', title: 'ノーミスで かんそう', metric: 'perfects', steps: [1, 3, 5, 10, 20, 30, 50, 100, 200, 300], name: (v) => `ノーミス ${v}回`, desc: (v) => `初回正解率100%で ${v}回 さいごまで とく` },
   { key: 'firstTry', cat: 'せいかく', title: '初回正解', metric: 'firstTry', steps: [10, 50, 100, 300, 500, 1000, 3000, 5000, 10000, 30000], name: (v) => `初回正解 ${fmt(v)}もん`, desc: (v) => `いっかいで 正解した もんだいが ${fmt(v)}もん` },
-  { key: 'dopa', cat: 'ドパ', title: 'ドパ', metric: 'bestDopaL', steps: [2, 3, 4, 5, 6, 7, 8, 9], name: (v) => `${DOPA_LABEL[v]}ドパ`, desc: (v) => `1回の プレイで ドパ ${DOPA_LABEL[v]}を こえる` },
+  { key: 'dopa', cat: 'スコア', title: 'スコア', metric: 'bestDopaL', steps: [2, 3, 4, 5, 6, 7, 8, 9], name: (v) => `${DOPA_LABEL[v]}スコア`, desc: (v) => `1回の プレイで スコア ${DOPA_LABEL[v]}を こえる` },
   { key: 'review', cat: 'ふくしゅう', title: 'ふくしゅう', metric: 'reviewSolved', steps: [1, 5, 10, 30, 50, 100, 200, 300], name: (v) => `ふくしゅう ${v}もん`, desc: (v) => `まちがえた もんだいを ${v}もん やりなおす` },
   ...[1, 2, 3, 4, 5, 6].map((g) => ({ key: `grade${g}`, cat: 'ステージ', title: `ステージ${g}で あそぶ`, metric: `gradePlays${g}`, steps: [1, 10, 30], name: (v) => `ステージ${g} ${v}回`, desc: (v) => `「ステージ${g}」で ${v}回 あそぶ` })),
   { key: 'secret', cat: 'ひみつ', title: 'ひみつ', items: [
