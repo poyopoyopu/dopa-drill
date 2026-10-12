@@ -69,6 +69,7 @@ function setLevelClasses(L) {
 
 function showScreen(name) {
   S.screen = name;
+  document.body.dataset.screen = name;
   $$('.screen').forEach((s) => s.classList.toggle('is-active', s.id === `screen-${name}`));
   const el = $(`#screen-${name}`);
   if (!S.reduced) tween(260, (k) => { el.style.opacity = k; el.style.transform = `translateY(${(1 - k) * 18}px)`; }).then(() => { el.style.transform = ''; });
@@ -502,7 +503,7 @@ function press(key, btn = padButtons[key]) {
 }
 
 function carry(from, cell, digit, done) {
-  if (S.reduced) { done(); return; }
+  if (S.reduced || S.screen === 'play') { done(); return; } // the mascot is hidden while playing
   const to = centerOf(cell);
   hero.carry(from, to, digit, { E: S.E, onGrab: () => audio.grab(), onPlace: () => { audio.place(); done(); } });
 }

@@ -742,8 +742,8 @@ body.reduced #guide-help-ring, body.reduced .guide-help-fallback::after { animat
 .sheet.quiz { display: block; width: 100%; font-family: var(--round); font-weight: 900; }
 /* The card grows with the question (the stage above gives way) so nothing needs scrolling;
    the cap is only a safety net for the longest questions on very short screens. */
-.sheet-wrap:has(.sheet.quiz) { align-items: flex-start; justify-content: stretch; min-height: 0; max-height: calc(100dvh - 310px); overflow-y: auto; padding: 2px 2px 4px; -webkit-overflow-scrolling: touch; }
-#screen-play:has(.sheet.quiz) .stage { min-height: 56px; }
+.sheet-wrap:has(.sheet.quiz) { align-items: flex-start; justify-content: stretch; min-height: 0; max-height: calc(100dvh - 240px); overflow-y: auto; padding: 2px 2px 4px; -webkit-overflow-scrolling: touch; }
+#screen-play:has(.sheet.quiz) .stage { min-height: 8px; }
 #screen-play:has(.sheet.quiz) .step-label { min-height: 0; margin: 0; font-size: 13px; }
 .qz-top { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; }
 .qz-q { flex: 1; margin: 0; font-size: clamp(14px, 3.9vw, 16px); line-height: 1.45; font-weight: 900; text-align: left; }
@@ -762,3 +762,11 @@ body.reduced #guide-help-ring, body.reduced .guide-help-fallback::after { animat
 .qz-exp[hidden] { display: none; }
 @media (max-height: 840px) { .pad button { height: 46px; } }
 .grades button { display: flex; align-items: baseline; justify-content: center; gap: 3px; }
+
+/* The mascot and crowd are shown on the title screen only; the game screens are for reading. */
+body:not([data-screen="title"]) #actors { display: none; }
+
+/* The mascot and the crowd are hidden (the game logic still drives them, they are just not drawn). */
+#actors, #actors-back, #actors-front { visibility: hidden; }
+#screen-play:has(.sheet.quiz) .stage { min-height: 0; flex: 1 1 auto; }
+.sheet-wrap:has(.sheet.quiz) { max-height: calc(100dvh - 230px); }
