@@ -288,7 +288,7 @@ function renderSheet(p) {
   sheet.innerHTML = '';
   sheet.className = `sheet ${p.kind}`;
   S.cells = {}; S.lines = {};
-  if (p.kind === 'quiz') { renderQuiz(p); return; }
+  if (p.kind === 'quiz') { renderQuiz(p); fitSheet(p); return; }
   sheet.style.setProperty('--cols', p.cols);
   sheet.style.setProperty('--rows', p.rows);
   S.cells = {}; S.lines = {};
@@ -323,8 +323,19 @@ function renderSheet(p) {
   fitSheet(p);
 }
 
+// Use the free room above the card: the text grows until the card would squeeze the
+// stage below a small margin (long questions stay at the base size).
+function fitQuiz() {
+  const wrap = sheet.parentElement;
+  for (let s = 1.6; s >= 1; s -= 0.05) {
+    sheet.style.setProperty('--qzs', s.toFixed(2));
+    if (stage.clientHeight >= 24 && wrap.scrollHeight <= wrap.clientHeight + 1) return;
+  }
+}
+
 // Size the grid so any layout (wide expressions, tall long division) fits the card.
 function fitSheet(p) {
+  if (p.kind === 'quiz') { fitQuiz(); return; }
   const wrap = sheet.parentElement;
   const availW = Math.max(200, wrap.clientWidth - 16);
   const availH = parseFloat(getComputedStyle(wrap).minHeight) || 200;
