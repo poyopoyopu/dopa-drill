@@ -34,6 +34,7 @@ export const SKILLS = [
   // ---------------------------------------------------------------- stage 3
   { id: 'lb-drive', name: '運転時間', grade: 3, lane: 1, req: ['lb-truck'], gen: q('lb_drive') },
   { id: 'lb-bus', name: 'バスの基準', grade: 3, lane: 1, side: 1, req: ['lb-truck'], gen: q('lb_bus') },
+  { id: 'lb-taxi', name: 'タクシーの基準', grade: 3, lane: 1, side: 1, req: ['lb-truck'], gen: q('lb_taxi') },
   { id: 'lb-pay', name: '割増賃金と年休', grade: 3, lane: 1, side: 1, req: ['lb-law32'], gen: q('lb_pay') },
   { id: 'vh-shaken', name: '車検と検査証', grade: 3, lane: 2, req: ['vh-check'], gen: q('vh_shaken') },
   { id: 'tr-speed', name: '速度と積載', grade: 3, lane: 2, side: 1, req: ['tr-stop'], gen: q('tr_speed') },
@@ -47,6 +48,7 @@ export const SKILLS = [
 
   // ---------------------------------------------------------------- stage 4
   { id: 'lb-36', name: '36協定と上限', grade: 4, lane: 1, side: 1, req: ['lb-pay', 'lb-truck'], gen: q('lb_36') },
+  { id: 'lb-special', name: '特例のきまり', grade: 4, lane: 1, req: ['lb-drive'], gen: q('lb_special') },
   { id: 'cg-record', name: '記録と保存', grade: 4, lane: 0, req: ['cg-tenko'], gen: q('cg_record') },
   { id: 'pr-prevent', name: '事故をふせぐ', grade: 4, lane: 3, req: ['pr-accident', 'pr-health'], gen: q('pr_prevent') },
 

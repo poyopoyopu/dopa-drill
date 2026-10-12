@@ -25,6 +25,7 @@
 | 2 | 実務 | 速度とカガク (`pr-physics`) | `pr_physics` | pr-body |
 | 3 | 労働時間 | 運転時間 (`lb-drive`) | `lb_drive` | lb-truck |
 | 3 | 労働時間 | バスの基準 (`lb-bus`) | `lb_bus` | lb-truck |
+| 3 | 労働時間 | タクシーの基準 (`lb-taxi`) | `lb_taxi` | lb-truck |
 | 3 | 労働時間 | 割増賃金と年休 (`lb-pay`) | `lb_pay` | lb-law32 |
 | 3 | 車両・道交 | 車検と検査証 (`vh-shaken`) | `vh_shaken` | vh-check |
 | 3 | 車両・道交 | 速度と積載 (`tr-speed`) | `tr_speed` | tr-stop |
@@ -36,6 +37,7 @@
 | 3 | 実務 | 健康と運転 (`pr-health`) | `pr_health` | pr-body |
 | 3 | 実務 | 事故と対応 (`pr-accident`) | `pr_accident` | pr-physics |
 | 4 | 労働時間 | 36協定と上限 (`lb-36`) | `lb_36` | lb-pay, lb-truck |
+| 4 | 労働時間 | 特例のきまり (`lb-special`) | `lb_special` | lb-drive |
 | 4 | 貨物・旅客 | 記録と保存 (`cg-record`) | `cg_record` | cg-tenko |
 | 4 | 実務 | 事故をふせぐ (`pr-prevent`) | `pr_prevent` | pr-accident, pr-health |
 | 5 | 貨物・旅客 | 指導と健康管理 (`cg-guide`) | `cg_guide` | cg-record |
