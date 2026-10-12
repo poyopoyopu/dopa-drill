@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="theme-color" content="#3b6bff">
-  <meta name="description" content="算数を解くたびに、演出と音がどんどんインフレするドリル。">
+  <meta name="description" content="運行管理者試験の問題を解くたびに、演出と音がどんどんインフレするドリル。">
   <title>ドパドリル</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
@@ -29,15 +29,15 @@
         <svg class="logo-burst" viewBox="-100 -100 200 200" aria-hidden="true"><path id="logo-burst-path" fill="#ffd23f" stroke="#1b1d4d" stroke-width="5" stroke-linejoin="round"/><path id="logo-burst-inner" fill="#ff7ab6" stroke="#1b1d4d" stroke-width="4" stroke-linejoin="round"/></svg>
         <span class="logo-top" aria-hidden="true"><i data-c="ド">ド</i><i data-c="パ">パ</i></span>
         <span class="logo-ribbon" aria-hidden="true"><svg class="ribbon-bg" viewBox="0 0 300 70" preserveAspectRatio="none"><path d="M4 22 L34 16 L28 36 L40 58 L6 62 L18 42Z" fill="#2a4fd6" stroke="#1b1d4d" stroke-width="4" stroke-linejoin="round"/><path d="M296 22 L266 16 L272 36 L260 58 L294 62 L282 42Z" fill="#2a4fd6" stroke="#1b1d4d" stroke-width="4" stroke-linejoin="round"/><path d="M30 10 Q150 -4 270 10 L270 56 Q150 42 30 56Z" fill="#3b6bff" stroke="#1b1d4d" stroke-width="4.5" stroke-linejoin="round"/><path d="M42 18 Q150 6 258 18" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="round" opacity=".7"/></svg><i>ド</i><i>リ</i><i>ル</i></span>
-        <span class="logo-bits" aria-hidden="true"><b style="--x:-46%;--y:4%;--r:-18deg;--c:#3fdcb0">＋</b><b style="--x:44%;--y:-2%;--r:14deg;--c:#a77bff">×</b><b style="--x:-34%;--y:104%;--r:10deg;--c:#ff4f6d">÷</b><b style="--x:36%;--y:102%;--r:-12deg;--c:#ffd23f">−</b></span>
+        <span class="logo-bits" aria-hidden="true"><b style="--x:-46%;--y:4%;--r:-18deg;--c:#3fdcb0">○</b><b style="--x:44%;--y:-2%;--r:14deg;--c:#a77bff">？</b><b style="--x:-34%;--y:104%;--r:10deg;--c:#ff4f6d">×</b><b style="--x:36%;--y:102%;--r:-12deg;--c:#ffd23f">✓</b></span>
       </h1>
       <div class="title-stage" id="title-stage" aria-hidden="true"></div>
       <div class="modes" id="modes">
         <button type="button" id="start" class="big-btn level-btn">じぶんレベル<small id="level-sub">はじめは じつりょくチェック</small></button>
         <button type="button" id="start-review" class="sub-btn review-btn review-main" hidden>ふくしゅう <b id="review-count">0</b></button>
-        <div class="grades" role="group" aria-label="学年べつ">
-          <button type="button" data-grade="1">1<small>ねんせい</small></button><button type="button" data-grade="2">2<small>ねんせい</small></button><button type="button" data-grade="3">3<small>ねんせい</small></button>
-          <button type="button" data-grade="4">4<small>ねんせい</small></button><button type="button" data-grade="5">5<small>ねんせい</small></button><button type="button" data-grade="6">6<small>ねんせい</small></button>
+        <div class="grades" role="group" aria-label="ステージ別">
+          <button type="button" data-grade="1"><small>ステージ</small>1</button><button type="button" data-grade="2"><small>ステージ</small>2</button><button type="button" data-grade="3"><small>ステージ</small>3</button>
+          <button type="button" data-grade="4"><small>ステージ</small>4</button><button type="button" data-grade="5"><small>ステージ</small>5</button><button type="button" data-grade="6"><small>ステージ</small>6</button>
         </div>
         <div class="mode-row">
           <button type="button" id="open-tree" class="sub-btn">スキルツリー <b id="tree-badge"></b></button>
@@ -121,16 +121,13 @@
       <section class="card" id="card" aria-labelledby="qtitle">
         <div class="marquee" aria-hidden="true"></div>
         <div class="card-top"><span class="chip" id="qtitle">たしざん</span><span class="qno" id="qno">第1問</span></div>
-        <div class="sheet-wrap"><div class="sheet" id="sheet" role="group" aria-label="計算"></div></div>
+        <div class="sheet-wrap"><div class="sheet" id="sheet" role="group" aria-label="問題"></div></div>
         <p class="step-label" id="step-label" aria-live="polite">一の位</p>
         <div class="stamp" id="stamp" aria-hidden="true"></div>
         <div class="reach-tag" id="reach-tag" aria-hidden="true">あと1けた</div>
       </section>
-      <div class="pad" id="pad" role="group" aria-label="数字の入力">
-        <button type="button" data-key="7">7</button><button type="button" data-key="8">8</button><button type="button" data-key="9">9</button>
-        <button type="button" data-key="4">4</button><button type="button" data-key="5">5</button><button type="button" data-key="6">6</button>
-        <button type="button" data-key="1">1</button><button type="button" data-key="2">2</button><button type="button" data-key="3">3</button>
-        <button type="button" data-key="Backspace" class="del" aria-label="1けた消す">⌫</button><button type="button" data-key="0" class="zero">0</button>
+      <div class="pad" id="pad" role="group" aria-label="こたえの番号">
+        <button type="button" data-key="1" aria-label="1番">①</button><button type="button" data-key="2" aria-label="2番">②</button><button type="button" data-key="3" aria-label="3番">③</button><button type="button" data-key="4" aria-label="4番">④</button>
       </div>
     </section>
 

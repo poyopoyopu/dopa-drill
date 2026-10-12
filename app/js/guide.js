@@ -1,7 +1,7 @@
 // Title tour: captions belong to the interface, never to the mascot.
 const INTRO = { title: 'あそびかた', text: 'もんだいは 3つの\nえらびかたが あるよ' };
 const LEVEL = { target: '#start', title: 'じぶんレベル', text: 'いまの きみに あった もんだい。\nはじめは じつりょくチェック' };
-const GRADES = { target: '.grades', title: '1ねんせい〜6ねんせい', text: 'がくねんの もんだいを\nまとめて れんしゅう' };
+const GRADES = { target: '.grades', title: 'ステージ1〜6', text: 'ステージごとの もんだいを\nまとめて れんしゅう' };
 const TREE = { target: '#open-tree', title: 'スキルツリー', text: 'やりたい もんだいを\n1つ えらんで れんしゅう' };
 const TROPHY = { target: '#open-trophy', title: 'トロフィー', text: 'あそぶと もらえるよ。\nつづけて あそぶと ふえていく' };
 const COLLECTION = { target: '#open-collect', title: 'コレクション', text: 'トロフィーの ごほうびで ふえる\nはいけい・おんがく・きせかえなどを\nえらべるよ' };

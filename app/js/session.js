@@ -13,19 +13,17 @@ export const ORDER = SKILLS.slice().sort((a, b) => DEPTH[a.id] - DEPTH[b.id] || 
 // Placement walks grade by grade (prerequisites never come from a later grade).
 export const PLACEMENT = SKILLS.slice().sort((a, b) => a.grade - b.grade || DEPTH[a.id] - DEPTH[b.id]).map((s) => s.id);
 
-// Skill-tree layout: each lane gets SUB columns and skills are placed grade
-// by grade, so the tree reads top-down by school year. Grades 5-6 all sit
-// below every grade 1-4 skill, after a blank row. Each skill takes the cheapest
+// Skill-tree layout: each lane gets SUB columns and skills are placed stage
+// by stage, so the tree reads top-down. Stages 5-6 all sit
+// below every stage 1-4 skill, after a blank row. Each skill takes the cheapest
 // free cell at or up to two rows below its prerequisites: going lower costs 3
 // per row, a same-column link passing behind another node 3 (so a slight
 // overlap may be kept instead of dropping far down; the renderer detours
-// it), leaving its chain's column 1.5 (add / multiply / decimal on the left,
-// subtract / divide / fraction on the right), each column away from a
+// it), leaving its chain's column 1.5 (a skill's `side` says which sub-column it prefers), each column away from a
 // prerequisite 1.
 export const TREE_SUB = 2;
 export const TREE_UPPER = 5;
-const RIGHT_GENS = new Set(['hsub', 'vsub', 'div', 'divRem', 'divTens', 'vdiv', 'fracOf', 'frac', 'gcdlcm', 'ratio', 'letter']);
-const prefSub = (sk) => (RIGHT_GENS.has(sk.gen[0]) ? 1 : 0);
+const prefSub = (sk) => sk.side || 0;
 export const TREE_LAYOUT = (() => {
   const row = {}; const col = {}; const occ = new Set();
   const key = (c, r) => `${c}:${r}`;
@@ -52,7 +50,9 @@ export const TREE_LAYOUT = (() => {
   return { row, col, rows: Math.max(...Object.values(row)) + 1, cols: LANES_N * TREE_SUB };
 })();
 
-export function emptyProgress() { return { placed: false, skills: {}, review: [] }; }
+// No placement walk for the exam drill: with four choices a lucky guess would
+// grant skills. Everyone starts from stage 1.
+export function emptyProgress() { return { placed: true, skills: {}, review: [] }; }
 
 const rec = (prog, id) => prog.skills[id] || (prog.skills[id] = { n: 0, hist: [], mastered: false, recent: [] });
 

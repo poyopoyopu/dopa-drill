@@ -26,7 +26,7 @@ export const QUESTS = [
   { id: 'extra5', tier: 'hard', metric: 'extraSolved', goal: 5, text: () => 'エクストラで 5もん とく', mode: 'any', plays: () => 1, need: (c) => c.extraOk },
   { id: 'combo20', tier: 'hard', metric: 'combo', goal: 20, text: () => '20コンボを だす', mode: 'any', plays: () => 2, need: (c) => cellsPerPlay(c) >= 26 },
   { id: 'play2', tier: 'hard', metric: 'play', goal: 2, text: () => '2回 あそぶ', mode: 'any', plays: () => 2 },
-  { id: 'grade1', tier: 'hard', metric: 'gradePlay', goal: 1, text: () => '学年べつで 1回 あそぶ', mode: 'grade', plays: () => 1 },
+  { id: 'grade1', tier: 'hard', metric: 'gradePlay', goal: 1, text: () => 'ステージべつで 1回 あそぶ', mode: 'grade', plays: () => 1 },
   { id: 'learn10', tier: 'hard', metric: 'learning', goal: 10, text: () => 'れんしゅうちゅうの スキルを 10もん', mode: 'any', plays: (c) => Math.ceil(10 / (c.count * 0.6)), need: (c) => c.hasLearning && c.placed },
 ];
 export const QUEST = Object.fromEntries(QUESTS.map((q) => [q.id, q]));

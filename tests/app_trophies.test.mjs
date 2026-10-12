@@ -24,7 +24,7 @@ test('earning: conditions met, kept forever, first run is a quiet batch', () => 
   const stats = emptyStats();
   Object.assign(stats, { problems: 120, plays: 6, days: 4, maxCombo: 12, bestDopaL: 4.3, playMs: 40 * 60000, flags: { sunday: true } });
   const prog = emptyProgress();
-  masterWithAncestors(prog, 'g1-add-c');
+  masterWithAncestors(prog, 'lb-36');
   const m = trophyMetrics({ stats, prog, bestStreak: 3, stickers: 4 });
   const st = {};
   assert.deepEqual(evaluate(st, m, 1), []); // first call: batch, no pop-ups
@@ -60,7 +60,7 @@ test('expanded catalogue (id045): 300+, new series measured, rewards all resolva
   assert.ok(Math.max(...SERIES.find((s) => s.key === 'items').items.map((x) => x.need)) <= ITEMS.length);
   const prog = emptyProgress();
   for (const s of SKILLS.filter((x) => x.grade === 1)) { masterWithAncestors(prog, s.id); prog.skills[s.id].stars = 3; }
-  prog.skills['g1-add-nc'].stars = 5;
+  prog.skills['lb-words'].stars = 5;
   const stats = { ...emptyStats(), polished: 2, capsules: 1, capsuleFaster: 1, grew: 5 };
   const m = trophyMetrics({ stats, prog, extra: { questDays: 7, questRun: 3, hammerUsed: 1, itemsOwned: 12, catComplete: 1 } });
   assert.equal(m.starsTotal, 3 * SKILLS.filter((x) => x.grade === 1).length + 2);

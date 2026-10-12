@@ -8,7 +8,7 @@ test('ids are unique and prerequisites exist', () => {
   for (const s of SKILLS) for (const r of s.req) assert.ok(SKILL[r], `${s.id} needs ${r}`);
 });
 
-test('prerequisites never come from a later grade and the graph is acyclic', () => {
+test('prerequisites never come from a later stage and the graph is acyclic', () => {
   for (const s of SKILLS) for (const r of s.req) assert.ok(SKILL[r].grade <= s.grade, `${s.id} <- ${r}`);
   for (const s of SKILLS) assert.ok(Number.isFinite(DEPTH[s.id]));
 });
@@ -16,5 +16,5 @@ test('prerequisites never come from a later grade and the graph is acyclic', () 
 test('every grade and lane is populated', () => {
   for (let g = 1; g <= 6; g++) assert.ok(SKILLS.some((s) => s.grade === g), `grade ${g}`);
   LANES.forEach((_, i) => assert.ok(SKILLS.some((s) => s.lane === i), `lane ${i}`));
-  assert.ok(SKILLS.length >= 50);
+  assert.ok(SKILLS.length >= 25);
 });

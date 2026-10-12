@@ -40,9 +40,9 @@ export function addDopa(L, base, combo) {
 }
 
 // Time allowed to enter the next answer cell before the combo breaks
-// (provisional). Harder skills (higher grade) get longer; the first cell of
-// a problem adds time to read it.
-export const COMBO_TIME = { base: 3000, perGrade: 600, read: 2500 };
+// (provisional). Every question is one cell that must be read first, so the
+// window is long: 20 s at stage 1 up to 30 s at stage 6.
+export const COMBO_TIME = { base: 12000, perGrade: 2000, read: 8000 };
 export function comboWindowMs(grade = 3, first = false) {
   const g = Math.min(6, Math.max(1, grade || 3));
   return COMBO_TIME.base + COMBO_TIME.perGrade * (g - 1) + (first ? COMBO_TIME.read : 0);

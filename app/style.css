@@ -735,3 +735,26 @@ body.guide-open .logo *, body.guide-open .logo-burst { animation: none !importan
 .guide-help-fallback::after { content: ''; position: absolute; inset: -5px; border: 2px solid var(--yellow); border-radius: 14px; animation: guide-help-pulse 1.4s ease-in-out infinite; }
 @keyframes guide-help-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
 body.reduced #guide-help-ring, body.reduced .guide-help-fallback::after { animation: none; }
+
+/* ------------------------------------------------------------ quiz (four-choice questions) */
+.pad { grid-template-columns: repeat(4, 1fr); }
+.pad button { font-size: 28px; }
+.sheet.quiz { display: block; width: 100%; font-family: var(--round); font-weight: 900; }
+.sheet-wrap:has(.sheet.quiz) { align-items: flex-start; justify-content: stretch; min-height: 0; max-height: clamp(170px, calc(100dvh - 480px), 400px); overflow-y: auto; padding: 4px 2px 6px; -webkit-overflow-scrolling: touch; }
+.qz-top { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px; }
+.qz-q { flex: 1; margin: 0; font-size: clamp(14px, 4.1vw, 17px); line-height: 1.5; font-weight: 900; text-align: left; }
+.qz-top .cell { flex: none; width: 44px; height: 44px; margin: 0; font-size: 28px; border: 3px dashed #c4cbff; border-radius: 12px; background: #fff; }
+.qz-top .cell.active { border-color: var(--blue); background: var(--blue-soft); }
+.qz-top .cell.input.active::before { content: "?"; }
+.qz-list { display: grid; gap: 7px; }
+.qz-ch { display: flex; gap: 8px; align-items: flex-start; width: 100%; padding: 8px 10px; border: 3px solid var(--ink); border-radius: 14px; background: #fff; box-shadow: 0 3px 0 var(--ink); font: inherit; font-size: clamp(13px, 3.7vw, 15px); line-height: 1.45; text-align: left; color: var(--ink); touch-action: manipulation; }
+.qz-ch b { flex: none; color: var(--blue); font-size: 1.15em; line-height: 1.3; }
+.qz-ch:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.qz-ch.nope { background: #efe8ff; border-color: #a77bff; color: #7a6aa8; text-decoration: line-through; box-shadow: none; opacity: .75; }
+.qz-ch.right { background: #d9fbef; border-color: #1fae83; box-shadow: 0 0 0 3px #3fdcb0; }
+.qz-exp { margin: 9px 0 0; padding: 8px 10px; border-radius: 12px; background: #fff3b8; font-size: clamp(12px, 3.4vw, 14px); line-height: 1.55; font-weight: 700; text-align: left; }
+.qz-exp[hidden] { display: none; }
+@media (max-height: 840px) {
+    .pad button { height: 46px; }
+}
+.grades button { display: flex; align-items: baseline; justify-content: center; gap: 3px; }

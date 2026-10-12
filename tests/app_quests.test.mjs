@@ -62,18 +62,18 @@ test('grade, review, new and learning quests count the right plays', () => {
 });
 
 test('polish quest: only with a rusty skill, now and then, at most twice a week (id040)', () => {
-  const ctx = { ...base, rusty: ['g2-kuku25'], polishWeek: 0 };
+  const ctx = { ...base, rusty: ['pr-physics'], polishWeek: 0 };
   const lists = days.map((d) => dailyQuests(d, ctx));
   const withPolish = lists.filter((l) => l.some((q) => q.id === 'polish'));
   assert.ok(withPolish.length > 10 && withPolish.length < days.length * 0.8, `${withPolish.length}`);
-  for (const l of withPolish) { const q = l.find((x) => x.id === 'polish'); assert.equal(q.skill, 'g2-kuku25'); assert.equal(questDef(q).tier, 'hard'); }
+  for (const l of withPolish) { const q = l.find((x) => x.id === 'polish'); assert.equal(q.skill, 'pr-physics'); assert.equal(questDef(q).tier, 'hard'); }
   assert.ok(days.every((d) => !dailyQuests(d, { ...ctx, polishWeek: 2 }).some((q) => q.id === 'polish')));
   assert.ok(days.every((d) => !dailyQuests(d, { ...ctx, rusty: [] }).some((q) => q.id === 'polish')));
   // Its progress counts first-try answers of that skill only.
-  const st = { list: [{ id: 'polish', skill: 'g2-kuku25', goal: 3, prog: 0, done: false }] };
-  questEvent(st, { type: 'solve', firstTry: true, skill: 'g1-add-nc' });
-  questEvent(st, { type: 'solve', firstTry: false, skill: 'g2-kuku25' });
-  questEvent(st, { type: 'solve', firstTry: true, skill: 'g2-kuku25' });
+  const st = { list: [{ id: 'polish', skill: 'pr-physics', goal: 3, prog: 0, done: false }] };
+  questEvent(st, { type: 'solve', firstTry: true, skill: 'lb-words' });
+  questEvent(st, { type: 'solve', firstTry: false, skill: 'pr-physics' });
+  questEvent(st, { type: 'solve', firstTry: true, skill: 'pr-physics' });
   assert.equal(st.list[0].prog, 1);
   // Recording the day keeps the weekly limit countable.
   const s2 = {};

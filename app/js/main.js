@@ -2,7 +2,7 @@
 // escalating visuals and sound.
 import { startClock, onFrame, wait, tween, clamp, lerp, rand, pick, chance, centerOf, params,
   easeOutBack, easeOutCubic, easeInCubic, easeInOutCubic, easeOutQuint } from './core.js';
-import { makeRng, generate, makeProblem, signature, BASIC_SETS, EXTRA_TIERS } from './problems.js';
+import { makeRng, makeProblem, signature, CHOICE_MARK } from './problems.js';
 import { AudioEngine } from './audio.js';
 import { Dopakichi, COSTUMES, dopakichiSVG } from './dopakichi.js';
 import { FX } from './fx.js';
@@ -21,7 +21,7 @@ const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
 
 const capture = params.has('capture');
-const EXTRA_MS = Number(params.get('extra') || 90) * 1000;
+const EXTRA_MS = Number(params.get('extra') || 150) * 1000;
 const audio = new AudioEngine({ capture });
 const fx = new FX($('#fx'), 300);
 const fxBack = new FX($('#fx-back'), 520);
@@ -198,7 +198,7 @@ function questPop(q) {
   })();
 }
 const REVIEW_MAX = 40;
-const MODE_LABEL = { level: 'じぶんレベル', grade: (g) => `${g}ねんせい`, review: 'ふくしゅう', practice: 'れんしゅう', drill: 'ドリル' };
+const MODE_LABEL = { level: 'じぶんレベル', grade: (g) => `ステージ${g}`, review: 'ふくしゅう', practice: 'れんしゅう', drill: 'ドリル' };
 
 // kind: 'level' | 'grade' | 'review' | 'practice' | 'drill'
 function makePlan(kind, arg) {
@@ -214,14 +214,12 @@ function makePlan(kind, arg) {
     const upper = SKILLS.filter((x) => x.grade >= 4).map((x) => x.id);
     return { mode: 'demo', basic, extra: () => upper[Math.floor(S.rng() * upper.length)] };
   }
-  if (kind === 'drill' || params.has('demo')) return { mode: 'drill', legacy: true, basic: BASIC_SETS[S.N] || BASIC_SETS[10] };
   return levelPlan(prog, S.N, S.rng);
 }
 
 function nextProblem(i) {
   const plan = S.plan;
   if (plan.mode === 'review') return structuredClone(plan.items[i].problem);
-  if (plan.legacy) return generate(plan.basic[i], S.rng, i === 0 ? { kind: 'add', a: 27, b: 35 } : null);
   const skill = params.get('skill') || (plan.placement ? plan.pick() : plan.basic[i]);
   return sessionProblem(skill);
 }
@@ -247,9 +245,49 @@ function applyLevel(E, { key, bpm } = {}) {
   ensureCrowd(E);
 }
 
+// A four-choice question: the text, the choices (tap one, or use the 1-4 pad),
+// and the answer cell that receives the chosen number.
+function renderQuiz(p) {
+  const top = document.createElement('div');
+  top.className = 'qz-top';
+  const q = document.createElement('p');
+  q.className = 'qz-q';
+  q.textContent = p.text;
+  top.appendChild(q);
+  const c = p.cells[0];
+  const cell = document.createElement('div');
+  cell.className = `cell ${c.kind}`;
+  cell.setAttribute('aria-label', 'こたえの番号');
+  cell.dataset.id = c.id;
+  top.appendChild(cell);
+  S.cells[c.id] = cell;
+  sheet.appendChild(top);
+  const list = document.createElement('div');
+  list.className = 'qz-list';
+  p.choices.forEach((t, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'qz-ch';
+    b.dataset.n = String(i + 1);
+    b.innerHTML = `<b>${CHOICE_MARK[i]}</b><span></span>`;
+    b.lastChild.textContent = t;
+    b.addEventListener('pointerdown', (e) => { e.preventDefault(); audio.unlock(); press(String(i + 1), padButtons[String(i + 1)]); });
+    list.appendChild(b);
+    S.cells[`ch${i + 1}`] = b;
+  });
+  sheet.appendChild(list);
+  const exp = document.createElement('p');
+  exp.className = 'qz-exp';
+  exp.hidden = true;
+  sheet.appendChild(exp);
+  S.cells.exp = exp;
+}
+
 function renderSheet(p) {
   sheet.innerHTML = '';
   sheet.className = `sheet ${p.kind}`;
+  S.cells = {}; S.lines = {};
+  if (p.kind === 'quiz') { renderQuiz(p); return; }
   sheet.style.setProperty('--cols', p.cols);
   sheet.style.setProperty('--rows', p.rows);
   S.cells = {}; S.lines = {};
@@ -338,7 +376,7 @@ function startGame(kind = 'level', arg) {
   showCombo();
   S.dopa = { L: 0, shown: 0, unit: '' };
   S.extra = { score: 0, solved: 0, misses: 0, end: 0, over: false };
-  S.targetMs = Math.ceil((S.N * 18) / 10) * 10 * 1000;
+  S.targetMs = Math.ceil((S.N * 40) / 10) * 10 * 1000;
   $('#clock-label').textContent = `目標 ${fmtTime(S.targetMs)}`;
   $('.clock').classList.remove('over', 'extra', 'hurry');
   $('#ok-total').textContent = `/${S.N}`;
@@ -368,8 +406,7 @@ async function setupProblem() {
     const tier = Math.floor(S.extra.solved / 3);
     E = 1 + Math.min(0.5, tier * 0.1);
     applyLevel(E, { key: 2 + Math.min(tier, 5), bpm: 134 + tier * 5 });
-    if (S.plan.legacy) { const pool = EXTRA_TIERS[Math.min(tier, EXTRA_TIERS.length - 1)]; S.problem = generate(pool[S.extra.solved % pool.length], S.rng); }
-    else S.problem = sessionProblem(params.get('skill') || S.plan.extra(S.extra.solved));
+    S.problem = sessionProblem(params.get('skill') || S.plan.extra(S.extra.solved));
   } else {
     E = basicE(S.qi);
     applyLevel(E, { key: S.qi === S.N - 1 ? 2 : 0 });
@@ -431,6 +468,7 @@ function press(key, btn = padButtons[key]) {
   const p = S.problem;
   const st = p.steps[S.step];
   if (!st) return;
+  if (p.kind === 'quiz' && !(Number(key) >= 1 && Number(key) <= p.choices.length)) return;
   const cell = S.cells[st.cell];
   audio.keyTap(S.combo);
   const from = btn ? centerOf(btn) : centerOf(cell);
@@ -444,6 +482,7 @@ function press(key, btn = padButtons[key]) {
     cell.classList.remove('bad', 'active', 'has');
     cell.classList.add('ok', 'pending');
     cell.textContent = key;
+    if (p.kind === 'quiz') S.cells[`ch${key}`]?.classList.add('right');
     bumpDopa(cell);
     carry(from, cell, key, () => { cell.classList.remove('pending'); onCorrect(st, cell, last); });
     if (!last) activate(S.step);
@@ -456,6 +495,7 @@ function press(key, btn = padButtons[key]) {
     updateTally();
     cell.classList.add('bad', 'has', 'pending');
     cell.textContent = key;
+    if (p.kind === 'quiz') S.cells[`ch${key}`]?.classList.add('nope');
     S.shownWrong = key;
     carry(from, cell, key, () => { cell.classList.remove('pending'); onWrong(cell, st); });
   }
@@ -567,6 +607,7 @@ function onWrong(cell, st) {
 // and Dopakichi points there; 3rd also spells out the sub-calculation.
 function giveHelp(st) {
   if (!st || !st.help || S.problem.steps[S.step] !== st) return;
+  if (S.problem.kind === 'quiz') return; // the explanation after the answer is the lesson
   const n = S.stepMisses;
   if (n < 2) return;
   const els = st.help.ids.map((id) => S.cells[id]).filter((el) => el && !el.classList.contains('hidden'));
@@ -662,18 +703,45 @@ async function clearProblem() {
     popEl(pip, 1.2);
   }
   $('#step-label').innerHTML = `<b>${S.problem.answerText}</b>`;
+  const expMs = showExplain(S.problem);
   if (gained) pointsPop(gained);
   if (wasReach) audio.reachHit(E); else audio.clear(E);
   hanamaru(E);
   const lastBasic = !extra && S.qi === S.N - 1;
   celebrate(E, wasReach, lastBasic);
   const capsuleShown = S.problem.capsule ? capsuleDone(S.problem.capsule) : false;
-  if (lastBasic) { if (capsuleShown) await wait(1600); await finale(); return; }
+  if (lastBasic) { if (capsuleShown) await wait(1600); await waitOrTap(Math.min(expMs, 3500)); await finale(); return; }
   const run = S.run;
-  await wait((extra ? 520 : lerp(600, 1150, clamp(E))) + (wasReach ? 250 : 0) + (capsuleShown ? 1900 : 0));
+  await waitOrTap(Math.max(extra ? 520 : lerp(600, 1150, clamp(E)), expMs) + (wasReach ? 250 : 0) + (capsuleShown ? 1900 : 0));
   if (S.screen !== 'play' || run !== S.run || (extra && S.extra.over)) return;
   if (!extra) S.qi += 1;
   setupProblem();
+}
+
+// Show the explanation under the choices; returns how long to leave it up (ms).
+function showExplain(p) {
+  const exp = S.cells.exp;
+  if (p.kind !== 'quiz' || !exp) return 0;
+  const parts = [p.explain, p.source ? `（${p.source}）` : ''].filter(Boolean);
+  if (!parts.length) return 0;
+  exp.textContent = parts.join('');
+  exp.hidden = false;
+  const wrap = sheet.parentElement;
+  setTimeout(() => { wrap.scrollTop = wrap.scrollHeight; }, 30);
+  return Math.min(7000, 1800 + (p.explain || '').length * 70);
+}
+
+// Wait, but a tap anywhere on the play screen (or Enter / Space) moves on.
+function waitOrTap(ms) {
+  return new Promise((resolve) => {
+    const scr = $('#screen-play');
+    let done = false;
+    const end = () => { if (done) return; done = true; clearTimeout(t); scr.removeEventListener('pointerdown', end, true); removeEventListener('keydown', onKey, true); resolve(); };
+    const onKey = (e) => { if (e.key === 'Enter' || e.key === ' ') end(); };
+    const t = setTimeout(end, ms);
+    // Ignore the tap that answered the question itself.
+    setTimeout(() => { if (!done) { scr.addEventListener('pointerdown', end, true); addEventListener('keydown', onKey, true); } }, 500);
+  });
 }
 
 function celebrate(E, big, lastBasic) {
@@ -1664,7 +1732,7 @@ function renderTree(justIds = [], starIds = []) {
     b.className = `node ${st}${justIds.includes(sk.id) ? ' just' : ''}${starIds.includes(sk.id) ? ' star-up' : ''}${rusty ? ' rusty' : ''}`;
     b.dataset.id = sk.id;
     b.style.cssText = `left:${pos[sk.id].x}px;top:${pos[sk.id].y}px;width:${nodeW}px;height:${NODE_H}px;--p:${masteryRatio(prog, sk.id)}`;
-    b.innerHTML = `<i class="hold"></i><span class="g">${sk.grade}年</span><span>${sk.name}</span>${st === 'learning' ? '<i class="ring"></i>' : ''}${st === 'mastered' ? `<i class="stars s${stars}">${starRow(stars)}</i>` : ''}${rusty ? '<i class="rust" aria-hidden="true">さび</i>' : ''}`;
+    b.innerHTML = `<i class="hold"></i><span class="g">S${sk.grade}</span><span>${sk.name}</span>${st === 'learning' ? '<i class="ring"></i>' : ''}${st === 'mastered' ? `<i class="stars s${stars}">${starRow(stars)}</i>` : ''}${rusty ? '<i class="rust" aria-hidden="true">さび</i>' : ''}`;
     b.setAttribute('aria-label', `${sk.name} ${{ locked: 'まだ', new: 'あたらしい', learning: 'れんしゅうちゅう', mastered: `マスター ほし${stars}こ${rusty ? ' さびついている' : ''}` }[st]}`);
     tree.appendChild(b);
   }
@@ -1711,7 +1779,7 @@ function openSkillInfo(id) {
   const times = (r.times || []).filter((e) => e.f);
   const best = times.length ? Math.min(...times.map((e) => e.t)) : null;
   S.skillInfo = id;
-  $('#si-grade').textContent = `${sk.grade}年　${LANES[sk.lane]}`;
+  $('#si-grade').textContent = `ステージ${sk.grade}　${LANES[sk.lane]}`;
   $('#si-title').textContent = sk.name;
   $('#si-stars').innerHTML = `${starRow(n)}<span>☆${n} / ${STAR_MAX}</span>`;
   $('#si-next').innerHTML = next ? `<p class="si-label">つぎの ☆${next.n}</p><p class="si-text">${next.text}</p><p class="si-now">${next.now}</p>` : '<p class="si-text done">☆5 たっせい！ すごい！</p>';
@@ -1866,7 +1934,7 @@ function toast(msg) {
 
 // ---------------------------------------------------------------- calendar
 const cal = { y: new Date().getFullYear(), m: new Date().getMonth(), seen: new Set() };
-const MODE_NAMES = { drill: (h) => `${h.count || ''}問ドリル`, level: () => 'じぶんレベル', grade: (h) => `${h.grade}ねんせい`, review: () => 'ふくしゅう', practice: (h) => `れんしゅう（${SKILL[h.skill]?.name || ''}）` };
+const MODE_NAMES = { drill: (h) => `${h.count || ''}問ドリル`, level: () => 'じぶんレベル', grade: (h) => `ステージ${h.grade}`, review: () => 'ふくしゅう', practice: (h) => `れんしゅう（${SKILL[h.skill]?.name || ''}）` };
 const stampSvg = (score) => {
   const gold = score > 100;
   const col = gold ? '#ffb000' : '#ff4f6d';
