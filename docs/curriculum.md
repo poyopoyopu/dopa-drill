@@ -29,9 +29,12 @@
 | 3 | 労働時間 | バスの基準 (`lb-bus`) | `lb_bus` | lb-truck |
 | 3 | 労働時間 | タクシーの基準 (`lb-taxi`) | `lb_taxi` | lb-truck |
 | 3 | 労働時間 | 割増賃金と年休 (`lb-pay`) | `lb_pay` | lb-law32 |
+| 3 | 労働時間 | 労働契約と賃金 (`lb-contract`) | `lb_contract` | lb-law32 |
 | 3 | 車両・道交 | 車検と検査証 (`vh-shaken`) | `vh_shaken` | vh-check |
 | 3 | 車両・道交 | 保安基準 (`vh-standard`) | `vh_standard` | vh-check |
 | 3 | 車両・道交 | 運転者の心得 (`tr-driver`) | `tr_driver` | tr-alcohol |
+| 3 | 車両・道交 | 免許の区分 (`tr-license`) | `tr_license` | tr-alcohol |
+| 3 | 車両・道交 | 合図のきまり (`tr-signal`) | `tr_signal` | tr-lane |
 | 3 | 車両・道交 | 速度と積載 (`tr-speed`) | `tr_speed` | tr-stop |
 | 3 | 貨物・旅客 | 貨物の点呼 (`cg-tenko`) | `cg_tenko` | cg-manager |
 | 3 | 貨物・旅客 | 貨物の過労防止 (`cg-care`) | `cg_care` | cg-manager |
@@ -43,11 +46,14 @@
 | 3 | 実務 | 事故と対応 (`pr-accident`) | `pr_accident` | pr-physics |
 | 4 | 労働時間 | 36協定と上限 (`lb-36`) | `lb_36` | lb-pay, lb-truck |
 | 4 | 労働時間 | 特例のきまり (`lb-special`) | `lb_special` | lb-drive |
+| 4 | 労働時間 | 年少者と女性 (`lb-protect`) | `lb_protect` | lb-contract |
 | 4 | 貨物・旅客 | 記録と保存 (`cg-record`) | `cg_record` | cg-tenko |
 | 4 | 車両・道交 | 高速道路のきまり (`tr-highway`) | `tr_highway` | tr-speed |
 | 4 | 貨物・旅客 | 貸切バスの交替運転者 (`ps-relief`) | `ps_relief` | ps-care |
 | 4 | 実務 | 事故をふせぐ (`pr-prevent`) | `pr_prevent` | pr-accident, pr-health |
+| 4 | 実務 | 運行計画の検証 (`pr-plan`) | `pr_plan` | pr-calc |
 | 5 | 貨物・旅客 | 指導と健康管理 (`cg-guide`) | `cg_guide` | cg-record |
+| 5 | 実務 | 危険予知と指差呼称 (`pr-hazard`) | `pr_hazard` | pr-prevent |
 | 6 | 実務 | 総まとめ (`mix-final`) | 全分野 | cg-guide, lb-36, lb-bus, lb-drive, vh-shaken, tr-speed, tr-alcohol, ps-tenko, ps-care, pr-prevent |
 
 問題群の中身は `app/js/bank_*.js`、スキルとの対応は `app/js/skills.js` の `gen: ['quiz', { pool }]` です。

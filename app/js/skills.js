@@ -38,9 +38,12 @@ export const SKILLS = [
   { id: 'lb-bus', name: 'バスの基準', grade: 3, lane: 1, side: 1, req: ['lb-truck'], gen: q('lb_bus') },
   { id: 'lb-taxi', name: 'タクシーの基準', grade: 3, lane: 1, side: 1, req: ['lb-truck'], gen: q('lb_taxi') },
   { id: 'lb-pay', name: '割増賃金と年休', grade: 3, lane: 1, side: 1, req: ['lb-law32'], gen: q('lb_pay') },
+  { id: 'lb-contract', name: '労働契約と賃金', grade: 3, lane: 1, side: 1, req: ['lb-law32'], gen: q('lb_contract') },
   { id: 'vh-shaken', name: '車検と検査証', grade: 3, lane: 2, req: ['vh-check'], gen: q('vh_shaken') },
   { id: 'vh-standard', name: '保安基準', grade: 3, lane: 2, req: ['vh-check'], gen: q('vh_standard') },
   { id: 'tr-driver', name: '運転者の心得', grade: 3, lane: 2, side: 1, req: ['tr-alcohol'], gen: q('tr_driver') },
+  { id: 'tr-license', name: '免許の区分', grade: 3, lane: 2, side: 1, req: ['tr-alcohol'], gen: q('tr_license') },
+  { id: 'tr-signal', name: '合図のきまり', grade: 3, lane: 2, side: 1, req: ['tr-lane'], gen: q('tr_signal') },
   { id: 'tr-speed', name: '速度と積載', grade: 3, lane: 2, side: 1, req: ['tr-stop'], gen: q('tr_speed') },
   { id: 'cg-tenko', name: '貨物の点呼', grade: 3, lane: 0, req: ['cg-manager'], gen: q('cg_tenko') },
   { id: 'cg-care', name: '貨物の過労防止', grade: 3, lane: 0, req: ['cg-manager'], gen: q('cg_care') },
@@ -54,13 +57,16 @@ export const SKILLS = [
   // ---------------------------------------------------------------- stage 4
   { id: 'lb-36', name: '36協定と上限', grade: 4, lane: 1, side: 1, req: ['lb-pay', 'lb-truck'], gen: q('lb_36') },
   { id: 'lb-special', name: '特例のきまり', grade: 4, lane: 1, req: ['lb-drive'], gen: q('lb_special') },
+  { id: 'lb-protect', name: '年少者と女性', grade: 4, lane: 1, side: 1, req: ['lb-contract'], gen: q('lb_protect') },
   { id: 'tr-highway', name: '高速道路のきまり', grade: 4, lane: 2, side: 1, req: ['tr-speed'], gen: q('tr_highway') },
   { id: 'ps-relief', name: '貸切バスの交替運転者', grade: 4, lane: 0, side: 1, req: ['ps-care'], gen: q('ps_relief') },
   { id: 'cg-record', name: '記録と保存', grade: 4, lane: 0, req: ['cg-tenko'], gen: q('cg_record') },
   { id: 'pr-prevent', name: '事故をふせぐ', grade: 4, lane: 3, req: ['pr-accident', 'pr-health'], gen: q('pr_prevent') },
+  { id: 'pr-plan', name: '運行計画の検証', grade: 4, lane: 3, side: 1, req: ['pr-calc'], gen: q('pr_plan') },
 
   // ---------------------------------------------------------------- stage 5
   { id: 'cg-guide', name: '指導と健康管理', grade: 5, lane: 0, req: ['cg-record'], gen: q('cg_guide') },
+  { id: 'pr-hazard', name: '危険予知と指差呼称', grade: 5, lane: 3, req: ['pr-prevent'], gen: q('pr_hazard') },
 
   // ---------------------------------------------------------------- stage 6
   { id: 'mix-final', name: '総まとめ', grade: 6, lane: 3, req: ['cg-guide', 'lb-36', 'lb-bus', 'lb-drive', 'vh-shaken', 'tr-speed', 'tr-alcohol', 'ps-tenko', 'ps-care', 'pr-prevent'], gen: ['quiz', { all: true }] },
