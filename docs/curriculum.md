@@ -21,6 +21,7 @@
 | 2 | 車両・道交 | 駐停車と追越し (`tr-stop`) | `tr_stop` | tr-basic |
 | 2 | 車両・道交 | 酒気と免許 (`tr-alcohol`) | `tr_alcohol` | tr-basic |
 | 2 | 貨物・旅客 | 運行管理者 (`cg-manager`) | `cg_manager` | cg-basic |
+| 2 | 貨物・旅客 | 貨物の許可と手続き (`cg-permit`) | `cg_permit` | cg-basic |
 | 2 | 実務 | 速度とカガク (`pr-physics`) | `pr_physics` | pr-body |
 | 3 | 労働時間 | 運転時間 (`lb-drive`) | `lb_drive` | lb-truck |
 | 3 | 労働時間 | バスの基準 (`lb-bus`) | `lb_bus` | lb-truck |
@@ -28,6 +29,8 @@
 | 3 | 車両・道交 | 車検と検査証 (`vh-shaken`) | `vh_shaken` | vh-check |
 | 3 | 車両・道交 | 速度と積載 (`tr-speed`) | `tr_speed` | tr-stop |
 | 3 | 貨物・旅客 | 貨物の点呼 (`cg-tenko`) | `cg_tenko` | cg-manager |
+| 3 | 貨物・旅客 | 貨物の過労防止 (`cg-care`) | `cg_care` | cg-manager |
+| 3 | 貨物・旅客 | 積載と点検整備 (`cg-load`) | `cg_load` | cg-manager |
 | 3 | 貨物・旅客 | 旅客の点呼 (`ps-tenko`) | `ps_tenko` | ps-basic |
 | 3 | 貨物・旅客 | 旅客の過労防止 (`ps-care`) | `ps_care` | ps-basic |
 | 3 | 実務 | 健康と運転 (`pr-health`) | `pr_health` | pr-body |

@@ -28,6 +28,7 @@ export const SKILLS = [
   { id: 'tr-stop', name: '駐停車と追越し', grade: 2, lane: 2, side: 1, req: ['tr-basic'], gen: q('tr_stop') },
   { id: 'tr-alcohol', name: '酒気と免許', grade: 2, lane: 2, side: 1, req: ['tr-basic'], gen: q('tr_alcohol') },
   { id: 'cg-manager', name: '運行管理者', grade: 2, lane: 0, req: ['cg-basic'], gen: q('cg_manager') },
+  { id: 'cg-permit', name: '貨物の許可と手続き', grade: 2, lane: 0, side: 1, req: ['cg-basic'], gen: q('cg_permit') },
   { id: 'pr-physics', name: '速度とカガク', grade: 2, lane: 3, req: ['pr-body'], gen: q('pr_physics') },
 
   // ---------------------------------------------------------------- stage 3
@@ -37,6 +38,8 @@ export const SKILLS = [
   { id: 'vh-shaken', name: '車検と検査証', grade: 3, lane: 2, req: ['vh-check'], gen: q('vh_shaken') },
   { id: 'tr-speed', name: '速度と積載', grade: 3, lane: 2, side: 1, req: ['tr-stop'], gen: q('tr_speed') },
   { id: 'cg-tenko', name: '貨物の点呼', grade: 3, lane: 0, req: ['cg-manager'], gen: q('cg_tenko') },
+  { id: 'cg-care', name: '貨物の過労防止', grade: 3, lane: 0, req: ['cg-manager'], gen: q('cg_care') },
+  { id: 'cg-load', name: '積載と点検整備', grade: 3, lane: 0, req: ['cg-manager'], gen: q('cg_load') },
   { id: 'ps-tenko', name: '旅客の点呼', grade: 3, lane: 0, side: 1, req: ['ps-basic'], gen: q('ps_tenko') },
   { id: 'ps-care', name: '旅客の過労防止', grade: 3, lane: 0, side: 1, req: ['ps-basic'], gen: q('ps_care') },
   { id: 'pr-health', name: '健康と運転', grade: 3, lane: 3, req: ['pr-body'], gen: q('pr_health') },
