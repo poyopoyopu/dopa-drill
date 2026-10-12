@@ -726,6 +726,7 @@ function showExplain(p) {
   if (!parts.length) return 0;
   exp.textContent = parts.join('');
   exp.hidden = false;
+  sheet.classList.add('answered');
   const wrap = sheet.parentElement;
   setTimeout(() => { wrap.scrollTop = wrap.scrollHeight; }, 30);
   return Math.min(7000, 1800 + (p.explain || '').length * 70);
