@@ -32,7 +32,7 @@ addItems([
   { id: 'costume:none', cat: 'costume', name: 'なし', base: true },
   { id: 'color:pink', cat: 'color', name: 'ピンク', base: true },
   { id: 'crowd:classic', cat: 'crowd', name: 'いろちがい', base: true },
-  { id: 'finale:classic', cat: 'finale', name: 'きょだい ドパキチ', base: true },
+  { id: 'finale:classic', cat: 'finale', name: 'ふつう', base: true },
 ]);
 // id041: one sample per category, to prove the pipeline end to end.
 // Rewards follow effort and coming back (plays, days, streaks, stars earned by

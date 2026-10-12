@@ -1,7 +1,14 @@
 // Canvas 2D particle layer: paper confetti, stars, sparks, coins, fireworks,
 // streamers, mini Dopakichi sprites and floating score text.
 import { rand, pick, clamp } from './core.js';
-import { dopakichiSprite } from './dopakichi.js';
+// Mini confetti: a plain round "pon" in the palette colours (no mascot).
+const MINI_COLORS = { pink: '#ff7ab6', blue: '#3b6bff', yellow: '#ffd23f', mint: '#3fdcb0', violet: '#a77bff' };
+function miniSprite(color, size = 96) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100" width="${size}" height="${size}"><circle r="38" fill="${color}" stroke="#1b1d4d" stroke-width="8"/><ellipse cx="-12" cy="-14" rx="12" ry="8" fill="#fff" opacity=".75" transform="rotate(-30 -12 -14)"/></svg>`;
+  const img = new Image();
+  img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  return img;
+}
 
 export const COLORS = ['#ff7ab6', '#3b6bff', '#ffd23f', '#3fdcb0', '#a77bff', '#ff5a4f', '#ffffff'];
 const PAPER = ['#ff7ab6', '#3b6bff', '#ffd23f', '#ffffff', '#3fdcb0'];
@@ -18,7 +25,7 @@ export class FX {
     this.motion = 1;
     // Unlockable particle theme (id041, id042): replaces part of the confetti.
     this.theme = null;
-    this.sprites = ['pink', 'blue', 'yellow', 'mint', 'violet'].map((p) => dopakichiSprite(p, 96));
+    this.sprites = Object.values(MINI_COLORS).map((c) => miniSprite(c, 96));
   }
   resize() {
     const dpr = Math.min(2, window.devicePixelRatio || 1);

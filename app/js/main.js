@@ -1505,7 +1505,7 @@ function refreshTitle() {
   renderQuests();
   refreshTrophyBadge();
   const got = gotTrophies();
-  $('#collect-badge').textContent = `${ul.ITEMS.filter((it) => ul.isUnlocked(it, got)).length}/${ul.ITEMS.length}`;
+  { const shown = ul.ITEMS.filter((it) => !HIDDEN_CATS.has(it.cat)); $('#collect-badge').textContent = `${shown.filter((it) => ul.isUnlocked(it, got)).length}/${shown.length}`; }
 }
 
 function toTitle() {
@@ -2229,7 +2229,7 @@ const PT_THUMB = {
   digit: '<text y="8" text-anchor="middle" font-family="Dela Gothic One, sans-serif" font-size="24" fill="#3fdcb0" stroke="#1b1d4d" stroke-width="3" paint-order="stroke">7</text>',
 };
 const FINALE_THUMB = {
-  classic: '<circle cy="6" r="13" fill="#ff97bf" stroke="#1b1d4d" stroke-width="2"/><circle cx="-14" cy="-2" r="7" fill="#ff97bf" stroke="#1b1d4d" stroke-width="2"/><circle cx="14" cy="-2" r="7" fill="#ff97bf" stroke="#1b1d4d" stroke-width="2"/><ellipse cy="8" rx="9" ry="7" fill="#fff3e4" stroke="#1b1d4d" stroke-width="1.5"/>',
+  classic: '<path d="M0 -15 L4.4 -4.6 L15.7 -3.9 L7 3.4 L9.7 14.4 L0 8.4 L-9.7 14.4 L-7 3.4 L-15.7 -3.9 L-4.4 -4.6Z" fill="#ffd23f" stroke="#1b1d4d" stroke-width="2" stroke-linejoin="round"/>',
   fireworks: '<g stroke-linecap="round" stroke-width="2.4">' + Array.from({ length: 10 }, (_, i) => { const a = (i / 10) * Math.PI * 2; return `<path d="M${(Math.cos(a) * 5).toFixed(1)} ${(Math.sin(a) * 5).toFixed(1)} L${(Math.cos(a) * 15).toFixed(1)} ${(Math.sin(a) * 15).toFixed(1)}" stroke="${['#ff4f6d', '#ffd23f', '#3b6bff'][i % 3]}"/>`; }).join('') + '</g>',
   rocket: '<g transform="rotate(-35) scale(.3)">' + ROCKET_SVG.replace(/^<svg[^>]*>|<\/svg>$/g, '') + '</g>',
   parade: '<rect x="-16" y="-12" width="32" height="12" rx="3" fill="#ff7ab6" stroke="#1b1d4d" stroke-width="2"/><path d="M-12 0 V12 M12 0 V12" stroke="#1b1d4d" stroke-width="2"/><circle cx="-12" cy="14" r="4" fill="#6fa0ff" stroke="#1b1d4d" stroke-width="1.5"/><circle cx="12" cy="14" r="4" fill="#ffd452" stroke="#1b1d4d" stroke-width="1.5"/>',
@@ -2259,9 +2259,12 @@ function openCollection() {
   renderCollection();
   requestAnimationFrame(layoutActors);
 }
+// ドパキチ関係の「きせかえ・いろ・おきゃくさん」はコレクションに出さない。
+const HIDDEN_CATS = new Set(['costume', 'color', 'crowd']);
+const shownCats = () => ul.CATS.filter((c) => !HIDDEN_CATS.has(c.key));
 function renderCollection() {
   const got = gotTrophies(); const eq = equipState();
-  $('#co-tabs').innerHTML = ul.CATS.map((c) => { const own = ul.unlockedIn(c.key, got).length; const all = ul.ITEMS.filter((it) => it.cat === c.key).length; return `<button type="button" data-cat="${c.key}" aria-pressed="${c.key === co.cat}">${c.name}<small>${own}/${all}</small></button>`; }).join('');
+  $('#co-tabs').innerHTML = shownCats().map((c) => { const own = ul.unlockedIn(c.key, got).length; const all = ul.ITEMS.filter((it) => it.cat === c.key).length; return `<button type="button" data-cat="${c.key}" aria-pressed="${c.key === co.cat}">${c.name}<small>${own}/${all}</small></button>`; }).join('');
   const items = ul.ITEMS.filter((it) => it.cat === co.cat);
   const auto = eq[co.cat] === 'auto';
   $('#co-note').textContent = auto ? '「おまかせ」は もっている ものから まいかい かわるよ' : 'えらんだ ものを いつも つかうよ';
@@ -2272,7 +2275,7 @@ function renderCollection() {
       const tro = it.trophy && tr.TROPHY[it.trophy];
       return `<button type="button" class="co-item${own ? '' : ' locked'}${on ? ' on' : ''}" data-id="${it.id}"${own ? '' : ` aria-label="まだ　トロフィー ${tro ? tro.name : ''}で もらえる"`}><span class="co-th">${itemThumb(it)}</span><span class="co-name">${own ? it.name : '？？？'}</span>${own ? '<small>&nbsp;</small>' : `<small class="co-lock">トロフィー「${tro ? tro.name : ''}」</small>`}</button>`;
     }).join('');
-  const all = ul.ITEMS.length; const own = ul.ITEMS.filter((it) => ul.isUnlocked(it, got)).length;
+  const shown = ul.ITEMS.filter((it) => !HIDDEN_CATS.has(it.cat)); const all = shown.length; const own = shown.filter((it) => ul.isUnlocked(it, got)).length;
   $('#collect-count').textContent = `${own} / ${all}`;
   $('#co-now').textContent = `${catName(co.cat)}：${auto ? 'おまかせ' : (ul.ITEM[eq[co.cat]] || {}).name || ''}`;
 }
