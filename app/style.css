@@ -70,7 +70,7 @@ button:focus-visible { outline: 4px solid var(--yellow); outline-offset: 3px; }
 #screen-title > * { flex: none; }
 /* Logo: layered paper cut-outs. A spinning burst sits behind "ドパ",
    "ドリル" rides on a folded ribbon, operator scraps float around. */
-.logo { position: relative; margin: calc(var(--fs) * 0.62) 0 calc(var(--fs) * 0.2); display: grid; justify-items: center; font-family: var(--chunky); font-weight: 400; line-height: 1; --fs: clamp(64px, 21vw, 96px); }
+.logo { position: relative; margin: calc(var(--fs) * 0.62) 0 calc(var(--fs) * 0.2); display: grid; justify-items: center; font-family: var(--chunky); font-weight: 400; line-height: 1; --fs: clamp(64px, 26vw, 120px); }
 .logo-burst { position: absolute; left: 50%; top: calc(var(--fs) * 0.52); width: calc(var(--fs) * 2.7); height: calc(var(--fs) * 2.7); transform: translate(-50%, -50%) rotate(calc(var(--spin, 0) * 1deg)); z-index: -1; filter: drop-shadow(0 6px 0 rgba(27, 29, 77, .9)); }
 .logo-top { display: flex; gap: .02em; font-size: var(--fs); letter-spacing: -.04em; }
 .logo i { font-style: normal; display: inline-block; position: relative; }
@@ -130,7 +130,7 @@ body.reduced .logo *, body.reduced .logo-burst { animation: none !important; }
 .slider::-moz-range-thumb { width: 26px; height: 26px; border: 3px solid var(--ink); border-radius: 50%; background: var(--yellow); box-shadow: 0 3px 0 var(--ink); }
 .slider.motion::-webkit-slider-runnable-track { background: linear-gradient(90deg, var(--blue-soft), var(--pink) 50%, var(--yellow)) 0 0 / calc(var(--v) * 100%) 100% no-repeat, #fff; }
 .slider.motion::-moz-range-track { background: linear-gradient(90deg, var(--blue-soft), var(--pink) 50%, var(--yellow)) 0 0 / calc(var(--v) * 100%) 100% no-repeat, #fff; }
-.title-stage { width: 100%; height: min(26vh, 200px); }
+.title-stage { display: none; } /* ドパキチ非表示。ロゴを大きくして、空いた分は上に詰める */
 .pick { display: flex; gap: 10px; }
 .pick button {
   width: 84px; height: 56px; border: 3px solid var(--ink); border-radius: 16px; background: #fff;
