@@ -747,7 +747,7 @@ body.reduced #guide-help-ring, body.reduced .guide-help-fallback::after { animat
 #screen-play:has(.sheet.quiz) .stage { min-height: 8px; }
 #screen-play:has(.sheet.quiz) .step-label { min-height: 0; margin: 0; font-size: 13px; }
 .qz-top { display: flex; gap: 8px; align-items: flex-start; margin-bottom: calc(6px * var(--qzs, 1)); }
-.qz-q { flex: 1; margin: 0; font-size: calc(clamp(14px, 3.9vw, 16px) * var(--qzs, 1)); line-height: 1.45; font-weight: 900; text-align: left; }
+.qz-q { flex: 1; margin: 0; white-space: pre-line; font-size: calc(clamp(14px, 3.9vw, 16px) * var(--qzs, 1)); line-height: 1.45; font-weight: 900; text-align: left; }
 .qz-top .cell { flex: none; width: 38px; height: 38px; margin: 0; font-size: 24px; border: 3px dashed #c4cbff; border-radius: 11px; background: #fff; }
 .qz-top .cell.active { border-color: var(--blue); background: var(--blue-soft); }
 .qz-top .cell.input.active::before { content: "?"; }
@@ -772,3 +772,19 @@ body:not([data-screen="title"]) #actors { display: none; }
 #screen-play:has(.sheet.quiz) .stage { min-height: 0; flex: 1 1 auto; }
 .sheet-wrap:has(.sheet.quiz) { max-height: calc(100dvh - 230px); }
 #screen-play:has(.sheet.quiz) .stage { min-height: 24px; }
+
+/* Mock exam (模擬試験) */
+.exam-row .sub-btn small { display: block; font-size: 11px; font-weight: 700; opacity: .7; }
+.exam-box { margin: 8px 0 12px; text-align: left; }
+.exam-verdict { margin: 0 0 4px; font-size: 18px; font-weight: 900; text-align: center; }
+.exam-verdict.pass { color: var(--pink); }
+.exam-verdict.fail { color: #5b5f8f; }
+.exam-total { margin: 0 0 8px; font-size: 13px; text-align: center; }
+.exam-total b { font-size: 20px; }
+.exam-fields { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.exam-fields li { display: grid; grid-template-columns: 1fr auto 6em; align-items: center; gap: 8px; font-size: 13px; padding: 4px 8px; border-radius: 8px; background: rgba(27, 29, 77, .06); }
+.exam-fields li b { font-size: 16px; }
+.exam-fields li em { font-style: normal; font-weight: 900; text-align: right; font-size: 12px; }
+.exam-fields li.ok em { color: #1f9e6b; }
+.exam-fields li.ng em { color: #d6334f; }
+.exam-note { margin: 8px 0 0; font-size: 11px; opacity: .7; }

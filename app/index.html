@@ -39,6 +39,10 @@
           <button type="button" data-grade="1"><small>ステージ</small>1</button><button type="button" data-grade="2"><small>ステージ</small>2</button><button type="button" data-grade="3"><small>ステージ</small>3</button>
           <button type="button" data-grade="4"><small>ステージ</small>4</button><button type="button" data-grade="5"><small>ステージ</small>5</button><button type="button" data-grade="6"><small>ステージ</small>6</button>
         </div>
+        <div class="mode-row exam-row" role="group" aria-label="模擬試験">
+          <button type="button" class="sub-btn" data-exam="cargo">模擬試験 貨物<small>30問</small></button>
+          <button type="button" class="sub-btn" data-exam="bus">模擬試験 旅客<small>30問</small></button>
+        </div>
         <div class="mode-row">
           <button type="button" id="open-tree" class="sub-btn">スキルツリー <b id="tree-badge"></b></button>
           <button type="button" id="open-trophy" class="sub-btn">トロフィー <b id="trophy-badge"></b></button>
@@ -145,6 +149,7 @@
         <p class="dopa-final"><small>スコア</small><b id="r-dopa">0</b></p>
         <div class="growth-box" id="r-growth"></div>
         <p class="unlock" id="r-unlock"></p>
+        <div class="exam-box" id="r-exam" hidden></div>
         <div class="skill-news" id="r-skills"></div>
         <div class="quest-mini" id="r-quests"></div>
         <div class="actions">

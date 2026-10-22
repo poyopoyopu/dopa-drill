@@ -12,6 +12,7 @@ import { createGuide } from './guide.js';
 import { SKILLS, SKILL, LANES, DEPTH } from './skills.js';
 import { ORDER, emptyProgress, recordResult, stateOf, masteryRatio, starsOf, nextStar, STAR_MAX, pickCapsule, useCapsule, rustyOf, gradePlan, levelPlan, reviewPlan, problemFor, frontier, isUnlocked, relockTargets, relockSkill, TREE_LAYOUT } from './session.js';
 import * as growth from './growth.js';
+import { buildExam, judgeExam, EXAM } from './exam.js';
 import * as qs from './quests.js';
 import * as tr from './trophies.js';
 import * as ul from './unlocks.js';
@@ -199,13 +200,14 @@ function questPop(q) {
   })();
 }
 const REVIEW_MAX = 40;
-const MODE_LABEL = { level: 'じぶんレベル', grade: (g) => `ステージ${g}`, review: 'ふくしゅう', practice: 'れんしゅう', drill: 'ドリル' };
+const MODE_LABEL = { level: 'じぶんレベル', grade: (g) => `ステージ${g}`, review: 'ふくしゅう', practice: 'れんしゅう', drill: 'ドリル', exam: '模擬試験' };
 
 // kind: 'level' | 'grade' | 'review' | 'practice' | 'drill'
 function makePlan(kind, arg) {
   const prog = progress();
   if (kind === 'grade') return gradePlan(arg, S.N, S.rng);
   if (kind === 'review') { const items = prog.review.slice(-Math.min(S.N, 10)); return reviewPlan(items); }
+  if (kind === 'exam') { const items = buildExam(arg, S.rng); return { mode: 'exam', exam: arg, items, basic: items.map(() => null) }; }
   if (kind === 'practice') return { mode: 'practice', skill: arg, basic: Array.from({ length: S.N }, () => arg), extra: () => { const kids = SKILLS.filter((x) => x.req.includes(arg) && isUnlocked(prog, x.id)); return kids.length ? kids[Math.floor(S.rng() * kids.length)].id : arg; } };
   if (kind === 'demo') {
     // Random skills from every grade, ordered easy -> hard so the show escalates.
@@ -221,6 +223,7 @@ function makePlan(kind, arg) {
 function nextProblem(i) {
   const plan = S.plan;
   if (plan.mode === 'review') return structuredClone(plan.items[i].problem);
+  if (plan.mode === 'exam') return structuredClone(plan.items[i]);
   const skill = params.get('skill') || (plan.placement ? plan.pick() : plan.basic[i]);
   return sessionProblem(skill);
 }
@@ -380,7 +383,8 @@ function startGame(kind = 'level', arg) {
   S.kind = kind; S.kindArg = arg;
   S.plan = makePlan(kind, arg);
   applyLook(playLook());
-  if (S.plan.mode === 'review') S.N = S.plan.items.length;
+  if (S.plan.mode === 'review' || S.plan.mode === 'exam') S.N = S.plan.items.length;
+  S.examLog = [];
   S.problems = [];
   S.wrongList = []; S.newUnlocks = []; S.newMastered = []; S.newStars = {}; S.sessionTimes = {}; S.capsuleNews = null; S.polished = [];
   planCapsule();
@@ -647,6 +651,7 @@ function noteProblem(p, firstTry) {
     else S.wrongList.push(p);
   }
   if (S.plan.placement && S.mode !== 'extra') S.plan.answer(firstTry);
+  if (S.plan.mode === 'exam' && S.mode !== 'extra' && p.examField != null) S.examLog.push({ field: p.examField, ok: firstTry });
   const timing = { at: Date.now(), day: store.dayKey(), ms: S.qMs, cells: p.steps.length, misses: S.qMisses || 0, problem: stripProblem(p) };
   questNote({ type: 'solve', firstTry, review: S.plan.mode === 'review', extra: S.mode === 'extra', skill: p.skill, skillState: p.skill && SKILL[p.skill] ? stateOf(prog, p.skill) : null });
   if (recording()) {
@@ -1220,14 +1225,16 @@ function showResult() {
   $('#r-time').textContent = fmtTime(t);
   $('#r-dopa').textContent = fmtDopa(S.dopa.L);
   const review = S.plan.mode === 'review';
-  const ok = rate >= 0.8 && !review;
+  const exam = S.plan.mode === 'exam' ? judgeExam(S.plan.exam, S.examLog) : null;
+  const ok = rate >= 0.8 && !review && !exam;
   if (S.plan.placement && !S.demo) { progress().placed = true; store.save(); }
   S.record = S.demo ? null : store.addRecord({ mode: S.plan.mode, grade: S.plan.grade, skill: S.plan.skill, count: S.N, score: BASIC_SCORE, ok: S.solved, ng: S.misses, firstRate: rate, timeMs: Math.round(t), dopaL: S.dopa.L });
   if (recording()) { growth.notePlay(stats(), { mode: S.plan.mode, day: store.dayKey(), timeMs: Math.round(t), dopaL: S.dopa.L, firstRate: rate }); store.save(); }
   questNote({ type: 'play', mode: S.plan.mode });
-  $('#result-title').textContent = review ? 'ふくしゅう クリア' : `${modeName(S.plan)} クリア`;
+  $('#result-title').textContent = review ? 'ふくしゅう クリア' : exam ? `模擬試験(${exam.name}) ${exam.pass ? '合格' : '不合格'}` : `${modeName(S.plan)} クリア`;
+  renderExamResult($('#r-exam'), exam);
   const un = $('#r-unlock');
-  un.textContent = review ? '' : ok ? 'エクストラ解放' : '初回正解率80%以上でエクストラ';
+  un.textContent = review || exam ? '' : ok ? 'エクストラ解放' : '初回正解率80%以上でエクストラ';
   un.classList.toggle('yes', ok);
   $('#go-extra').hidden = !ok;
   $('#go-extra small').textContent = `${Math.round(EXTRA_MS / 1000)}秒`;
@@ -1240,7 +1247,8 @@ function showResult() {
   setReviewButton($('#go-review'), ok ? 0 : S.wrongList.length);
   audio.play('musicGain', audio.now(), { v: 0.55, ramp: 0.6 });
   showScreen('result');
-  countUp($('#r-score'), BASIC_SCORE, 900);
+  $('#r-score').nextElementSibling.textContent = exam ? `/${exam.max}問` : '点';
+  countUp($('#r-score'), exam ? exam.total : BASIC_SCORE, 900);
   demoAfterResult('result');
 }
 
@@ -1485,6 +1493,17 @@ function renderSkillNews(el) {
   if (S.plan.placement) items.unshift(`<p>じつりょくチェック おわり　${SKILLS.filter((x) => stateOf(progress(), x.id) === 'mastered').length}こ クリア</p>`);
   el.innerHTML = items.slice(0, 5).join('');
 }
+// Mock exam verdict: total against the pass line, then each field against its minimum.
+function renderExamResult(box, exam) {
+  box.hidden = !exam;
+  if (!exam) { box.innerHTML = ''; return; }
+  const rows = exam.fields.map((f) => `<li class="${f.pass ? 'ok' : 'ng'}"><span>${f.label}</span><b>${f.ok}<small>/${f.n}</small></b><em>${f.pass ? '○' : `× ${f.need}問以上`}</em></li>`).join('');
+  box.innerHTML = `<p class="exam-verdict ${exam.pass ? 'pass' : 'fail'}">${exam.pass ? '合格ライン クリア' : '合格ラインに とどかず'}</p>`
+    + `<p class="exam-total">初回正解 <b>${exam.total}</b>/${exam.max}問（合格は${exam.line}問以上、かつ各分野の基準）</p>`
+    + `<ol class="exam-fields">${rows}</ol>`
+    + '<p class="exam-note">本試験と同じ分野・問題数（運行管理者試験センターの受験概要による）。はじめに正解した問題だけを得点にしています。</p>';
+}
+
 function setReviewButton(btn, n) {
   btn.hidden = !n;
   btn.textContent = `まちがえた ${n}問を やりなおす`;
@@ -2577,6 +2596,7 @@ $('#go-review').addEventListener('click', startReview);
 $('#f-review').addEventListener('click', startReview);
 $('#start-review').addEventListener('click', startReview);
 $$('.grades button').forEach((b) => b.addEventListener('click', () => startGame('grade', Number(b.dataset.grade))));
+$$('.exam-row button').forEach((b) => b.addEventListener('click', () => { if (EXAM[b.dataset.exam]) startGame('exam', b.dataset.exam); }));
 $('#open-tree').addEventListener('click', () => openTree());
 $('#tree').addEventListener('pointerdown', startHold);
 $('#tree').addEventListener('contextmenu', (e) => { if (e.target.closest('.node')) e.preventDefault(); });

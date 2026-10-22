@@ -54,6 +54,14 @@ test('the correct answer lands on every number over many draws', () => {
   for (const c of count) assert.ok(c > 50, count.join());
 });
 
+test('"fix" entries (ア・イ・ウ combinations) are well formed', () => {
+  for (const [id, list] of Object.entries(POOLS)) list.forEach((it, i) => {
+    if (!it.fix) return;
+    assert.ok(Number.isInteger(it.a) && it.a >= 0 && it.a < it.c.length, `${id}[${i}]: bad a`);
+    assert.ok(/\nア/.test(it.q), `${id}[${i}]: statements ア・イ・ウ should start on their own lines`);
+  });
+});
+
 test('"fix" keeps the written order of the choices', () => {
   const p = buildQuiz({ q: 'x', c: ['ア', 'イ', 'ウ', 'エ'], a: 2, e: 'e', fix: true }, makeRng(1), 't');
   assert.deepEqual(p.choices, ['ア', 'イ', 'ウ', 'エ']);
@@ -85,10 +93,11 @@ test('the correct choice is not given away by its length', () => {
   let total = 0, longest = 0, shortest = 0;
   for (const list of Object.values(POOLS)) for (const it of list) {
     const l = it.c.map(len);
-    const rest = l.slice(1);
+    const a = it.a ?? 0; // the correct choice (listed first unless `a` says otherwise)
+    const rest = l.filter((_, i) => i !== a);
     total++;
-    if (l[0] > Math.max(...rest)) longest++;
-    if (l[0] < Math.min(...rest)) shortest++;
+    if (l[a] > Math.max(...rest)) longest++;
+    if (l[a] < Math.min(...rest)) shortest++;
   }
   assert.ok(longest / total < 0.30, `correct is strictly the longest in ${(longest / total * 100).toFixed(1)}% of questions`);
   assert.ok(shortest / total < 0.30, `correct is strictly the shortest in ${(shortest / total * 100).toFixed(1)}% of questions`);
