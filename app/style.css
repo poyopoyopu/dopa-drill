@@ -68,44 +68,21 @@ button:focus-visible { outline: 4px solid var(--yellow); outline-offset: 3px; }
 /* ------------------------------------------------------------ title */
 #screen-title { flex-direction: column; align-items: center; justify-content: flex-start; gap: 14px; padding: calc(28px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom)); overflow-y: auto; overscroll-behavior: contain; }
 #screen-title > * { flex: none; }
-/* Logo: layered paper cut-outs. A spinning burst sits behind "ドパ",
-   "ドリル" rides on a folded ribbon, operator scraps float around. */
-.logo { position: relative; margin: calc(var(--fs) * 0.62) 0 calc(var(--fs) * 0.2); display: grid; justify-items: center; font-family: var(--chunky); font-weight: 400; line-height: 1; --fs: clamp(64px, 26vw, 120px); }
-.logo-burst { position: absolute; left: 50%; top: calc(var(--fs) * 0.52); width: calc(var(--fs) * 2.7); height: calc(var(--fs) * 2.7); transform: translate(-50%, -50%) rotate(calc(var(--spin, 0) * 1deg)); z-index: -1; filter: drop-shadow(0 6px 0 rgba(27, 29, 77, .9)); }
-.logo-top { display: flex; gap: .02em; font-size: calc(var(--fs) * 0.72); letter-spacing: -.04em; }
-.logo i { font-style: normal; display: inline-block; position: relative; }
-.logo-top i {
-  color: #fff;
-  /* white paper edge, ink outline, then an offset second sheet */
-  text-shadow:
-    0 0 0 #fff,
-    3px 0 0 var(--ink), -3px 0 0 var(--ink), 0 3px 0 var(--ink), 0 -3px 0 var(--ink),
-    2.5px 2.5px 0 var(--ink), -2.5px 2.5px 0 var(--ink), 2.5px -2.5px 0 var(--ink), -2.5px -2.5px 0 var(--ink),
-    6px 7px 0 var(--pink), 8px 9px 0 var(--ink), 4px 10px 0 var(--ink);
-  transform: rotate(var(--r, -6deg)) translateY(var(--dy, 0));
-  animation: logo-hop 1.6s cubic-bezier(.3, 1.6, .5, 1) infinite;
-}
-.logo-top i:nth-child(1) { --r: -9deg; color: #fff; }
-.logo-top i:nth-child(2) { --r: 7deg; --dy: -6px; animation-delay: -.8s; }
-.logo-top i::after { content: attr(data-c); position: absolute; inset: 0; color: var(--blue); clip-path: polygon(0 62%, 100% 50%, 100% 100%, 0 100%); text-shadow: none; }
-.logo-top i:nth-child(2)::after { color: var(--pink); }
-.logo-top i:nth-child(3) { --r: -5deg; --dy: -2px; animation-delay: -.4s; }
-.logo-top i:nth-child(4) { --r: 8deg; --dy: -8px; animation-delay: -1.2s; }
-.logo-top i:nth-child(4)::after { color: var(--pink); }
-.logo-ribbon { position: relative; display: flex; justify-content: center; gap: .1em; margin-top: calc(var(--fs) * 0.04); padding: .12em .9em .2em; font-size: calc(var(--fs) * 0.52); color: #fff; transform: rotate(-3deg); }
-.ribbon-bg { position: absolute; inset: -6% -14% -10%; width: 128%; height: 116%; z-index: -1; filter: drop-shadow(0 5px 0 var(--ink)); }
-.logo-ribbon i { text-shadow: 2px 0 0 var(--ink), -2px 0 0 var(--ink), 0 2px 0 var(--ink), 0 -2px 0 var(--ink), 0 4px 0 var(--ink); animation: logo-wave 1.6s ease-in-out infinite; }
-.logo-ribbon i:nth-child(3) { animation-delay: -.25s; }
-.logo-ribbon i:nth-child(4) { animation-delay: -.5s; }
-.logo-bits { position: absolute; inset: 0; pointer-events: none; }
-.logo-bits b { position: absolute; left: calc(50% + var(--x)); top: var(--y); font-size: calc(var(--fs) * 0.4); color: var(--c); transform: translate(-50%, -50%) rotate(var(--r)); text-shadow: 2px 0 0 var(--ink), -2px 0 0 var(--ink), 0 2px 0 var(--ink), 0 -2px 0 var(--ink), 3px 4px 0 var(--ink); animation: logo-float 2.4s ease-in-out infinite; }
-.logo-bits b:nth-child(2) { animation-delay: -.6s; }
-.logo-bits b:nth-child(3) { animation-delay: -1.2s; }
-.logo-bits b:nth-child(4) { animation-delay: -1.8s; }
-@keyframes logo-hop { 0%, 100% { transform: rotate(var(--r)) translateY(var(--dy, 0)) scale(1); } 12% { transform: rotate(var(--r)) translateY(calc(var(--dy, 0px) + 4px)) scale(1.08, .9); } 30% { transform: rotate(calc(var(--r) * -0.4)) translateY(calc(var(--dy, 0px) - 10px)) scale(.96, 1.06); } 55% { transform: rotate(var(--r)) translateY(var(--dy, 0)) scale(1); } }
-@keyframes logo-wave { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-@keyframes logo-float { 0%, 100% { margin-top: 0; } 50% { margin-top: -8px; } }
-body.reduced .logo *, body.reduced .logo-burst { animation: none !important; }
+/* Title logo: a road guide sign. */
+.logo { position: relative; margin: calc(var(--fs) * 0.42) 0 calc(var(--fs) * 0.16); display: grid; justify-items: center; font-family: var(--chunky); font-weight: 400; line-height: 1; --fs: clamp(64px, 26vw, 120px); }
+/* Logo: a road guide sign (blue plate, white inset border) with a white sub-plate and a yellow warning diamond. */
+.sign { position: relative; display: grid; justify-items: center; transform-origin: 50% 100%; animation: sign-sway 3.2s ease-in-out infinite; }
+.sign-plate { position: relative; z-index: 2; padding: .14em .3em .2em; border-radius: .16em; background: #2552c9; border: 4px solid var(--ink); box-shadow: 0 7px 0 var(--ink); }
+.sign-plate::before { content: ""; position: absolute; inset: .07em; border: 3px solid #fff; border-radius: .1em; pointer-events: none; }
+.sign-text { position: relative; display: block; font-size: calc(var(--fs) * 0.6); letter-spacing: .02em; color: #fff; line-height: 1.1; padding: .06em .12em 0; }
+.sign-sub { position: relative; z-index: 2; margin-top: calc(var(--fs) * 0.1); padding: .1em .55em .14em; font-size: calc(var(--fs) * 0.4); letter-spacing: .14em; color: var(--ink); background: #fff; border: 4px solid var(--ink); border-radius: .14em; box-shadow: 0 6px 0 var(--ink); transform: rotate(-2deg); }
+.sign-sub::after { content: ""; position: absolute; left: .55em; right: .41em; bottom: .14em; height: .1em; border-radius: 99px; background: var(--pink); }
+.sign-warn { position: absolute; z-index: 3; left: calc(var(--fs) * -0.2); top: calc(var(--fs) * -0.26); width: calc(var(--fs) * 0.5); height: calc(var(--fs) * 0.5); display: grid; place-items: center; background: #ffd23f; border: 4px solid var(--ink); border-radius: .14em; transform: rotate(45deg); box-shadow: 4px 4px 0 var(--ink); }
+.sign-warn i { font-style: normal; font-size: calc(var(--fs) * 0.32); color: var(--ink); transform: rotate(-45deg); line-height: 1; }
+.sign-pole { position: relative; z-index: 1; width: calc(var(--fs) * 0.16); height: calc(var(--fs) * 0.36); margin-top: -4px; background: linear-gradient(90deg, #c9cbe8, #eef0ff 45%, #b4b7da); border: 4px solid var(--ink); border-top: 0; border-radius: 0 0 6px 6px; }
+@keyframes sign-sway { 0%, 100% { transform: rotate(-1.4deg); } 50% { transform: rotate(1.4deg); } }
+body.reduced .logo *, body.reduced .sign { animation: none !important; }
+@media (prefers-reduced-motion: reduce) { .sign { animation: none; } }
 .settings-btn { display: grid; place-items: center; position: absolute; top: calc(12px + env(safe-area-inset-top)); right: 14px; width: 48px; height: 48px; padding: 4px; background: #fff; box-shadow: 0 4px 0 var(--ink); z-index: 3; }
 .settings-btn svg { display: block; width: 100%; height: 100%; transition: transform .4s; }
 #open-settings:active svg { transform: rotate(90deg); }
@@ -724,7 +701,7 @@ li.done .qbar { background: var(--mint); }
 .guide-actions button { flex: 1; min-width: 0; height: 48px; font-size: 18px; padding: 0 8px; }
 #guide-back:disabled { opacity: .4; cursor: default; }
 #guide-recommend { position: absolute; padding: 2px 8px; border: 2px solid var(--ink); border-radius: 6px; background: var(--yellow); font-size: 13px; font-weight: 900; transform: rotate(-4deg); }
-body.guide-open .logo *, body.guide-open .logo-burst { animation: none !important; }
+body.guide-open .logo * { animation: none !important; }
 @media (max-height: 680px) {
   #guide-card { padding: 12px; }
   #guide-heading { font-size: 18px; }
@@ -765,7 +742,8 @@ body.reduced #guide-help-ring, body.reduced .guide-help-fallback::after { animat
 .qz-exp { margin: 8px 0 0; padding: 7px 10px; border-radius: 12px; background: #fff3b8; font-size: calc(clamp(12px, 3.3vw, 13.5px) * var(--qzs, 1)); line-height: 1.5; font-weight: 700; text-align: left; }
 .qz-exp[hidden] { display: none; }
 @media (max-height: 840px) { .pad button { height: 46px; } }
-.grades button { display: flex; align-items: baseline; justify-content: center; gap: 3px; }
+.grades button { display: flex; align-items: baseline; justify-content: center; gap: 3px; padding: 0 4px; white-space: nowrap; }
+@media (max-width: 360px) { .grades button { font-size: 20px; } .grades button small { font-size: 11px; } }
 
 /* The mascot and crowd are shown on the title screen only; the game screens are for reading. */
 body:not([data-screen="title"]) #actors { display: none; }
@@ -827,3 +805,5 @@ body:not([data-screen="title"]) #actors { display: none; }
 .exam-book a.buy { color: #bf0000; font-size: 12px; font-weight: 900; }
 .exam-book-note { margin: 6px 0 0; font-size: 10px; opacity: .6; line-height: 1.5; }
 .exam-share { display: flex; align-items: center; justify-content: center; width: 100%; margin: 10px 0 0; height: 44px; color: var(--ink); font-size: 15px; font-weight: 900; text-decoration: none; }
+.title-foot { margin: 4px 0 0; font-size: 12px; }
+.title-foot a, .about-row a { color: var(--ink); font-weight: 700; }

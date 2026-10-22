@@ -35,10 +35,12 @@
         <svg viewBox="-16 -16 32 32" aria-hidden="true"><path d="M-6 -4 C-6 -7 -3 -9 0 -9 C3 -9 6 -7 6 -4 C6 -1 0 0 0 3 M0 9v.01" fill="none" stroke="#1b1d4d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <h1 id="logo" class="logo" aria-label="運行管理ドリル">
-        <svg class="logo-burst" viewBox="-100 -100 200 200" aria-hidden="true"><path id="logo-burst-path" fill="#ffd23f" stroke="#1b1d4d" stroke-width="5" stroke-linejoin="round"/><path id="logo-burst-inner" fill="#ff7ab6" stroke="#1b1d4d" stroke-width="4" stroke-linejoin="round"/></svg>
-        <span class="logo-top" aria-hidden="true"><i data-c="運">運</i><i data-c="行">行</i><i data-c="管">管</i><i data-c="理">理</i></span>
-        <span class="logo-ribbon" aria-hidden="true"><svg class="ribbon-bg" viewBox="0 0 300 70" preserveAspectRatio="none"><path d="M4 22 L34 16 L28 36 L40 58 L6 62 L18 42Z" fill="#2a4fd6" stroke="#1b1d4d" stroke-width="4" stroke-linejoin="round"/><path d="M296 22 L266 16 L272 36 L260 58 L294 62 L282 42Z" fill="#2a4fd6" stroke="#1b1d4d" stroke-width="4" stroke-linejoin="round"/><path d="M30 10 Q150 -4 270 10 L270 56 Q150 42 30 56Z" fill="#3b6bff" stroke="#1b1d4d" stroke-width="4.5" stroke-linejoin="round"/><path d="M42 18 Q150 6 258 18" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="round" opacity=".7"/></svg><i>ド</i><i>リ</i><i>ル</i></span>
-        <span class="logo-bits" aria-hidden="true"><b style="--x:-46%;--y:4%;--r:-18deg;--c:#3fdcb0">○</b><b style="--x:44%;--y:-2%;--r:14deg;--c:#a77bff">？</b><b style="--x:-34%;--y:104%;--r:10deg;--c:#ff4f6d">×</b><b style="--x:36%;--y:102%;--r:-12deg;--c:#ffd23f">✓</b></span>
+        <span class="sign" aria-hidden="true">
+          <span class="sign-plate"><span class="sign-text">運行管理</span></span>
+          <span class="sign-warn"><i>!</i></span>
+          <span class="sign-sub">ドリル</span>
+          <span class="sign-pole"></span>
+        </span>
       </h1>
       <div class="title-stage" id="title-stage" aria-hidden="true"></div>
       <div class="modes" id="modes">
@@ -73,6 +75,7 @@
         <div class="cal-grid" id="cal-grid" role="grid"></div>
       </section>
       <p class="hint">数字キーとBackspaceでも操作できます</p>
+      <p class="title-foot"><a href="about.html">このサイトについて・プライバシーポリシー</a></p>
     </section>
 
     <!-- Skill tree -->
@@ -232,7 +235,7 @@
       <div class="set-row about-row">
         <span class="set-label">このアプリについて</span>
         <p class="set-note">運行管理ドリルは、grmchnさんの「dopa-drill」(MIT License)をもとにした<b>非公式</b>の改造版です。元の作者・プロジェクトとは関係ありません。問題はすべてオリジナルの学習用で、過去問の転載ではありません。法令は改正されるので、試験の前には公式の最新資料を確認してください。</p>
-        <p class="set-note"><a href="https://github.com/grmchn/dopa-drill" target="_blank" rel="noopener">元のdopa-drill</a>・<a href="https://github.com/poyopoyopu/dopa-drill" target="_blank" rel="noopener">このアプリのソース</a>・<a href="LICENSE.txt" target="_blank" rel="noopener">ライセンス</a></p>
+        <p class="set-note"><a href="https://github.com/grmchn/dopa-drill" target="_blank" rel="noopener">元のdopa-drill</a>・<a href="https://github.com/poyopoyopu/dopa-drill" target="_blank" rel="noopener">このアプリのソース</a>・<a href="LICENSE.txt" target="_blank" rel="noopener">ライセンス</a>・<a href="about.html">このサイトについて・プライバシーポリシー</a></p>
       </div>
       <button type="button" class="big-btn" id="close-settings">とじる</button>
     </div>

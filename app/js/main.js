@@ -2760,24 +2760,6 @@ addEventListener('resize', () => requestAnimationFrame(() => {
   g.innerHTML = s;
 })();
 
-// Logo burst: a hand-cut star with slightly irregular points.
-(() => {
-  const star = (R, r, n, jitter, seed) => {
-    let d = ''; let s0 = seed;
-    const rnd = () => { s0 = (s0 * 9301 + 49297) % 233280; return s0 / 233280; };
-    for (let i = 0; i < n * 2; i++) {
-      const a = (i / (n * 2)) * Math.PI * 2 - Math.PI / 2;
-      const rr = (i % 2 ? r : R) * (1 + (rnd() - 0.5) * jitter);
-      d += `${i ? 'L' : 'M'}${(Math.cos(a) * rr).toFixed(1)} ${(Math.sin(a) * rr).toFixed(1)}`;
-    }
-    return `${d}Z`;
-  };
-  $('#logo-burst-path').setAttribute('d', star(96, 66, 14, 0.14, 7));
-  $('#logo-burst-inner').setAttribute('d', star(70, 52, 14, 0.1, 3));
-  const burst = $('.logo-burst');
-  onFrame((dt, t) => { if (S.screen === 'title' && !S.reduced) burst.style.setProperty('--spin', (t / 1000 * 10 * (0.3 + S.motion)) % 360); });
-})();
-
 const saved = store.settings();
 const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 setCount(params.has('count') ? Number(params.get('count')) : saved.count, { persist: false });
