@@ -1530,11 +1530,16 @@ function missedHtml(list, exam) {
   }).join('');
   return `<details class="exam-missed"><summary>まちがえた問題を見直す（${list.length}問）</summary><ol>${items}</ol></details>`;
 }
-// A recommended book for this kind of exam (affiliate link, marked as PR).
+// A recommended book for this kind of exam (affiliate links, marked as PR).
 function bookHtml(b) {
-  if (!b || !/^https:\/\/hb\.afl\.rakuten\.co\.jp\//.test(b.url)) return '';
+  if (!b) return '';
+  const link = (url, ok, label) => (url && ok.test(url) ? `<a class="buy" href="${esc(url)}" target="_blank" rel="nofollow sponsored noopener">${label}</a>` : '');
+  const rakuten = link(b.url, /^https:\/\/hb\.afl\.rakuten\.co\.jp\//, '楽天ブックスで見る');
+  const amazon = link(b.amazon, /^https:\/\/www\.amazon\.co\.jp\//, 'Amazonで見る');
+  if (!rakuten && !amazon) return '';
   return `<div class="exam-book"><p class="exam-book-head"><span class="pr">PR</span>本番前の仕上げに</p>`
-    + `<a href="${esc(b.url)}" target="_blank" rel="nofollow sponsored noopener">${esc(b.title)}<small>楽天ブックスで見る</small></a></div>`;
+    + `<p class="exam-book-title">${esc(b.title)}</p><p class="exam-book-links">${rakuten}${amazon}</p>`
+    + (amazon ? '<p class="exam-book-note">Amazonのアソシエイトとして、運行管理ドリルは適格販売により収入を得ています。</p>' : '') + '</div>';
 }
 // Weakest field of this exam, with a button straight to practice its skill.
 function weakHtml(w) {
