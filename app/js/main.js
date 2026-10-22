@@ -2280,7 +2280,7 @@ function openTrophies() {
   $('#tg-title').textContent = 'トロフィー ゲット！';
   $('#tg-sub').innerHTML = batch.length ? `これまでの記録で<b>${batch.length}</b>個獲得！` : list.length > 1 ? `<b>${list.length}</b>個獲得！` : '';
   const MAX = 6;
-  const rewards = list.map((x) => x.reward && ul.ITEM[x.reward]).filter(Boolean);
+  const rewards = list.map((x) => x.reward && ul.ITEM[x.reward]).filter((it) => it && !HIDDEN_CATS.has(it.cat)); // ドパキチの着せ替えなどは出さない
   $('#tg-list').innerHTML = list.slice(0, MAX).map((x) => `<li class="r-${x.rank}"><i>${trophySvg(x.rank)}</i><span><b>${x.name}</b><small>${x.desc}</small></span></li>`).join('') + (list.length > MAX ? `<li class="more">ほか ${list.length - MAX}こ</li>` : '')
     + rewards.map((it) => `<li class="reward"><i>${itemThumb(it)}</i><span><b>${catName(it.cat)}「${it.name}」を手に入れた！</b><small>コレクションで選べます</small></span></li>`).join('');
   $('#trophy-got').hidden = false;
@@ -2331,7 +2331,7 @@ function renderTrophyList() {
       const next = v.next ? `<span class="tr-next">次：${secret ? '？？？' : v.next.name}${!secret && trophyValueText(v.next, v.value) ? `（${trophyValueText(v.next, v.value)}）` : ''}</span>` : '<span class="tr-next done">コンプリート！</span>';
       const items = s.items.filter((x) => trFilter.f !== 'got' || got[x.id]).map((x) => {
         const hide = x.secret && !got[x.id];
-        const rw = x.reward && ul.ITEM[x.reward];
+        const rw0 = x.reward && ul.ITEM[x.reward]; const rw = rw0 && !HIDDEN_CATS.has(rw0.cat) ? rw0 : null;
         return `<li class="${got[x.id] ? 'got' : ''}"><i>${trophySvg(got[x.id] ? x.rank : 'none')}</i><span><b>${hide ? '？？？' : x.name}</b><small>${hide ? '秘密のトロフィー' : x.desc}</small>${rw && !hide ? `<small class="rw">ごほうび：${catName(rw.cat)}「${rw.name}」</small>` : ''}</span><em>${got[x.id] ? day(got[x.id]) : ''}</em></li>`;
       }).join('');
       html += `<details class="tr-series"><summary><i class="tr-icon">${trophySvg(v.top ? v.top.rank : 'none')}</i><span class="tr-t"><b>${s.title}</b>${next}</span><span class="tr-n">${v.got.length}/${s.items.length}</span><span class="tr-dots">${dots}</span></summary><ul>${items}</ul></details>`;
