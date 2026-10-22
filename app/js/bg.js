@@ -1,5 +1,5 @@
 // Full-screen WebGL backdrop: sunburst rays that grow into a rainbow tunnel of
-// Dopakichi silhouettes. Falls back to a CSS conic gradient without WebGL.
+// stars. Falls back to a CSS conic gradient without WebGL.
 
 const VERT = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0., 1.); }`;
 const FRAG = `precision highp float;
@@ -7,18 +7,24 @@ uniform vec2 uRes; uniform vec2 uCenter; uniform float uTime, uE, uKick, uFlash,
 vec3 hsv(float h, float s, float v){ vec3 k = clamp(abs(mod(h*6. + vec3(0.,4.,2.), 6.) - 3.) - 1., 0., 1.); return v * mix(vec3(1.), k, s); }
 float hash(vec2 c){ return fract(sin(dot(c, vec2(127.1, 311.7))) * 43758.5453); }
 mat2 rot(float a){ float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
-// Dopakichi head silhouette: a wide rounded head with large side ears.
+// Star silhouette for the tunnel (ドパキチの顔はやめて星にした).
 float dopa(vec2 p){
-  vec2 q = (p - vec2(0., -0.02)) / vec2(0.2, 0.15);
-  float h = (length(q) - 1.) * 0.15;
-  float e1 = length(p - vec2(-0.26, 0.01)) - 0.11;
-  float e2 = length(p - vec2(0.26, 0.01)) - 0.11;
-  return min(h, min(e1, e2));
+  const vec2 k1 = vec2(0.809016994375, -0.587785252292);
+  const vec2 k2 = vec2(-0.809016994375, -0.587785252292);
+  float r = 0.3, rf = 0.48;
+  p.x = abs(p.x);
+  p -= 2.0 * max(dot(k1, p), 0.0) * k1;
+  p -= 2.0 * max(dot(k2, p), 0.0) * k2;
+  p.x = abs(p.x);
+  p.y -= r;
+  vec2 ba = rf * vec2(-k1.y, k1.x) - vec2(0., 1.);
+  float h = clamp(dot(p, ba) / dot(ba, ba), 0.0, r);
+  return length(p - ba * h) * sign(p.y * ba.x - p.x * ba.y);
 }
 // Beat rings travelling outward (shared).
 float beatRings(float r, float t, float E){ return smoothstep(.35, .7, E) * smoothstep(0.035, 0., abs(fract(r * 2.4 - t * 0.8) - .5) - .45); }
 
-// 0: sunburst rays -> rainbow -> tunnel of Dopakichi faces.
+// 0: sunburst rays -> rainbow -> tunnel of stars.
 vec3 classic(vec2 p, float r, float a, float E, float t){
   float nr = floor(mix(10., 20., clamp(E, 0., 1.)));
   float tw = sin(r * 6. - t * 1.5) * 0.25 * smoothstep(.6, 1., E);

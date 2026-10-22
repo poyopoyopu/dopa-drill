@@ -1,5 +1,5 @@
 // Canvas 2D particle layer: paper confetti, stars, sparks, coins, fireworks,
-// streamers, mini Dopakichi sprites and floating score text.
+// streamers, small round "pon" sprites and floating score text.
 import { rand, pick, clamp } from './core.js';
 // Mini confetti: a plain round "pon" in the palette colours (no mascot).
 const MINI_COLORS = { pink: '#ff7ab6', blue: '#3b6bff', yellow: '#ffd23f', mint: '#3fdcb0', violet: '#a77bff' };
