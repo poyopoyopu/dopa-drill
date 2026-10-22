@@ -72,7 +72,7 @@ button:focus-visible { outline: 4px solid var(--yellow); outline-offset: 3px; }
    "ドリル" rides on a folded ribbon, operator scraps float around. */
 .logo { position: relative; margin: calc(var(--fs) * 0.62) 0 calc(var(--fs) * 0.2); display: grid; justify-items: center; font-family: var(--chunky); font-weight: 400; line-height: 1; --fs: clamp(64px, 26vw, 120px); }
 .logo-burst { position: absolute; left: 50%; top: calc(var(--fs) * 0.52); width: calc(var(--fs) * 2.7); height: calc(var(--fs) * 2.7); transform: translate(-50%, -50%) rotate(calc(var(--spin, 0) * 1deg)); z-index: -1; filter: drop-shadow(0 6px 0 rgba(27, 29, 77, .9)); }
-.logo-top { display: flex; gap: .02em; font-size: var(--fs); letter-spacing: -.04em; }
+.logo-top { display: flex; gap: .02em; font-size: calc(var(--fs) * 0.72); letter-spacing: -.04em; }
 .logo i { font-style: normal; display: inline-block; position: relative; }
 .logo-top i {
   color: #fff;
@@ -89,6 +89,9 @@ button:focus-visible { outline: 4px solid var(--yellow); outline-offset: 3px; }
 .logo-top i:nth-child(2) { --r: 7deg; --dy: -6px; animation-delay: -.8s; }
 .logo-top i::after { content: attr(data-c); position: absolute; inset: 0; color: var(--blue); clip-path: polygon(0 62%, 100% 50%, 100% 100%, 0 100%); text-shadow: none; }
 .logo-top i:nth-child(2)::after { color: var(--pink); }
+.logo-top i:nth-child(3) { --r: -5deg; --dy: -2px; animation-delay: -.4s; }
+.logo-top i:nth-child(4) { --r: 8deg; --dy: -8px; animation-delay: -1.2s; }
+.logo-top i:nth-child(4)::after { color: var(--pink); }
 .logo-ribbon { position: relative; display: flex; justify-content: center; gap: .1em; margin-top: calc(var(--fs) * 0.04); padding: .12em .9em .2em; font-size: calc(var(--fs) * 0.52); color: #fff; transform: rotate(-3deg); }
 .ribbon-bg { position: absolute; inset: -6% -14% -10%; width: 128%; height: 116%; z-index: -1; filter: drop-shadow(0 5px 0 var(--ink)); }
 .logo-ribbon i { text-shadow: 2px 0 0 var(--ink), -2px 0 0 var(--ink), 0 2px 0 var(--ink), 0 -2px 0 var(--ink), 0 4px 0 var(--ink); animation: logo-wave 1.6s ease-in-out infinite; }
