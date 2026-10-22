@@ -56,7 +56,7 @@ node --test tests/*.test.mjs
 | パス | 内容 |
 | --- | --- |
 | `app/` | ゲーム本体（依存ライブラリなしのES Modules） |
-| `app/kyokasho/` | 教科書(`tools/kyokasho/<スキルID>.html` の本文から `node tools/build_kyokasho.mjs` で生成。共通の見た目は `app/kyokasho/kyokasho.css`。`app/sitemap.xml` も一緒に更新) |
+| `app/kyokasho/` | 教科書(`tools/kyokasho/<スキルID>.html` の本文から `node tools/build_kyokasho.mjs` で生成。共通の見た目は `app/kyokasho/kyokasho.css`。ビルド時に `tools/budoux/` で文節の区切りに `<wbr>` を入れ、見出しや表が単語の途中で折り返さないようにしている。`app/sitemap.xml` も一緒に更新) |
 | `app/text.html` | 要点ノート(`tools/notes/*.mjs` から `node tools/build_text.mjs` で生成) |
 | `app/about.html` | このサイトについて・広告・プライバシーポリシー・免責事項・クレジット |
 | `app/js/affiliate.js` | 模擬試験の結果画面に出す問題集の紹介リンク（楽天・Amazon） |

@@ -52,3 +52,25 @@ test('kyokasho chapters only link to pages that exist', () => {
     }
   }
 });
+
+// 教科書の文節区切り(tools/budoux)
+import { insertWbr } from '../tools/budoux/phrase.mjs';
+
+test('insertWbr only adds <wbr> between phrases and leaves text, tags and figures alone', () => {
+  const html = '<h2>なぜ運転時間にも上限があるの?</h2><p>前日とも<b>翌日とも</b>超えたら違反</p><svg><text>平均9.5 超</text></svg><div class="ticks"><span>1か月の時間外</span></div>';
+  const out = insertWbr(html);
+  assert.ok(out.includes('<wbr>'));
+  assert.equal(out.replace(/<wbr>/g, ''), html);
+  assert.ok(out.includes('<svg><text>平均9.5 超</text></svg>'));
+  assert.ok(!/<div class="ticks">[^]*?<wbr>[^]*?<\/div>/.test(out));
+  // 1文字だけの切れはしは作らない
+  for (const seg of out.replace(/<[^w][^>]*>|<\/[^>]+>/g, '|').split(/<wbr>|\|/)) assert.notEqual(seg.length, 1, seg);
+});
+
+test('kyokasho text is identical with or without the phrase breaks', () => {
+  for (const { skill } of chapters()) {
+    const raw = readFileSync(new URL(`../tools/kyokasho/${skill.id}.html`, import.meta.url), 'utf8');
+    const strip = (s) => s.replace(/<span class="no">\d+<\/span>/g, '').replace(/<[^>]+>/g, '').replace(/\s+/g, '');
+    assert.ok(strip(renderChapter(skill.id)).includes(strip(raw.replace(/^\s*<!--[\s\S]*?-->/, ''))), skill.id);
+  }
+});

@@ -28,7 +28,7 @@ src: 改善基準告示(トラック)、厚生労働省「トラック運転者�
     <p>1日の流れを、出社から次の出社までの帯で見てみます。</p>
     <div class="tl" aria-label="1日の時間の分け方の図">
       <div class="tl-row"><span>1日目</span>
-        <div class="bar"><span class="work" style="width:20%">運転・作業</span><span class="rest" style="width:5%">休憩</span><span class="work" style="width:29%">運転・荷待ち</span><span class="free" style="width:46%">休息期間</span></div>
+        <div class="bar"><span class="work" style="width:20%">運転・作業</span><span class="rest" style="width:5%" title="休憩"></span><span class="work" style="width:29%">運転・荷待ち</span><span class="free" style="width:46%">休息期間</span></div>
       </div>
       <div class="ticks"><span class="s" style="left:0">始業</span><span style="left:54%">終業</span><span class="e" style="left:100%">次の始業</span></div>
     </div>
@@ -75,8 +75,8 @@ src: 改善基準告示(トラック)、厚生労働省「トラック運転者�
     <div class="box tip"><span class="lbl">覚え方</span>「13と11」「15と9」。どちらも足して24。片方を覚えればもう片方も出てきます。</div>
     <p>拘束が14時間を超える日は、<b class="k">1週間に2回まで</b>が目安です(バス・タクシーは週3回)。15時間まで延ばせるといっても、毎日はだめ、ということです。</p>
     <div class="fig">
-      <svg class="chart" viewBox="0 0 340 210" role="img" aria-label="1週間の拘束時間の例。14時間を超える日が3回目で目安オーバー">
-        <g font-size="11" fill="#5b5f8f">
+      <svg class="chart" viewBox="16 19 312 191" role="img" aria-label="1週間の拘束時間の例。14時間を超える日が3回目で目安オーバー">
+        <g font-size="12" fill="#5b5f8f">
           <line x1="22" y1="80" x2="300" y2="80" stroke="#2e9e6a" stroke-width="1.5" stroke-dasharray="4 3"/><text x="302" y="84" fill="#2e9e6a">13h</text>
           <line x1="22" y1="62" x2="300" y2="62" stroke="#e0a800" stroke-width="1.5" stroke-dasharray="4 3"/><text x="302" y="66" fill="#b58700">14h</text>
           <line x1="22" y1="44" x2="300" y2="44" stroke="#d6455d" stroke-width="1.5"/><text x="302" y="48" fill="#d6455d">15h</text>
@@ -89,13 +89,13 @@ src: 改善基準告示(トラック)、厚生労働省「トラック運転者�
           <rect x="150" y="44" width="28" height="126" rx="3" fill="#7fa2ff"/>
           <rect x="190" y="53" width="28" height="117" rx="3" fill="#ff8fb0"/>
         </g>
-        <g font-size="12" font-weight="700" fill="#1b1d4d" text-anchor="middle">
+        <g font-size="13" font-weight="700" fill="#1b1d4d" text-anchor="middle">
           <text x="84" y="46">①</text><text x="164" y="37">②</text><text x="204" y="40" fill="#d6455d">③✗</text>
           <text x="244" y="160" fill="#5b5f8f">休</text><text x="284" y="160" fill="#5b5f8f">休</text>
         </g>
-        <g font-size="12" fill="#1b1d4d" text-anchor="middle">
+        <g font-size="13" fill="#1b1d4d" text-anchor="middle">
           <text x="44" y="188">月</text><text x="84" y="188">火</text><text x="124" y="188">水</text><text x="164" y="188">木</text><text x="204" y="188">金</text><text x="244" y="188">土</text><text x="284" y="188">日</text>
-          <text x="44" y="204" font-size="10" fill="#5b5f8f">13</text><text x="84" y="204" font-size="10" fill="#5b5f8f">14.5</text><text x="124" y="204" font-size="10" fill="#5b5f8f">12</text><text x="164" y="204" font-size="10" fill="#5b5f8f">15</text><text x="204" y="204" font-size="10" fill="#d6455d">14.5</text>
+          <text x="44" y="204" font-size="12" fill="#5b5f8f">13</text><text x="84" y="204" font-size="12" fill="#5b5f8f">14.5</text><text x="124" y="204" font-size="12" fill="#5b5f8f">12</text><text x="164" y="204" font-size="12" fill="#5b5f8f">15</text><text x="204" y="204" font-size="12" fill="#d6455d">14.5</text>
         </g>
       </svg>
       <p class="cap">1日ずつ見ればどの日も15時間以内。でも14時間を超えた日が週3回目(金曜)になった時点で、目安オーバーです。</p>

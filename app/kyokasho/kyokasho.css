@@ -54,15 +54,15 @@ a:focus-visible { outline:3px solid var(--pink); outline-offset:2px; }
 
 /* 図のわく */
 .fig { margin-top:12px; padding:10px 12px; border:2px dashed #b9c3e8; border-radius:14px; background:#fbfcff; min-width:0; }
-.fig .cap { font-size:12px; color:var(--muted); margin-top:6px; line-height:1.6; }
+.fig .cap { font-size:13px; color:var(--muted); margin-top:6px; line-height:1.6; }
 .fig .ttl { font-weight:900; font-size:14px; margin:0 0 4px; }
 svg.chart { width:100%; height:auto; display:block; }
 
 /* 時間の帯(タイムライン) */
 .tl { margin-top:6px; }
 .tl-row { display:grid; grid-template-columns:56px 1fr; align-items:center; gap:8px; margin-top:6px; font-size:13px; line-height:1.4; }
-.bar { position:relative; height:30px; border:2px solid var(--ink); border-radius:8px; overflow:hidden; display:flex; background:#fff; }
-.bar span { display:grid; place-items:center; font-size:11px; font-weight:700; white-space:nowrap; overflow:hidden; }
+.bar { position:relative; min-height:30px; border:2px solid var(--ink); border-radius:8px; overflow:hidden; display:flex; background:#fff; }
+.bar span { display:grid; place-items:center; font-size:12px; font-weight:700; line-height:1.25; padding:2px 0; text-align:center; overflow:hidden; }
 .work { background:var(--work); color:#fff; } .rest { background:var(--rest); } .free { background:var(--free); }
 .drive { background:#4a72e8; color:#fff; } .wait { background:#b7c6f5; }
 .dup { background:repeating-linear-gradient(45deg,#ff8fb0,#ff8fb0 5px,#ffc2d4 5px,#ffc2d4 10px); }
@@ -70,7 +70,7 @@ svg.chart { width:100%; height:auto; display:block; }
 .or { background:var(--orange); } .gr { background:#e6e7f2; color:var(--muted); }
 .tl-row.ng > span:first-child { color:var(--red); font-weight:900; }
 .tl-row.okr > span:first-child { color:var(--green); font-weight:900; }
-.ticks { position:relative; height:18px; font-size:11px; color:var(--muted); margin-left:64px; }
+.ticks { position:relative; height:20px; font-size:12px; color:var(--muted); margin-left:64px; }
 .ticks.full { margin-left:0; }
 .ticks span { position:absolute; top:0; transform:translateX(-50%); white-space:nowrap; }
 .ticks span.s { transform:none; } .ticks span.e { transform:translateX(-100%); }
@@ -94,9 +94,19 @@ svg.chart { width:100%; height:auto; display:block; }
 .nest .lab { font-weight:900; font-size:14px; }
 .nest .ko .lab { color:var(--sign); }
 .nest .in { display:grid; grid-template-columns:3fr 2fr; gap:6px; margin-top:6px; }
-.nest .in > div { border:2px solid var(--ink); border-radius:10px; padding:6px 8px; font-size:12px; line-height:1.5; background:#fff; }
+.nest .in > div { border:2px solid var(--ink); border-radius:10px; padding:6px 8px; font-size:13px; line-height:1.5; background:#fff; }
 .nest small, .tree small, .vs small { display:block; font-size:12px; line-height:1.5; }
-@media (max-width:440px){ .nest { grid-template-columns:1fr; } }
+@media (max-width:440px){ .nest { grid-template-columns:1fr; } .card { padding:14px 12px; } .fig { padding:8px 6px; } table { font-size:13px; } th, td { padding:6px 4px; } }
+@media (max-width:370px){ table { font-size:12px; } th, td { padding:5px 3px; } }
+/* 読みやすさ：単語の途中で折り返さない。
+   ビルド時に文節の区切りへ <wbr> を入れてある(tools/budoux)ので、keep-all でもそこでは折り返せる。
+   overflow-wrap は anywhere にしないこと(表の列が縮んで単語が割れる)。
+   長い本文(p)はふつうの折り返しのまま。 */
+h1, h2, h3, li, th, td, summary, dt, dd, small, .box .lbl, .fig .ttl, .fig .cap, .bar span, .tl-row > span:first-child,
+.chain span, .flow span, .tree, .vs, .nest, .okng, .ba, .big, .pager a, .toc-list a, .legend { word-break:keep-all; overflow-wrap:break-word; }
+.bar span { overflow-wrap:anywhere; } /* 細い帯は1文字ずつでも折り返す */
+h1, h2, h3, th, td, .bar span, .tl-row > span:first-child, .tree .kids > div, .vs > div, .nest .in > div, .box .lbl, .fig .ttl, .chain span, small, .stamp { text-wrap:balance; }
+p, li, dd, .cap { text-wrap:pretty; }
 
 /* 分類の木 */
 .tree { display:grid; gap:8px; }
@@ -117,7 +127,7 @@ svg.chart { width:100%; height:auto; display:block; }
 .stamp.kyoka { color:var(--red); } .stamp.ninka { color:#b35b00; } .stamp.todoke { color:var(--sign); } .stamp.houkoku { color:var(--green); }
 
 /* ものさし */
-.gauge { display:flex; height:26px; border:2px solid var(--ink); border-radius:8px; overflow:hidden; margin-top:6px; font-size:11px; font-weight:700; }
+.gauge { display:flex; height:26px; border:2px solid var(--ink); border-radius:8px; overflow:hidden; margin-top:6px; font-size:12px; font-weight:700; }
 .gauge span { display:grid; place-items:center; white-space:nowrap; overflow:hidden; }
 
 /* 月・日のマス */
@@ -127,7 +137,7 @@ svg.chart { width:100%; height:auto; display:block; }
 .months b { font-size:12px; }
 .cal { display:grid; grid-template-columns:52px repeat(14,1fr); gap:2px; align-items:center; margin-top:6px; font-size:12px; }
 .cal.w7 { grid-template-columns:52px repeat(7,1fr); }
-.cal i { font-style:normal; height:22px; border:1.5px solid var(--ink); border-radius:4px; text-align:center; font-size:10px; line-height:20px; background:var(--work); color:#fff; overflow:hidden; }
+.cal i { font-style:normal; height:22px; border:1.5px solid var(--ink); border-radius:4px; text-align:center; font-size:11px; line-height:20px; background:var(--work); color:#fff; overflow:hidden; }
 .cal i.h { background:var(--free); color:var(--ink); }
 .cal i.w, .legend i.w { background:repeating-linear-gradient(45deg,#ff8fb0,#ff8fb0 4px,#ffc2d4 4px,#ffc2d4 8px); color:var(--ink); font-weight:900; }
 .cal i.lab { background:none; border:none; color:var(--muted); }

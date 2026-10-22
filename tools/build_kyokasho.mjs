@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { SKILLS, LANES } from '../app/js/skills.js';
 import { NOTES } from './notes/index.mjs';
 import { GROUPS } from './build_text.mjs';
+import { insertWbr } from './budoux/phrase.mjs';
 
 const SRC_DIR = fileURLToPath(new URL('./kyokasho/', import.meta.url));
 const OUT_DIR = fileURLToPath(new URL('../app/kyokasho/', import.meta.url));
@@ -36,7 +37,8 @@ export function readChapter(id) {
   }
   if (!meta.title || !meta.src) throw new Error(`${id}: title / src がありません`);
   let n = 0;
-  const body = raw.slice(m[0].length).trim()
+  // 文節の区切りに <wbr> を入れてから見出しに番号を付ける(番号と見出しの文がつながらないように)
+  const body = insertWbr(raw.slice(m[0].length).trim())
     .replace(/<h2>/g, () => `<h2><span class="no">${++n}</span>`);
   return { id, title: meta.title, src: meta.src, body };
 }
@@ -75,10 +77,10 @@ export function renderChapter(id) {
   const prev = list[i - 1];
   const next = list[i + 1];
   const desc = `運行管理者試験の教科書「${ch.title}」。${NOTES[id].lead}`;
-  const pager = (x, cls, label) => (x ? `<a class="${cls}" href="${x.skill.id}.html"><small>${label}</small>${esc(x.ch.title)}</a>` : '');
+  const pager = (x, cls, label) => (x ? `<a class="${cls}" href="${x.skill.id}.html"><small>${label}</small>${insertWbr(esc(x.ch.title))}</a>` : '');
   return `${head({ title: `${ch.title}｜教科書｜運行管理ドリル`, desc, path: `kyokasho/${id}.html` })}
   <nav class="topnav" aria-label="ページ移動"><a href="./">← 教科書のもくじ</a><a href="../">ドリル</a></nav>
-  <div class="plate"><p>${esc(g.title)} ・ ステージ${skill.grade}</p><h1>${esc(ch.title)}</h1></div>
+  <div class="plate"><p>${esc(g.title)} ・ ステージ${skill.grade}</p><h1>${insertWbr(esc(ch.title))}</h1></div>
 
 ${ch.body}
 
@@ -101,7 +103,7 @@ export function renderIndex() {
   <section class="card toc-group" id="g-${g.key}">
     <h2 class="plain">${esc(g.title)} <small>${esc(g.sub)}</small></h2>
     <ul class="toc-list">
-${items.map((x) => `      <li><a href="${x.skill.id}.html"><span class="st">${x.skill.grade}</span><span>${esc(x.ch.title)}<small>スキル「${esc(x.skill.name)}」・${esc(LANES[x.skill.lane])}</small></span></a></li>`).join('\n')}
+${items.map((x) => `      <li><a href="${x.skill.id}.html"><span class="st">${x.skill.grade}</span><span>${insertWbr(esc(x.ch.title))}<small>スキル「${esc(x.skill.name)}」・${esc(LANES[x.skill.lane])}</small></span></a></li>`).join('\n')}
     </ul>
   </section>`;
   }).join('');
