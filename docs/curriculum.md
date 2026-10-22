@@ -53,6 +53,7 @@
 | 4 | 実務 | 事故をふせぐ (`pr-prevent`) | `pr_prevent` | pr-accident, pr-health |
 | 4 | 実務 | 運行計画の検証 (`pr-plan`) | `pr_plan` | pr-calc |
 | 5 | 貨物・旅客 | 指導と健康管理 (`cg-guide`) | `cg_guide` | cg-record |
+| 5 | 貨物・旅客 | 事故時と乗務員 (`ps-crew`) | `ps_crew` | ps-tenko, ps-care |
 | 5 | 実務 | 危険予知と指差呼称 (`pr-hazard`) | `pr_hazard` | pr-prevent |
 | 6 | 実務 | 総まとめ (`mix-final`) | 全分野 | cg-guide, lb-36, lb-bus, lb-drive, vh-shaken, tr-speed, tr-alcohol, ps-tenko, ps-care, pr-prevent |
 

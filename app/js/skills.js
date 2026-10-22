@@ -66,6 +66,7 @@ export const SKILLS = [
 
   // ---------------------------------------------------------------- stage 5
   { id: 'cg-guide', name: '指導と健康管理', grade: 5, lane: 0, req: ['cg-record'], gen: q('cg_guide') },
+  { id: 'ps-crew', name: '事故時と乗務員', grade: 5, lane: 0, side: 1, req: ['ps-tenko', 'ps-care'], gen: q('ps_crew') },
   { id: 'pr-hazard', name: '危険予知と指差呼称', grade: 5, lane: 3, req: ['pr-prevent'], gen: q('pr_hazard') },
 
   // ---------------------------------------------------------------- stage 6
