@@ -43,6 +43,7 @@
     a:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
     .cta { display: inline-flex; margin-top: 12px; padding: 10px 20px; border-radius: 16px; background: var(--pink); color: #fff; text-decoration: none; font-weight: 900; border: 3px solid var(--ink); box-shadow: 0 5px 0 var(--ink); }
     footer { text-align: center; color: var(--muted); font-size: 13px; }
+    .mail { font-size: 18px; font-weight: 900; word-break: break-all; }
   </style>
 </head>
 <body>
@@ -110,7 +111,20 @@
 
     <section aria-labelledby="s-contact">
       <h2 id="s-contact">お問い合わせ</h2>
-      <p>問題の誤りのご指摘やご意見は、Xの<a href="https://x.com/claude_life_jp" target="_blank" rel="noopener">@claude_life_jp</a>までお寄せください。</p>
+      <p>問題の誤りのご指摘やご意見は、メールでお寄せください。</p>
+      <p class="mail" id="mail"><span class="mail-text">sotaexportjp(アット)gmail.com</span></p>
+      <p class="note">迷惑メール対策のため、(アット)を@に置きかえて送ってください。お返事にはお時間をいただくことがあります。</p>
+      <script>
+        (() => {
+          const box = document.getElementById('mail');
+          const addr = ['sotaexportjp', 'gmail.com'].join(String.fromCharCode(64));
+          const a = document.createElement('a');
+          a.href = 'mailto:' + addr + '?subject=' + encodeURIComponent('運行管理ドリルについて');
+          a.textContent = addr;
+          box.replaceChildren(a);
+          box.nextElementSibling.textContent = 'お返事にはお時間をいただくことがあります。';
+        })();
+      </script>
     </section>
 
     <footer>制定日 2026年10月22日<br>© 運行管理ドリル</footer>
