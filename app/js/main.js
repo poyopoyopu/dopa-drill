@@ -374,7 +374,35 @@ function activate(k) {
 }
 
 // ---------------------------------------------------------------- flow
-function startGame(kind = 'level', arg) {
+// Before a skill is played for the first time, offer its 教科書 chapter
+// (app/kyokasho/<id>.html). Each skill is offered once; "このまま とく" starts
+// the game as before.
+const INTRO_KEY = 'unko-kyokasho-intro';
+function introSeen() { try { return new Set(JSON.parse(localStorage.getItem(INTRO_KEY) || '[]')); } catch { return new Set(); } }
+function markIntro(ids) { try { const s = introSeen(); ids.forEach((id) => s.add(id)); localStorage.setItem(INTRO_KEY, JSON.stringify([...s])); } catch { /* storage off: just ask again next time */ } }
+function newSkillsFor(kind, arg) {
+  if (params.get('skill') || params.has('demo')) return [];
+  const prog = progress();
+  let ids = [];
+  if (kind === 'practice') ids = [arg];
+  else if (kind === 'level' && prog.placed) ids = frontier(prog).slice(0, 4);
+  const seen = introSeen();
+  return ids.filter((id) => SKILL[id] && !(prog.skills[id] && prog.skills[id].n) && !seen.has(id));
+}
+function offerKyokasho(ids, kind, arg) {
+  markIntro(ids);
+  const list = ids.map((id) => `<li><a href="kyokasho/${id}.html">${SKILL[id].name}</a></li>`).join('');
+  openConfirm({
+    title: 'はじめての スキル',
+    msg: 'とく まえに 教科書を よむと<br>ぐっと わかりやすく なるよ',
+    list, yes: '教科書へ', no: 'このまま とく', danger: false,
+    onYes: () => { location.href = `kyokasho/${ids[0]}.html`; },
+    onNo: () => startGame(kind, arg, true),
+  });
+}
+
+function startGame(kind = 'level', arg, introDone = false) {
+  if (!introDone) { const ids = newSkillsFor(kind, arg); if (ids.length) { offerKyokasho(ids, kind, arg); return; } }
   audio.unlock();
   S.run += 1;
   if (S.bonusOpen) { $('#bonus').hidden = true; S.bonusOpen = false; }
@@ -1913,7 +1941,7 @@ function openSkillInfo(id) {
   $('#si-next').innerHTML = next ? `<p class="si-label">つぎの ☆${next.n}</p><p class="si-text">${next.text}</p><p class="si-now">${next.now}</p>` : '<p class="si-text done">☆5 たっせい！ すごい！</p>';
   $('#si-note').textContent = `${rustyOf(prog).includes(id) ? 'すこし さびているよ。1もん 初回正解で ピカピカ！　' : ''}といた もんだい ${r.n || 0}もん${best != null ? `　いちばん はやい 1もん ${(best / 1000).toFixed(1)}びょう` : ''}`;
   $('#si-text').href = `text.html#${id}`;
-  $('#si-kaisetsu').href = `kaisetsu/${id}.html`;
+  $('#si-kyokasho').href = `kyokasho/${id}.html`;
   $('#skill-info').hidden = false;
   const cardEl = $('#skill-info .modal-card');
   if (!S.reduced) tween(260, (k) => { cardEl.style.transform = `translateY(${(1 - k) * 30}px) scale(${0.92 + 0.08 * k})`; }, easeOutBack).then(() => { cardEl.style.transform = ''; });
@@ -1958,9 +1986,9 @@ function setConfirmFace(urgent) {
   if (urgent) hero.sweat.setAttribute('transform', 'translate(46 -130)');
   hero.shake = urgent && !S.reduced ? 1.4 * S.motion : 0;
 }
-function openConfirm({ title, msg, list = '', yes, no, danger = true, urgent = false, onYes, focusBack = null }) {
+function openConfirm({ title, msg, list = '', yes, no, danger = true, urgent = false, onYes, onNo = null, focusBack = null }) {
   audio.unlock();
-  S.confirm = { onYes, focusBack, urgent, pausedAt: now() };
+  S.confirm = { onYes, onNo, focusBack, urgent, pausedAt: now() };
   $('#confirm-title').textContent = title;
   $('#confirm-msg').innerHTML = msg;
   $('#confirm-list').innerHTML = list;
@@ -2703,7 +2731,7 @@ $('#tree-scroll').addEventListener('scroll', cancelHold, { passive: true });
 addEventListener('pointermove', (e) => { if (hold.node && Math.hypot(e.clientX - hold.x, e.clientY - hold.y) > 10) { hold.dragged = true; cancelHold(); } });
 addEventListener('pointerup', cancelHold);
 addEventListener('pointercancel', cancelHold);
-$('#confirm-no').addEventListener('click', () => { audio.play('blip', audio.now(), { m: 72, v: 0.08 }); closeConfirm(); });
+$('#confirm-no').addEventListener('click', () => { audio.play('blip', audio.now(), { m: 72, v: 0.08 }); const c = S.confirm; closeConfirm(); if (c && c.onNo) c.onNo(); });
 $('#confirm-yes').addEventListener('click', confirmYes);
 $('#confirm').addEventListener('click', (e) => { if (e.target.id === 'confirm') closeConfirm(); });
 $('#tree').addEventListener('click', (e) => {

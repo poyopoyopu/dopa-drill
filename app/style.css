@@ -419,6 +419,7 @@ body.reduced .node { animation: none !important; }
 .confirm-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .confirm-list li { padding: 3px 9px; border: 2px solid var(--ink); border-radius: 999px; background: #fff; font-size: 12px; font-weight: 900; }
 .confirm-list li.more { border-style: dashed; background: transparent; }
+.confirm-list li a { color: var(--ink); text-decoration: none; }
 .confirm-actions { display: flex; justify-content: center; gap: 12px; }
 .confirm-actions .sub-btn { min-width: 120px; font-weight: 900; }
 .sub-btn.danger { background: var(--red); color: #fff; text-shadow: 0 2px 0 rgba(27, 29, 77, .45); }

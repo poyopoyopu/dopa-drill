@@ -1,0 +1,160 @@
+/* 教科書(app/kyokasho/*.html)の共通スタイル。tools/build_kyokasho.mjs で生成するページが読み込む */
+:root { --ink:#1b1d4d; --paper:#fff8ec; --card:#fff; --sign:#2552c9; --pink:#e8558f; --muted:#5b5f8f; --soft:#eef1ff; --yellow:#ffd23f; --green:#2e9e6a; --red:#d6455d; --orange:#ffb35c;
+  --work:#7fa2ff; --rest:#ffd9a8; --free:#c9efd9;
+  --text:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo","Noto Sans JP",sans-serif; color-scheme: light; }
+* { box-sizing:border-box; }
+html { -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--text); font-size:16px; line-height:1.9;
+  background-image:linear-gradient(rgba(59,107,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(59,107,255,.07) 1px,transparent 1px); background-size:28px 28px; }
+.wrap { max-width:760px; margin:0 auto; padding:calc(20px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right)) calc(56px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left)); display:grid; gap:18px; }
+.topnav { display:flex; flex-wrap:wrap; gap:8px; }
+.topnav a { color:var(--ink); font-weight:900; text-decoration:none; padding:4px 12px; border:3px solid var(--ink); border-radius:14px; background:var(--card); box-shadow:0 4px 0 var(--ink); font-size:14px; }
+.plate { justify-self:start; background:var(--sign); color:#fff; border:4px solid var(--ink); border-radius:12px; box-shadow:0 6px 0 var(--ink); padding:4px; }
+.plate p { margin:0; padding:2px 16px 0; font-size:13px; opacity:.9; }
+.plate h1 { margin:0; padding:2px 16px 10px; font-size:clamp(22px,6.5vw,32px); line-height:1.35; font-weight:900; }
+.card { background:var(--card); border:3px solid var(--ink); border-radius:18px; padding:16px 18px; box-shadow:0 5px 0 var(--ink); min-width:0; }
+h2 { margin:0 0 8px; font-size:21px; line-height:1.4; font-weight:900; display:flex; gap:10px; align-items:baseline; }
+h2 .no { flex:none; display:inline-grid; place-items:center; width:30px; height:30px; border-radius:50%; background:var(--sign); color:#fff; font-size:15px; }
+h3 { margin:16px 0 4px; font-size:17px; font-weight:900; }
+p { margin:8px 0 0; }
+ul, ol { margin:8px 0 0; padding-left:1.3em; }
+li + li { margin-top:4px; }
+b.k { background:linear-gradient(transparent 60%, #ffe58a 60%); }
+.goal li::marker { content:"✓ "; color:var(--green); font-weight:900; }
+.box { margin-top:12px; padding:10px 14px; border-radius:12px; background:var(--soft); }
+.box.warn { background:#fff0f3; border-left:5px solid var(--red); }
+.box.tip { background:#fff7d6; border-left:5px solid #e0a800; }
+.box .lbl { display:block; font-weight:900; font-size:14px; }
+.big { display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
+.big > div { flex:1 1 140px; border:2.5px solid var(--ink); border-radius:14px; padding:8px 10px; text-align:center; background:#fff; }
+.big small { display:block; color:var(--muted); font-size:12px; line-height:1.5; }
+.big strong { display:block; font-size:26px; line-height:1.3; }
+.big em { display:block; font-style:normal; font-size:12px; color:var(--muted); line-height:1.5; }
+table { width:100%; border-collapse:collapse; margin-top:10px; font-size:14px; line-height:1.6; }
+th, td { border:2px solid var(--ink); padding:6px 8px; text-align:center; }
+th { background:var(--soft); }
+td.l, th.l { text-align:left; }
+td.hl { background:#fff7d6; font-weight:900; }
+.scroll { overflow-x:auto; }
+.q { margin-top:12px; padding:12px 14px; border:2.5px dashed var(--sign); border-radius:14px; }
+.q .lbl { font-weight:900; color:var(--sign); margin:0; }
+details { margin-top:8px; }
+summary { cursor:pointer; font-weight:900; color:var(--pink); }
+.steps { counter-reset:s; list-style:none; padding:0; }
+.steps li { counter-increment:s; position:relative; padding-left:32px; }
+.steps li::before { content:counter(s); position:absolute; left:0; top:4px; width:22px; height:22px; border-radius:50%; background:var(--pink); color:#fff; font-size:12px; font-weight:900; display:grid; place-items:center; line-height:1; }
+.trap li { margin-top:8px; }
+.trap s, s.old { color:var(--red); }
+.cta { justify-self:center; display:inline-flex; padding:10px 22px; border-radius:16px; background:var(--pink); color:#fff; text-decoration:none; font-weight:900; border:3px solid var(--ink); box-shadow:0 5px 0 var(--ink); }
+.src { color:var(--muted); font-size:13px; }
+a { color:var(--sign); }
+a:focus-visible { outline:3px solid var(--pink); outline-offset:2px; }
+.ok { color:var(--green); font-weight:900; } .ng { color:var(--red); font-weight:900; }
+
+/* 図のわく */
+.fig { margin-top:12px; padding:10px 12px; border:2px dashed #b9c3e8; border-radius:14px; background:#fbfcff; min-width:0; }
+.fig .cap { font-size:12px; color:var(--muted); margin-top:6px; line-height:1.6; }
+.fig .ttl { font-weight:900; font-size:14px; margin:0 0 4px; }
+svg.chart { width:100%; height:auto; display:block; }
+
+/* 時間の帯(タイムライン) */
+.tl { margin-top:6px; }
+.tl-row { display:grid; grid-template-columns:56px 1fr; align-items:center; gap:8px; margin-top:6px; font-size:13px; line-height:1.4; }
+.bar { position:relative; height:30px; border:2px solid var(--ink); border-radius:8px; overflow:hidden; display:flex; background:#fff; }
+.bar span { display:grid; place-items:center; font-size:11px; font-weight:700; white-space:nowrap; overflow:hidden; }
+.work { background:var(--work); color:#fff; } .rest { background:var(--rest); } .free { background:var(--free); }
+.drive { background:#4a72e8; color:#fff; } .wait { background:#b7c6f5; }
+.dup { background:repeating-linear-gradient(45deg,#ff8fb0,#ff8fb0 5px,#ffc2d4 5px,#ffc2d4 10px); }
+.x { background:repeating-linear-gradient(45deg,#ffd0d8,#ffd0d8 5px,#fff 5px,#fff 10px); color:var(--red); }
+.or { background:var(--orange); } .gr { background:#e6e7f2; color:var(--muted); }
+.tl-row.ng > span:first-child { color:var(--red); font-weight:900; }
+.tl-row.okr > span:first-child { color:var(--green); font-weight:900; }
+.ticks { position:relative; height:18px; font-size:11px; color:var(--muted); margin-left:64px; }
+.ticks.full { margin-left:0; }
+.ticks span { position:absolute; top:0; transform:translateX(-50%); white-space:nowrap; }
+.ticks span.s { transform:none; } .ticks span.e { transform:translateX(-100%); }
+.legend { display:flex; flex-wrap:wrap; gap:4px 12px; font-size:12px; margin-top:8px; line-height:1.5; }
+.legend i { display:inline-block; width:14px; height:14px; border:1.5px solid var(--ink); border-radius:3px; vertical-align:-2px; margin-right:4px; }
+
+/* 流れ・つながり */
+.chain { display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
+.chain span { border:2.5px solid var(--ink); border-radius:10px; padding:2px 10px; background:#fff; font-weight:700; font-size:14px; line-height:1.6; }
+.chain .arr { border:none; background:none; padding:0; color:var(--muted); font-weight:400; }
+.chain .bad { background:#ffe1e7; } .chain .good { background:var(--free); } .chain .blue { background:var(--soft); }
+.flow { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:10px; font-size:14px; line-height:1.6; }
+.flow span { background:var(--pink); color:#fff; border-radius:999px; padding:2px 12px; font-weight:700; }
+.flow .arr { background:none; color:var(--muted); padding:0; }
+
+/* 入れ子の図(何が何に含まれるか) */
+.nest { display:grid; grid-template-columns:2fr 1fr; gap:8px; }
+.nest > div { border:3px solid var(--ink); border-radius:14px; padding:8px; }
+.nest .ko { background:var(--soft); border-color:var(--sign); }
+.nest .fr { background:var(--free); }
+.nest .lab { font-weight:900; font-size:14px; }
+.nest .ko .lab { color:var(--sign); }
+.nest .in { display:grid; grid-template-columns:3fr 2fr; gap:6px; margin-top:6px; }
+.nest .in > div { border:2px solid var(--ink); border-radius:10px; padding:6px 8px; font-size:12px; line-height:1.5; background:#fff; }
+.nest small, .tree small, .vs small { display:block; font-size:12px; line-height:1.5; }
+@media (max-width:440px){ .nest { grid-template-columns:1fr; } }
+
+/* 分類の木 */
+.tree { display:grid; gap:8px; }
+.tree .root { justify-self:center; border:3px solid var(--ink); border-radius:12px; padding:4px 14px; background:var(--sign); color:#fff; font-weight:900; text-align:center; line-height:1.5; }
+.tree .kids { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr)); gap:8px; position:relative; padding-top:12px; border-top:3px solid var(--ink); }
+.tree .kids > div { border:2.5px solid var(--ink); border-radius:12px; padding:6px 8px; background:#fff; text-align:center; font-size:14px; line-height:1.5; font-weight:700; }
+.tree .kids > div small { font-weight:400; color:var(--muted); }
+
+/* 比べるカード */
+.vs { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr)); gap:8px; }
+.vs > div { border:2.5px solid var(--ink); border-radius:12px; padding:8px 10px; background:#fff; line-height:1.6; font-size:14px; }
+.vs .h { display:block; font-weight:900; font-size:15px; margin-bottom:2px; }
+.vs .blue { background:var(--soft); } .vs .green { background:var(--free); } .vs .pinkb { background:#ffe1e7; } .vs .yel { background:#fff7d6; }
+
+/* 判子(許可・届出など) */
+.nw { white-space:nowrap; }
+.stamp { white-space:nowrap; display:inline-block; padding:0 8px; border:2px solid currentColor; border-radius:6px; font-weight:900; font-size:13px; line-height:1.6; }
+.stamp.kyoka { color:var(--red); } .stamp.ninka { color:#b35b00; } .stamp.todoke { color:var(--sign); } .stamp.houkoku { color:var(--green); }
+
+/* ものさし */
+.gauge { display:flex; height:26px; border:2px solid var(--ink); border-radius:8px; overflow:hidden; margin-top:6px; font-size:11px; font-weight:700; }
+.gauge span { display:grid; place-items:center; white-space:nowrap; overflow:hidden; }
+
+/* 月・日のマス */
+.months { display:grid; grid-template-columns:52px repeat(12,1fr); gap:3px; align-items:center; margin-top:6px; font-size:12px; }
+.months i { font-style:normal; border:1.5px solid var(--ink); border-radius:5px; text-align:center; font-size:11px; line-height:22px; background:var(--free); }
+.months i.o { background:var(--orange); font-weight:900; }
+.months b { font-size:12px; }
+.cal { display:grid; grid-template-columns:52px repeat(14,1fr); gap:2px; align-items:center; margin-top:6px; font-size:12px; }
+.cal.w7 { grid-template-columns:52px repeat(7,1fr); }
+.cal i { font-style:normal; height:22px; border:1.5px solid var(--ink); border-radius:4px; text-align:center; font-size:10px; line-height:20px; background:var(--work); color:#fff; overflow:hidden; }
+.cal i.h { background:var(--free); color:var(--ink); }
+.cal i.w, .legend i.w { background:repeating-linear-gradient(45deg,#ff8fb0,#ff8fb0 4px,#ffc2d4 4px,#ffc2d4 8px); color:var(--ink); font-weight:900; }
+.cal i.lab { background:none; border:none; color:var(--muted); }
+
+/* 改正前→後 */
+.ba { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:8px; margin-top:10px; }
+.ba > div { border:2.5px solid var(--ink); border-radius:12px; padding:6px 10px; background:#fff; text-align:center; line-height:1.5; }
+.ba small { display:block; font-size:12px; color:var(--muted); }
+.ba s { color:var(--red); }
+.ba strong { font-size:20px; color:var(--sign); }
+
+/* ○×チェック */
+.okng { display:grid; gap:6px; margin-top:8px; }
+.okng > div { position:relative; border:2px solid var(--ink); border-radius:10px; padding:6px 8px 6px 38px; background:#fff; font-size:14px; line-height:1.6; }
+.okng > div::before { position:absolute; left:10px; top:6px; font-weight:900; font-size:16px; }
+.okng .o::before { content:"◯"; color:var(--green); }
+.okng .n::before { content:"✕"; color:var(--red); }
+
+/* ページ送り・もくじ */
+.pager { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.pager a { display:block; padding:8px 12px; border:3px solid var(--ink); border-radius:14px; background:var(--card); color:var(--ink); text-decoration:none; box-shadow:0 4px 0 var(--ink); font-weight:900; font-size:14px; line-height:1.5; }
+.pager a small { display:block; font-weight:400; font-size:12px; color:var(--muted); }
+.pager .next { text-align:right; grid-column:2; }
+.toc-group h2 { font-size:19px; }
+.toc-group h2 small { font-size:12px; font-weight:400; color:var(--muted); }
+.toc-list { list-style:none; padding:0; margin:8px 0 0; display:grid; gap:6px; }
+.toc-list a { display:flex; gap:8px; align-items:center; padding:6px 10px; border:2px solid var(--ink); border-radius:12px; background:var(--soft); color:var(--ink); text-decoration:none; font-weight:700; font-size:15px; line-height:1.5; }
+.toc-list .st { flex:none; display:inline-grid; place-items:center; width:22px; height:22px; border-radius:50%; background:var(--sign); color:#fff; font-size:11px; }
+.toc-list small { display:block; font-weight:400; font-size:12px; color:var(--muted); }
+footer { text-align:center; color:var(--muted); font-size:13px; }

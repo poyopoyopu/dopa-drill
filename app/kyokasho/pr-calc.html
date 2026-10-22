@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2552c9">
+  <title>距離・時間・速度の計算｜教科書｜運行管理ドリル</title>
+  <meta name="description" content="運行管理者試験の教科書「距離・時間・速度の計算」。速度・距離・時間の計算。「÷3.6」を使いこなせば怖くありません。">
+  <link rel="canonical" href="https://unko-drill.pages.dev/kyokasho/pr-calc.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="運行管理ドリル">
+  <meta property="og:title" content="距離・時間・速度の計算｜教科書｜運行管理ドリル">
+  <meta property="og:description" content="運行管理者試験の教科書「距離・時間・速度の計算」。速度・距離・時間の計算。「÷3.6」を使いこなせば怖くありません。">
+  <meta property="og:url" content="https://unko-drill.pages.dev/kyokasho/pr-calc.html">
+  <meta property="og:image" content="https://unko-drill.pages.dev/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="kyokasho.css">
+</head>
+<body>
+<main class="wrap">
+  <nav class="topnav" aria-label="ページ移動"><a href="./">← 教科書のもくじ</a><a href="../">ドリル</a></nav>
+  <div class="plate"><p>実務上の知識及び能力 ・ ステージ3</p><h1>距離・時間・速度の計算</h1></div>
+
+<section class="card">
+    <h2 class="plain">この章でわかること</h2>
+    <ul class="goal">
+      <li>時速を秒速に直す「÷3.6」</li>
+      <li>空走距離・停止距離の計算と、追突するかの判断</li>
+      <li>制動距離の「2乗」の計算</li>
+      <li>運転時間・到着時刻の計算(0.1時間＝6分)</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">1</span>なぜ3.6で割るの?</h2>
+    <p>時速は「1時間(3,600秒)に何km(1,000m×)進むか」。秒速に直すには、1,000倍して3,600で割ります。1,000÷3,600＝1÷3.6 なので、<b class="k">時速÷3.6＝秒速</b>。</p>
+    <div class="fig">
+      <div class="chain"><span class="blue">時速 km/h</span><span class="arr">÷3.6 →</span><span class="good">秒速 m/s</span><span class="arr">→ ×3.6 →</span><span class="blue">時速 km/h</span></div>
+    </div>
+    <div class="fig">
+      <p class="ttl">よく出る組み合わせ(覚えると速い)</p>
+      <div class="scroll"><table>
+        <tr><th>時速</th><td>36</td><td>54</td><td>72</td><td>90</td><td>108</td><td>126</td></tr>
+        <tr><th>秒速</th><td>10</td><td>15</td><td>20</td><td>25</td><td>30</td><td>35</td></tr>
+      </table></div>
+      <p class="cap">時速が18増えるごとに秒速は5増える。60km/hは約16.7m/s、80km/hは約22.2m/s、100km/hは約27.8m/s。</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">2</span>停止距離と追突の判断</h2>
+    <div class="fig">
+      <div class="steps-fig">
+        <ol class="steps">
+          <li>時速を秒速に直す(÷3.6)</li>
+          <li>空走距離 ＝ 秒速 × 空走時間(反応時間)</li>
+          <li>停止距離 ＝ 空走距離 ＋ 制動距離</li>
+          <li>停止距離 ＞ 前の車(障害物)までの距離 → <b>追突する</b></li>
+        </ol>
+      </div>
+    </div>
+    <div class="fig">
+      <p class="ttl">例：時速54km、空走時間1秒、制動距離20m、前の車まで30m</p>
+      <div class="tl">
+        <div class="tl-row"><span>止まるまで</span><div class="bar"><span class="work" style="width:37.5%">空走 15m</span><span class="or" style="width:50%">制動 20m</span><span class="gr" style="width:12.5%"></span></div></div>
+        <div class="tl-row ng"><span>前の車</span><div class="bar"><span class="free" style="width:75%">30m</span><span class="x" style="width:25%">ぶつかる</span></div></div>
+      </div>
+      <div class="ticks"><span class="s" style="left:0">0</span><span style="left:37.5%">15m</span><span style="left:75%">30m</span><span style="left:87.5%">35m</span></div>
+      <p class="cap">54÷3.6＝15m/s。空走15m＋制動20m＝35m。30mより長いので<b>追突する</b>。</p>
+    </div>
+    <h3>制動距離は2乗で変わる</h3>
+    <div class="fig">
+      <div class="chain"><span class="blue">速度が2倍</span><span class="arr">→</span><span class="good">制動距離 4倍</span><span class="arr">／</span><span class="blue">3倍</span><span class="arr">→</span><span class="good">9倍</span></div>
+      <p class="cap">例：40km/hで制動距離10m → 80km/hでは 10×4＝40m。30km/hで5m → 90km/hでは 5×9＝45m。</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">3</span>運転時間と到着時刻</h2>
+    <div class="vs">
+      <div class="blue"><span class="h">時間 ＝ 距離 ÷ 速度</span>220km ÷ 50km/h ＝ 4.4時間</div>
+      <div class="blue"><span class="h">距離 ＝ 速度 × 時間</span>45km/h × 2時間40分(8/3時間) ＝ 120km</div>
+    </div>
+    <div class="fig">
+      <p class="ttl">小数の時間を分に直す</p>
+      <div class="scroll"><table>
+        <tr><th>時間</th><td>0.1</td><td>0.25</td><td>0.4</td><td>0.5</td><td>0.75</td></tr>
+        <tr><th>分</th><td>6分</td><td>15分</td><td>24分</td><td>30分</td><td>45分</td></tr>
+      </table></div>
+      <p class="cap">0.1時間＝6分。4.4時間＝4時間24分。</p>
+    </div>
+    <div class="fig">
+      <p class="ttl">到着時刻：午前8時出発、150kmを時速30km、途中休憩30分</p>
+      <div class="tl">
+        <div class="tl-row"><span>行程</span><div class="bar"><span class="drive" style="width:45%">運転 2.5h</span><span class="free" style="width:9%"></span><span class="drive" style="width:46%">運転 2.5h</span></div></div>
+      </div>
+      <div class="ticks"><span class="s" style="left:0">8:00</span><span class="e" style="left:100%">13:30</span></div>
+      <p class="cap">運転時間 150÷30＝5時間＋休憩30分＝5時間30分 → <b>午後1時30分</b>着。連続運転が4時間を超えないかも確認(この例は2.5時間ごとに休憩でOK)。</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">4</span>例題で確かめよう</h2>
+    <div class="q">
+      <p class="lbl">例題1</p>
+      <p>時速72kmで走行中、前方40mに障害物を発見。空走時間1秒、制動距離25m。衝突するか。</p>
+      <details><summary>答えと解き方を見る</summary>
+        <ol class="steps">
+          <li>72÷3.6＝20m/s</li>
+          <li>空走距離 20×1＝20m</li>
+          <li>停止距離 20＋25＝45m ＞ 40m → <b class="ng">衝突するおそれがある</b></li>
+        </ol>
+      </details>
+    </div>
+    <div class="q">
+      <p class="lbl">例題2</p>
+      <p>平均時速40kmで100km走る。運転時間は?</p>
+      <details><summary>答えと解き方を見る</summary>
+        <p>100÷40＝2.5時間＝<b>2時間30分</b>。</p>
+      </details>
+    </div>
+    <div class="q">
+      <p class="lbl">例題3</p>
+      <p>時速80kmで、空走時間0.75秒。空走距離はおよそ何m?</p>
+      <details><summary>答えと解き方を見る</summary>
+        <p>80÷3.6≒22.2m/s、×0.75≒16.7 → <b>約17m</b>。</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">5</span>試験でねらわれるひっかけ</h2>
+    <div class="okng">
+      <div class="n">時速を秒速にするには3.6をかける</div>
+      <div class="o">3.6で割る(秒速→時速は3.6をかける)</div>
+      <div class="n">4.4時間は4時間40分</div>
+      <div class="o">0.4時間＝24分なので4時間24分</div>
+      <div class="n">速度が2倍なら制動距離も2倍</div>
+      <div class="o">4倍(2乗に比例)。空走距離は2倍</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="plain">まとめ</h2>
+    <ul>
+      <li>時速÷3.6＝秒速。36→10、54→15、72→20、90→25、108→30</li>
+      <li>空走距離＝秒速×空走時間、停止距離＝空走＋制動。停止距離＞車間距離なら追突</li>
+      <li>制動距離は速度2倍で4倍、3倍で9倍</li>
+      <li>時間＝距離÷速度、0.1時間＝6分。到着時刻は休憩を足す。連続運転4時間もチェック</li>
+    </ul>
+  </section>
+
+  <a class="cta" href="../">ドリルで確かめる(距離と時間の計算)</a>
+  <p class="src" style="text-align:center;margin:0"><a href="../text.html#pr-calc">要点ノートで見直す</a></p>
+  <nav class="pager" aria-label="前後の章"><a class="prev" href="pr-physics.html"><small>← まえの章</small>速度と力(停止距離・遠心力・内輪差)</a><a class="next" href="pr-health.html"><small>つぎの章 →</small>運転者の健康管理(SAS・脳血管疾患・視野障害)</a></nav>
+  <p class="src">出典：運行管理者の実務知識(計算問題)。2026年10月時点の内容です。法令や告示は改正されることがあるので、試験の前には最新の公式資料で確認してください。</p>
+</main>
+</body>
+</html>

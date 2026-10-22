@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2552c9">
+  <title>運行計画が基準に合っているかを確かめる｜教科書｜運行管理ドリル</title>
+  <meta name="description" content="運行管理者試験の教科書「運行計画が基準に合っているかを確かめる」。運行計画が改善基準告示に合っているかを確かめる計算問題の解き方。">
+  <link rel="canonical" href="https://unko-drill.pages.dev/kyokasho/pr-plan.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="運行管理ドリル">
+  <meta property="og:title" content="運行計画が基準に合っているかを確かめる｜教科書｜運行管理ドリル">
+  <meta property="og:description" content="運行管理者試験の教科書「運行計画が基準に合っているかを確かめる」。運行計画が改善基準告示に合っているかを確かめる計算問題の解き方。">
+  <meta property="og:url" content="https://unko-drill.pages.dev/kyokasho/pr-plan.html">
+  <meta property="og:image" content="https://unko-drill.pages.dev/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="kyokasho.css">
+</head>
+<body>
+<main class="wrap">
+  <nav class="topnav" aria-label="ページ移動"><a href="./">← 教科書のもくじ</a><a href="../">ドリル</a></nav>
+  <div class="plate"><p>実務上の知識及び能力 ・ ステージ4</p><h1>運行計画が基準に合っているかを確かめる</h1></div>
+
+<section class="card">
+    <h2 class="plain">この章でわかること</h2>
+    <ul class="goal">
+      <li>運行計画の問題で確かめる6つのチェック項目</li>
+      <li>連続運転の数え方(中断が30分たまるまで)</li>
+      <li>拘束時間・休息期間・2日平均・2週平均の計算の順番</li>
+      <li>実際の運行計画を使った解き方</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">1</span>試験の「総合問題」はチェックリストで解く</h2>
+    <p>実務の問題でよく出るのが、運行計画(何時に出発して、どこで休憩して…)を見せて「改善基準告示に違反していないか」を問う問題です。<b class="k">見る順番を決めておく</b>と迷いません。</p>
+    <div class="fig">
+      <ol class="steps">
+        <li><b>連続運転</b>：中断(1回おおむね10分以上)が合計30分たまるまでの運転が4時間以内か</li>
+        <li><b>1日の拘束時間</b>：始業〜終業(休憩込み)。13時間原則・最大15時間・14時間超は週2回まで。翌日の早出分も足す</li>
+        <li><b>休息期間</b>：終業〜次の始業。11時間基本・9時間未満は違反</li>
+        <li><b>2日平均の運転時間</b>：前日との平均・翌日との平均が<b>ともに</b>9時間超なら違反</li>
+        <li><b>2週平均の運転時間</b>：2週間の合計÷2が44時間以内(合計88時間)</li>
+        <li><b>1か月の拘束時間</b>：284時間以内(協定で310時間)</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">2</span>例：ある1日の運行計画</h2>
+    <div class="scroll"><table>
+      <tr><th>時刻</th><th class="l">内容</th></tr>
+      <tr><td>6:00</td><td class="l">始業・乗務前点呼</td></tr>
+      <tr><td>6:30〜9:30</td><td class="l">運転(3時間)</td></tr>
+      <tr><td>9:30〜9:45</td><td class="l">休憩(15分)</td></tr>
+      <tr><td>9:45〜11:45</td><td class="l">運転(2時間)</td></tr>
+      <tr><td>11:45〜12:45</td><td class="l">休憩(1時間)</td></tr>
+      <tr><td>12:45〜16:45</td><td class="l">運転(4時間)</td></tr>
+      <tr><td>16:45〜19:30</td><td class="l">荷下ろし・帰庫</td></tr>
+      <tr><td>20:00</td><td class="l">乗務後点呼・終業</td></tr>
+      <tr><td>翌5:00</td><td class="l">翌日の始業</td></tr>
+    </table></div>
+    <div class="fig">
+      <div class="tl">
+        <div class="tl-row"><span>1日目</span><div class="bar"><span class="work" style="width:3%"></span><span class="drive" style="width:21.4%">3h</span><span class="rest" style="width:1.8%"></span><span class="x" style="width:14.3%">2h</span><span class="rest" style="width:7.1%">1h</span><span class="drive" style="width:28.6%">4h</span><span class="work" style="width:23.8%">荷役・帰庫</span></div></div>
+      </div>
+      <div class="ticks"><span class="s" style="left:0">6:00</span><span style="left:50%">13:00</span><span class="e" style="left:100%">20:00</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">3</span>チェックしてみよう</h2>
+    <div class="q">
+      <p class="lbl">① 連続運転</p>
+      <ol class="steps">
+        <li>運転3時間 → 休憩15分(中断の合計15分。まだ30分に届かない)</li>
+        <li>運転2時間 → ここまでの運転は 3＋2＝<b>5時間</b></li>
+        <li>4時間を超えた → <b class="ng">違反</b>。15分の休憩だけでは連続運転はリセットされない</li>
+      </ol>
+      <p class="src">直すなら：9:30の休憩を30分にする、または2回目の運転の途中で15分以上の中断を入れる。</p>
+    </div>
+    <div class="q">
+      <p class="lbl">② 1日の拘束時間</p>
+      <ol class="steps">
+        <li>始業6:00〜終業20:00 ＝ 14時間</li>
+        <li>翌日の始業が5:00なので、1日目の24時間(翌6:00まで)に1時間食い込む → ＋1時間</li>
+        <li>拘束時間 ＝ <b>15時間</b>。最大15時間なので <b class="ok">ぎりぎりOK</b>(14時間超の1回にカウント)</li>
+      </ol>
+    </div>
+    <div class="q">
+      <p class="lbl">③ 休息期間</p>
+      <p>20:00〜翌5:00 ＝ <b>9時間</b>。9時間を下回っていないので <b class="ok">違反ではない</b>(11時間の基本には足りない)。</p>
+    </div>
+    <div class="q">
+      <p class="lbl">④ 2日平均の運転時間</p>
+      <p>1日目の運転は 3＋2＋4＝9時間。前日が8時間、翌日が10時間なら、前日との平均8.5時間・翌日との平均9.5時間。<b>ともに</b>超えてはいないので <b class="ok">違反ではない</b>。</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">4</span>到着時刻の出し方</h2>
+    <div class="fig">
+      <div class="chain"><span class="blue">走行時間 ＝ 距離 ÷ 速度</span><span class="arr">＋</span><span class="blue">休憩・荷役の時間</span><span class="arr">＋</span><span class="good">出発時刻 → 到着時刻</span></div>
+      <p class="cap">例：9:00出発、180kmを平均時速40kmで、途中休憩30分 → 180÷40＝4.5時間＋0.5時間＝5時間 → 14:00着。この例は休憩をはさまないと連続運転が4.5時間になるので、休憩の位置にも注意(→「<a href="pr-calc.html">距離と時間の計算</a>」)。</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">5</span>試験でねらわれるひっかけ</h2>
+    <div class="okng">
+      <div class="n">15分の休憩をとれば連続運転時間はリセットされる</div>
+      <div class="o">中断が合計30分たまるまでリセットされない</div>
+      <div class="n">連続運転がちょうど4時間なら違反</div>
+      <div class="o">4時間「以内」なのでちょうど4時間は適合</div>
+      <div class="n">1週目に運転が44時間を超えたら違反</div>
+      <div class="o">2週間の平均で判断。2週目が短ければ合計88時間以内でOK</div>
+      <div class="n">2日平均は、前日か翌日のどちらかとの平均が9時間を超えたら違反</div>
+      <div class="o">ともに超えたときだけ違反</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="plain">まとめ</h2>
+    <ul>
+      <li>チェックの順：連続運転 → 拘束 → 休息 → 2日平均 → 2週平均 → 1か月</li>
+      <li>連続運転は、中断が合計30分たまるまでの運転を足して4時間以内か</li>
+      <li>拘束は翌日の早出分も足す。休息は9時間未満で違反</li>
+      <li>2日平均はともに9時間超で違反、2週は合計88時間以内</li>
+      <li>到着時刻＝出発＋走行時間(距離÷速度)＋休憩</li>
+    </ul>
+  </section>
+
+  <a class="cta" href="../">ドリルで確かめる(運行計画の検証)</a>
+  <p class="src" style="text-align:center;margin:0"><a href="../text.html#pr-plan">要点ノートで見直す</a></p>
+  <nav class="pager" aria-label="前後の章"><a class="prev" href="pr-prevent.html"><small>← まえの章</small>事故をふせぐ運転と指導(追突・左折・ドライブレコーダー)</a><a class="next" href="pr-hazard.html"><small>つぎの章 →</small>危険予知訓練・指差呼称・ヒヤリハット</a></nav>
+  <p class="src">出典：改善基準告示(トラック)、厚生労働省「トラック運転者の労働時間等の改善基準のポイント」。2026年10月時点の内容です。法令や告示は改正されることがあるので、試験の前には最新の公式資料で確認してください。</p>
+</main>
+</body>
+</html>

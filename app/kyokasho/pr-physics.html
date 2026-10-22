@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2552c9">
+  <title>速度と力(停止距離・遠心力・内輪差)｜教科書｜運行管理ドリル</title>
+  <meta name="description" content="運行管理者試験の教科書「速度と力(停止距離・遠心力・内輪差)」。速度と力の関係。「速度に比例」か「速度の2乗に比例」かを区別します。">
+  <link rel="canonical" href="https://unko-drill.pages.dev/kyokasho/pr-physics.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="運行管理ドリル">
+  <meta property="og:title" content="速度と力(停止距離・遠心力・内輪差)｜教科書｜運行管理ドリル">
+  <meta property="og:description" content="運行管理者試験の教科書「速度と力(停止距離・遠心力・内輪差)」。速度と力の関係。「速度に比例」か「速度の2乗に比例」かを区別します。">
+  <meta property="og:url" content="https://unko-drill.pages.dev/kyokasho/pr-physics.html">
+  <meta property="og:image" content="https://unko-drill.pages.dev/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="kyokasho.css">
+</head>
+<body>
+<main class="wrap">
+  <nav class="topnav" aria-label="ページ移動"><a href="./">← 教科書のもくじ</a><a href="../">ドリル</a></nav>
+  <div class="plate"><p>実務上の知識及び能力 ・ ステージ2</p><h1>速度と力(停止距離・遠心力・内輪差)</h1></div>
+
+<section class="card">
+    <h2 class="plain">この章でわかること</h2>
+    <ul class="goal">
+      <li>停止距離＝空走距離＋制動距離</li>
+      <li>「速度に比例」と「速度の2乗に比例」の区別</li>
+      <li>遠心力・内輪差</li>
+      <li>ハイドロプレーニング・ベーパーロック・フェード・スタンディングウェーブ</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">1</span>止まるまでの距離は2つに分かれる</h2>
+    <div class="fig">
+      <div class="tl">
+        <div class="tl-row"><span>停止距離</span><div class="bar"><span class="work" style="width:40%">空走距離</span><span class="or" style="width:60%">制動距離</span></div></div>
+      </div>
+      <div class="ticks"><span class="s" style="left:0">危険!</span><span style="left:40%">効き始め</span><span class="e" style="left:100%">止まる</span></div>
+      <p class="cap"><b>空走距離</b>：危険を感じてからブレーキが効き始めるまで(反応している間も車は進む)。<b>制動距離</b>：ブレーキが効き始めてから止まるまで。</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">2</span>比例か、2乗に比例か</h2>
+    <div class="fig">
+      <svg class="chart" viewBox="0 0 340 200" role="img" aria-label="速度を2倍にすると、空走距離は2倍、制動距離は4倍になる">
+        <g font-family="sans-serif">
+          <g font-size="12" font-weight="700" fill="#1b1d4d"><text x="4" y="46">30km/h</text><text x="4" y="96">60km/h</text></g>
+          <g stroke="#1b1d4d" stroke-width="1.5">
+            <rect x="70" y="30" width="40" height="24" fill="#7fa2ff"/><rect x="110" y="30" width="40" height="24" fill="#ffb35c"/>
+            <rect x="70" y="80" width="80" height="24" fill="#7fa2ff"/><rect x="150" y="80" width="160" height="24" fill="#ffb35c"/>
+          </g>
+          <g font-size="11" font-weight="700" fill="#1b1d4d" text-anchor="middle">
+            <text x="90" y="46" fill="#fff">1</text><text x="130" y="46">1</text>
+            <text x="110" y="96" fill="#fff">2倍</text><text x="230" y="96">4倍</text>
+          </g>
+          <rect x="70" y="130" width="14" height="14" fill="#7fa2ff" stroke="#1b1d4d"/><text x="90" y="142" font-size="12" fill="#1b1d4d">空走距離：速度に比例</text>
+          <rect x="70" y="156" width="14" height="14" fill="#ffb35c" stroke="#1b1d4d"/><text x="90" y="168" font-size="12" fill="#1b1d4d">制動距離：速度の2乗に比例</text>
+        </g>
+      </svg>
+    </div>
+    <div class="scroll"><table>
+      <tr><th class="l">速度に比例(2倍→2倍)</th><th class="l">速度の2乗に比例(2倍→4倍、3倍→9倍)</th></tr>
+      <tr><td class="l">空走距離</td><td class="l">制動距離(濡れた路面ではさらに長い)<br>衝撃力・運動エネルギー(質量にも比例)<br>遠心力(カーブの半径に反比例)</td></tr>
+    </table></div>
+    <div class="box tip"><span class="lbl">見分け方</span>「反応している間に進む距離」だけがふつうの比例。「ぶつかる・すべる・振られる」力の話はぜんぶ2乗。</div>
+    <div class="fig">
+      <div class="gauge"><span style="width:90%;background:#c9efd9">時速30km：生存率 約9割</span><span class="x" style="width:10%"></span></div>
+      <div class="gauge"><span style="width:20%;background:#ffb35c">約2割</span><span class="gr" style="width:80%">時速50km</span></div>
+      <p class="cap">歩行者が車にはねられたときの生存率。衝突速度が時速30kmなら約9割、時速50kmでは約2割に下がります。</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">3</span>遠心力と内輪差</h2>
+    <div class="fig">
+      <svg class="chart" viewBox="0 0 340 180" role="img" aria-label="左折するとき後輪は前輪より内側を通る。この差が内輪差で、ホイールベースの長い大型車ほど大きい">
+        <g font-family="sans-serif">
+          <path d="M300 170 V100 Q300 30 230 30 H10" fill="none" stroke="#2552c9" stroke-width="3"/>
+          <path d="M260 170 V110 Q260 70 220 70 H10" fill="none" stroke="#e8558f" stroke-width="3" stroke-dasharray="6 4"/>
+          <path d="M260 120 L300 120" stroke="#d6455d" stroke-width="2"/>
+          <text x="266" y="138" font-size="11" font-weight="700" fill="#d6455d">内輪差</text>
+          <text x="40" y="22" font-size="12" font-weight="700" fill="#2552c9">前輪の通り道</text>
+          <text x="40" y="88" font-size="12" font-weight="700" fill="#e8558f">後輪の通り道(内側)</text>
+          <circle cx="262" cy="52" r="8" fill="#ffb35c" stroke="#1b1d4d" stroke-width="2"/>
+          <text x="210" y="160" font-size="11" fill="#1b1d4d">左折 ↑から←へ</text>
+        </g>
+      </svg>
+      <p class="cap"><b>内輪差</b>：曲がるとき、後輪が前輪より内側を通る差。ホイールベース(前輪と後輪の間)が長い<b>大型車ほど大きい</b>。左折時の巻き込みの原因。<b>遠心力</b>は速度の2乗に比例し、カーブの半径が小さい(急な)ほど大きい。</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">4</span>タイヤとブレーキのトラブル</h2>
+    <div class="vs">
+      <div class="blue"><span class="h">ハイドロプレーニング</span>雨の路面を高速で走ると、タイヤが水の膜に乗って浮き、ハンドル・ブレーキが効かない。<b>摩耗タイヤ・高速</b>で起きやすい</div>
+      <div class="pinkb"><span class="h">ベーパーロック</span>ブレーキの使いすぎで<b>ブレーキ液が沸騰して気泡</b>ができ、踏んでも効かない</div>
+      <div class="pinkb"><span class="h">フェード</span>ブレーキの使いすぎで<b>摩擦材が過熱</b>し、効きが悪くなる</div>
+      <div class="yel"><span class="h">スタンディングウェーブ</span><b>空気圧不足</b>のタイヤで高速走行すると、タイヤが波打ちバーストのおそれ</div>
+    </div>
+    <p>ベーパーロックとフェードは、どちらも<b class="k">長い下り坂でフットブレーキを多用</b>するのが原因。<b class="k">エンジンブレーキを併用</b>して防ぎます。</p>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">5</span>例題で確かめよう</h2>
+    <div class="q">
+      <p class="lbl">例題1</p>
+      <p>速度を時速30kmから90kmにすると、制動距離はおよそ何倍になるか。</p>
+      <details><summary>答えと解き方を見る</summary>
+        <p>速度は3倍 → 2乗に比例なので 3×3＝<b>9倍</b>。</p>
+      </details>
+    </div>
+    <div class="q">
+      <p class="lbl">例題2</p>
+      <p>長い下り坂でブレーキを踏み続けたら、ブレーキ液に気泡ができて効かなくなった。この現象は?</p>
+      <details><summary>答えと解き方を見る</summary>
+        <p><b>ベーパーロック現象。</b>摩擦材の過熱で効きが悪くなるのはフェード現象。</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">6</span>試験でねらわれるひっかけ</h2>
+    <div class="okng">
+      <div class="n">空走距離は速度の2乗に比例する</div>
+      <div class="o">空走距離は速度に比例。2乗は制動距離</div>
+      <div class="n">遠心力はカーブの半径に比例する</div>
+      <div class="o">半径に反比例(急なカーブほど大きい)、速度の2乗に比例</div>
+      <div class="n">内輪差はホイールベースの短い車ほど大きい</div>
+      <div class="o">ホイールベースの長い大型車ほど大きい</div>
+      <div class="n">スタンディングウェーブは空気圧が高すぎると起きる</div>
+      <div class="o">空気圧不足で起きる</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="plain">まとめ</h2>
+    <ul>
+      <li>停止距離＝空走距離(速度に比例)＋制動距離(速度の2乗に比例)</li>
+      <li>衝撃力・運動エネルギー・遠心力も速度の2乗。遠心力は半径に反比例</li>
+      <li>内輪差は大型車ほど大きい。左折の巻き込みに注意</li>
+      <li>ハイドロプレーニング(水の膜)、ベーパーロック(気泡)、フェード(過熱)、スタンディングウェーブ(空気圧不足)</li>
+      <li>歩行者の生存率は30km/hで約9割、50km/hで約2割</li>
+    </ul>
+  </section>
+
+  <a class="cta" href="../">ドリルで確かめる(速度とカガク)</a>
+  <p class="src" style="text-align:center;margin:0"><a href="../text.html#pr-physics">要点ノートで見直す</a></p>
+  <nav class="pager" aria-label="前後の章"><a class="prev" href="pr-body.html"><small>← まえの章</small>運転と人の体(視野・疲労・眠気・アルコール)</a><a class="next" href="pr-calc.html"><small>つぎの章 →</small>距離・時間・速度の計算</a></nav>
+  <p class="src">出典：運行管理者の実務知識、内閣府 交通安全白書ほか。2026年10月時点の内容です。法令や告示は改正されることがあるので、試験の前には最新の公式資料で確認してください。</p>
+</main>
+</body>
+</html>

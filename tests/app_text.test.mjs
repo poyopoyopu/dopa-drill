@@ -27,23 +27,23 @@ test('app/text.html is up to date (run node tools/build_text.mjs)', () => {
   for (const s of SKILLS) assert.ok(file.includes(`id="${s.id}"`), s.id);
 });
 
-// 解説テキスト(tools/kaisetsu → app/kaisetsu)
+// 教科書(tools/kyokasho → app/kyokasho)
 import { readdirSync } from 'node:fs';
-import { chapters, renderChapter, renderIndex, renderSitemap } from '../tools/build_kaisetsu.mjs';
+import { chapters, renderChapter, renderIndex, renderSitemap } from '../tools/build_kyokasho.mjs';
 
-test('every skill has a kaisetsu chapter and the generated pages are up to date (run node tools/build_kaisetsu.mjs)', () => {
+test('every skill has a kyokasho chapter and the generated pages are up to date (run node tools/build_kyokasho.mjs)', () => {
   const list = chapters();
   assert.deepEqual(list.map((x) => x.skill.id).sort(), SKILLS.map((s) => s.id).sort());
   for (const { skill } of list) {
-    const file = readFileSync(new URL(`../app/kaisetsu/${skill.id}.html`, import.meta.url), 'utf8');
+    const file = readFileSync(new URL(`../app/kyokasho/${skill.id}.html`, import.meta.url), 'utf8');
     assert.equal(file, renderChapter(skill.id), skill.id);
   }
-  assert.equal(readFileSync(new URL('../app/kaisetsu/index.html', import.meta.url), 'utf8'), renderIndex());
+  assert.equal(readFileSync(new URL('../app/kyokasho/index.html', import.meta.url), 'utf8'), renderIndex());
   assert.equal(readFileSync(new URL('../app/sitemap.xml', import.meta.url), 'utf8'), renderSitemap());
 });
 
-test('kaisetsu chapters only link to pages that exist', () => {
-  const pages = new Set(readdirSync(new URL('../app/kaisetsu/', import.meta.url)));
+test('kyokasho chapters only link to pages that exist', () => {
+  const pages = new Set(readdirSync(new URL('../app/kyokasho/', import.meta.url)));
   for (const { skill, ch } of chapters()) {
     for (const m of ch.body.matchAll(/href="([^"#]+)(#[^"]*)?"/g)) {
       const href = m[1];

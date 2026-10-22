@@ -1,0 +1,3 @@
+/kaisetsu /kyokasho/ 301
+/kaisetsu/ /kyokasho/ 301
+/kaisetsu/* /kyokasho/:splat 301
