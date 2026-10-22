@@ -760,7 +760,7 @@ body:not([data-screen="title"]) #actors { display: none; }
 a.sub-btn { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; color: var(--ink); text-decoration: none; line-height: 1.15; }
 .text-btn { background: #eef1ff; }
 .text-btn small { display: block; font-size: 11px; font-weight: 700; opacity: .7; }
-.si-text-link { margin: 8px 0 0; text-align: center; font-size: 14px; font-weight: 900; }
+.si-text-link { margin: 8px 0 0; text-align: center; font-size: 14px; font-weight: 900; line-height: 2; }
 .si-text-link a { color: var(--blue); }
 .exam-row .sub-btn small { display: block; font-size: 11px; font-weight: 700; opacity: .7; }
 .exam-box { margin: 8px 0 12px; text-align: left; }

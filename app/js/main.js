@@ -1913,6 +1913,7 @@ function openSkillInfo(id) {
   $('#si-next').innerHTML = next ? `<p class="si-label">つぎの ☆${next.n}</p><p class="si-text">${next.text}</p><p class="si-now">${next.now}</p>` : '<p class="si-text done">☆5 たっせい！ すごい！</p>';
   $('#si-note').textContent = `${rustyOf(prog).includes(id) ? 'すこし さびているよ。1もん 初回正解で ピカピカ！　' : ''}といた もんだい ${r.n || 0}もん${best != null ? `　いちばん はやい 1もん ${(best / 1000).toFixed(1)}びょう` : ''}`;
   $('#si-text').href = `text.html#${id}`;
+  $('#si-kaisetsu').href = `kaisetsu/${id}.html`;
   $('#skill-info').hidden = false;
   const cardEl = $('#skill-info .modal-card');
   if (!S.reduced) tween(260, (k) => { cardEl.style.transform = `translateY(${(1 - k) * 30}px) scale(${0.92 + 0.08 * k})`; }, easeOutBack).then(() => { cardEl.style.transform = ''; });

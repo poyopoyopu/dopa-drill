@@ -112,7 +112,8 @@ svg.chart { width:100%; height:auto; display:block; }
 .vs .blue { background:var(--soft); } .vs .green { background:var(--free); } .vs .pinkb { background:#ffe1e7; } .vs .yel { background:#fff7d6; }
 
 /* 判子(許可・届出など) */
-.stamp { display:inline-block; padding:0 8px; border:2px solid currentColor; border-radius:6px; font-weight:900; font-size:13px; line-height:1.6; }
+.nw { white-space:nowrap; }
+.stamp { white-space:nowrap; display:inline-block; padding:0 8px; border:2px solid currentColor; border-radius:6px; font-weight:900; font-size:13px; line-height:1.6; }
 .stamp.kyoka { color:var(--red); } .stamp.ninka { color:#b35b00; } .stamp.todoke { color:var(--sign); } .stamp.houkoku { color:var(--green); }
 
 /* ものさし */
