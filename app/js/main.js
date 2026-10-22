@@ -1530,6 +1530,12 @@ function missedHtml(list, exam) {
   }).join('');
   return `<details class="exam-missed"><summary>まちがえた問題を見直す（${list.length}問）</summary><ol>${items}</ol></details>`;
 }
+// Post this result on X (opens X's compose screen only when tapped).
+function shareHtml(exam) {
+  const text = `運行管理ドリルの模擬試験(${exam.name})で ${exam.total}/${exam.max}問${exam.pass ? '、合格ライン クリア！' : '。'}\n#運行管理者試験 #運行管理ドリル`;
+  const url = `https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent('https://unko-drill.pages.dev/')}`;
+  return `<a class="sub-btn exam-share" href="${esc(url)}" target="_blank" rel="noopener">結果をXでシェア</a>`;
+}
 // A recommended book for this kind of exam (affiliate links, marked as PR).
 function bookHtml(b) {
   if (!b) return '';
@@ -1572,6 +1578,7 @@ function renderExamResult(box, exam, missed = []) {
   box.innerHTML = `<p class="exam-verdict ${exam.pass ? 'pass' : 'fail'}">${exam.pass ? '合格ライン クリア' : '合格ラインに とどかず'}</p>`
     + `<p class="exam-total">初回正解 <b>${exam.total}</b>/${exam.max}問（合格は${exam.line}問以上、かつ各分野の基準）</p>`
     + `<ol class="exam-fields">${rows}</ol>`
+    + shareHtml(exam)
     + (exam.answered < exam.max ? `<p class="exam-timeup">時間切れ：${exam.max - exam.answered}問が未回答（不正解あつかい）</p>` : '')
     + weakHtml(exam.weak)
     + missedHtml(missed, exam)
