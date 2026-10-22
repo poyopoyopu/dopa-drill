@@ -1,0 +1,160 @@
+<!--
+title: トラックの運転時間と連続運転
+src: 改善基準告示(トラック)、厚生労働省「トラック運転者の労働時間等の改善基準のポイント」
+-->
+  <section class="card">
+    <h2 class="plain">この章でわかること</h2>
+    <ul class="goal">
+      <li>運転時間の「2日平均9時間」と「2週平均44時間」</li>
+      <li>2日平均の判定方法(前日とも翌日とも超えたら違反)</li>
+      <li>連続運転4時間と「運転の中断」の数え方</li>
+      <li>計算問題の解き方の手順</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>なぜ運転時間にも上限があるの?</h2>
+    <p>拘束時間を守っていても、その大部分をハンドルを握って過ごせば、集中力は切れていきます。そこで改善基準告示は、拘束時間とは別に<b class="k">「運転そのもの」の長さ</b>にも上限をつけています。</p>
+    <div class="fig">
+      <div class="vs">
+        <div class="blue"><span class="h">2日平均</span>1日あたり<b>9時間</b>以内</div>
+        <div class="blue"><span class="h">2週平均</span>1週あたり<b>44時間</b>以内</div>
+        <div class="pinkb"><span class="h">連続運転</span><b>4時間</b>以内(途中で中断30分)</div>
+      </div>
+      <p class="cap">3つの物差しを全部守ります。「1日8時間」という運転時間の基準はありません(8時間は労働基準法の法定労働時間)。</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>2日平均9時間：前日とも、翌日とも</h2>
+    <p>ある日(特定日)を決めて、<b class="k">「特定日と前日」の平均</b>と<b class="k">「特定日と翌日」の平均</b>の2つを出します。<b class="k">両方が9時間を超えたときだけ違反</b>です。</p>
+    <div class="fig">
+      <svg class="chart" viewBox="0 0 340 200" role="img" aria-label="前日10時間、特定日9時間、翌日8時間の運転時間。前日との平均9.5時間、翌日との平均8.5時間">
+        <g font-family="sans-serif">
+          <line x1="20" y1="60" x2="300" y2="60" stroke="#d6455d" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <text x="302" y="64" font-size="11" fill="#d6455d">9h</text>
+          <line x1="20" y1="150" x2="300" y2="150" stroke="#1b1d4d" stroke-width="2"/>
+          <g stroke="#1b1d4d" stroke-width="2">
+            <rect x="50" y="50" width="44" height="100" rx="4" fill="#7fa2ff"/>
+            <rect x="140" y="60" width="44" height="90" rx="4" fill="#4a72e8"/>
+            <rect x="230" y="70" width="44" height="80" rx="4" fill="#7fa2ff"/>
+          </g>
+          <g font-size="12" text-anchor="middle" fill="#1b1d4d">
+            <text x="72" y="168">前日</text><text x="162" y="168" font-weight="700">特定日</text><text x="252" y="168">翌日</text>
+            <text x="72" y="44" font-weight="700">10h</text><text x="162" y="54" font-weight="700">9h</text><text x="252" y="64" font-weight="700">8h</text>
+          </g>
+          <path d="M72 186 H162" stroke="#d6455d" stroke-width="3"/><text x="117" y="198" font-size="11" text-anchor="middle" fill="#d6455d" font-weight="700">平均9.5 超</text>
+          <path d="M162 186 H252" stroke="#2e9e6a" stroke-width="3"/><text x="207" y="198" font-size="11" text-anchor="middle" fill="#2e9e6a" font-weight="700">平均8.5 OK</text>
+        </g>
+      </svg>
+      <p class="cap">前日との平均は超えているけれど、翌日との平均は9時間以内。片方がOKなので<b>違反ではない</b>。</p>
+    </div>
+    <div class="scroll"><table>
+      <tr><th>前日との平均</th><th>翌日との平均</th><th>判定</th></tr>
+      <tr><td>9時間以内</td><td>9時間以内</td><td class="ok">OK</td></tr>
+      <tr><td>9時間超</td><td>9時間以内</td><td class="ok">OK</td></tr>
+      <tr><td>9時間以内</td><td>9時間超</td><td class="ok">OK</td></tr>
+      <tr><td>9時間超</td><td>9時間超</td><td class="ng">違反</td></tr>
+    </table></div>
+    <div class="box tip"><span class="lbl">計算のコツ</span>平均を出す前に「合計が18時間を超えるか」を見ると速い。(前日＋特定日)と(特定日＋翌日)が、<b>両方とも18時間超</b>なら違反です。</div>
+  </section>
+
+  <section class="card">
+    <h2>2週平均44時間 ＝ 2週間で88時間</h2>
+    <div class="fig">
+      <div class="gauge"><span style="width:88%;background:#c9efd9">2週間の合計 88時間まで OK</span><span class="x" style="width:12%">✗</span></div>
+      <div class="ticks full"><span class="s" style="left:0">0</span><span style="left:44%">44h</span><span style="left:88%">88h</span></div>
+      <p class="cap">「2週間を平均して1週44時間」は、言いかえると<b>2週間の合計が88時間以内</b>。1週目が50時間でも、2週目が38時間なら合計88時間でOKです。</p>
+    </div>
+    <p>2週間の区切りは、<b class="k">特定の日を起算日として2週間ごと</b>に区切って判断します。</p>
+    <div class="box"><span class="lbl">バスとはちがう</span>バスは「4週間を平均して1週40時間」。トラックは「2週間・44時間」。入れかえたひっかけに注意(→「<a href="lb-bus.html">バスの基準</a>」)。</div>
+  </section>
+
+  <section class="card">
+    <h2>連続運転4時間と「運転の中断」</h2>
+    <p>連続運転時間とは、運転の中断をはさまずに運転し続けた時間です。<b class="k">4時間以内</b>に、合計<b class="k">30分以上</b>の中断を入れます。</p>
+    <div class="big">
+      <div><small>連続運転</small><strong>4時間</strong><em>以内</em></div>
+      <div><small>中断</small><strong>合計30分</strong><em>以上。1回おおむね連続10分以上</em></div>
+    </div>
+    <h3>数え方：中断が合計30分たまったらリセット</h3>
+    <div class="fig">
+      <p class="ttl">◯ の例</p>
+      <div class="tl">
+        <div class="tl-row okr"><span>◯</span><div class="bar"><span class="drive" style="width:22%">1h</span><span class="free" style="width:6%"></span><span class="drive" style="width:44%">2h</span><span class="free" style="width:6%"></span><span class="drive" style="width:22%">1h</span></div></div>
+      </div>
+      <div class="ticks"><span style="left:25%">中断10分</span><span style="left:75%">中断20分</span></div>
+      <p class="cap">運転1h → 中断10分 → 運転2h → 中断20分(ここで中断が合計30分) → 運転1h…。中断が30分たまるまでの運転は1＋2＝3時間で、4時間以内。</p>
+      <p class="ttl" style="margin-top:10px">✕ の例</p>
+      <div class="tl">
+        <div class="tl-row ng"><span>✕</span><div class="bar"><span class="drive" style="width:36%">2h</span><span class="free" style="width:5%"></span><span class="drive" style="width:27%">1.5h</span><span class="free" style="width:4%"></span><span class="x" style="width:28%">1h → 4.5h</span></div></div>
+      </div>
+      <div class="ticks"><span style="left:38%">中断15分</span><span style="left:70%">中断10分</span></div>
+      <p class="cap">中断は15＋10＝25分で、まだ30分に届いていない。その間の運転は2＋1.5＋1＝4.5時間で、<b>4時間を超えて違反</b>。</p>
+    </div>
+    <h3>中断のこまかい決まり</h3>
+    <ul>
+      <li>1回は<b>おおむね連続10分以上</b>。10分未満の中断を<b>3回以上連続させない</b></li>
+      <li>SA・PAが満車で止められないなど、やむを得ないときは<b>30分まで延長</b>できる(最大4時間30分)</li>
+      <li>運転の中断は、原則として休憩(荷役などの作業ではなく)</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>例題で確かめよう</h2>
+    <div class="q">
+      <p class="lbl">例題1</p>
+      <p>運転時間が、1日目9時間、2日目(特定日)10時間、3日目10時間だった。2日平均の基準に違反するか。</p>
+      <details><summary>答えと解き方を見る</summary>
+        <ol class="steps">
+          <li>特定日と前日の平均：(9＋10)÷2＝<b>9.5時間</b> → 9時間超</li>
+          <li>特定日と翌日の平均：(10＋10)÷2＝<b>10時間</b> → 9時間超</li>
+          <li>両方とも超えているので<b class="ng">違反</b>。</li>
+        </ol>
+      </details>
+    </div>
+    <div class="q">
+      <p class="lbl">例題2</p>
+      <p>次の運転は、連続運転時間の基準に違反するか。<br>運転1時間30分 → 中断5分 → 運転1時間 → 中断10分 → 運転1時間 → 中断15分 → 運転30分</p>
+      <details><summary>答えと解き方を見る</summary>
+        <ol class="steps">
+          <li>中断を足していく：5分 → 15分 → 30分。3回目で合計30分に届く。</li>
+          <li>それまでの運転：1.5＋1＋1＝<b>3時間30分</b>。4時間以内。</li>
+          <li>10分未満の中断(5分)は1回だけで、3回連続ではない。よって<b class="ok">違反ではない</b>。</li>
+        </ol>
+      </details>
+    </div>
+    <div class="q">
+      <p class="lbl">例題3</p>
+      <p>2週間の運転時間が、1週目48時間、2週目42時間だった。2週平均の基準は守れているか。</p>
+      <details><summary>答えと解き方を見る</summary>
+        <p>合計90時間で、88時間を超える → <b class="ng">守れていない</b>(平均すると1週45時間)。</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>試験でねらわれるひっかけ</h2>
+    <div class="okng">
+      <div class="n">運転時間は1日ごとに8時間以内</div>
+      <div class="o">2日平均で1日9時間以内(1日ごとの上限はない)</div>
+      <div class="n">前日との平均か翌日との平均の、どちらかが9時間を超えたら違反</div>
+      <div class="o">両方が9時間を超えたときだけ違反</div>
+      <div class="n">トラックは4週平均で1週40時間</div>
+      <div class="o">トラックは2週平均で1週44時間(4週・40時間はバス)</div>
+      <div class="n">連続運転時間は5時間以内</div>
+      <div class="o">4時間以内(やむを得ない場合でも4時間30分まで)</div>
+      <div class="n">荷待ちの時間は運転時間に含める</div>
+      <div class="o">運転時間はハンドルを握る時間だけ。荷待ちは拘束時間</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="plain">まとめ</h2>
+    <ul>
+      <li>運転時間：2日平均9時間、2週平均44時間(＝2週で88時間)</li>
+      <li>2日平均は「前日との平均」「翌日との平均」の両方が9時間超で違反</li>
+      <li>連続運転4時間以内。中断は1回おおむね10分以上・合計30分以上</li>
+      <li>10分未満の中断は3回以上連続させない。やむを得なければ4時間30分まで</li>
+    </ul>
+  </section>

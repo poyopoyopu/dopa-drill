@@ -1,6 +1,6 @@
 // app/text.html(要点ノート)を tools/notes/*.mjs から生成する。
 // 使い方: node tools/build_text.mjs   (ノートを書き換えたら実行して、生成物もコミットする)
-import { writeFileSync } from 'node:fs';
+import { writeFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { SKILLS, LANES } from '../app/js/skills.js';
 import { NOTES } from './notes/index.mjs';
@@ -18,6 +18,9 @@ export const GROUPS = [
   { key: 'pr', title: '実務上の知識及び能力', sub: '貨物・旅客 共通' },
   { key: 'mix', title: '総まとめ', sub: '試験のしくみ' },
 ];
+
+// 解説テキスト(tools/kaisetsu/<id>.html)がある章には、くわしい解説へのリンクを付ける
+const hasKaisetsu = (id) => existsSync(fileURLToPath(new URL(`./kaisetsu/${id}.html`, import.meta.url)));
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const groupOf = (id) => id.split('-')[0];
@@ -41,7 +44,8 @@ ${skillsIn(g.key).map((s) => {
       <ul>
 ${n.points.map((p) => `        <li>${esc(p)}</li>`).join('\n')}
       </ul>
-      <p class="src">出典の目安：${esc(n.src)}</p>
+      <p class="src">出典の目安：${esc(n.src)}</p>${hasKaisetsu(s.id) ? `
+      <a class="kai" href="kaisetsu/${s.id}.html">図と例題でくわしく読む(解説テキスト) →</a>` : ''}
       <a class="up" href="#toc">もくじへ</a>
     </section>`;
   }).join('\n')}`).join('\n');
@@ -101,6 +105,7 @@ ${n.points.map((p) => `        <li>${esc(p)}</li>`).join('\n')}
     .note li + li { margin-top: 6px; }
     .note li::marker { color: var(--pink); }
     .src { margin: 10px 0 0; color: var(--muted); font-size: 13px; }
+    .kai { justify-self: start; margin-top: 10px; padding: 4px 12px; border: 2px solid var(--ink); border-radius: 12px; background: var(--soft); color: var(--ink); font-weight: 700; font-size: 14px; text-decoration: none; }
     .up { justify-self: end; margin-top: 4px; font-size: 13px; color: var(--sign); }
     a { color: var(--sign); }
     a:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
@@ -115,6 +120,7 @@ ${n.points.map((p) => `        <li>${esc(p)}</li>`).join('\n')}
 
     <div class="card">
       <p>運行管理者試験(貨物・旅客)の覚えるポイントを、ドリルの48スキルごとにまとめたテキストです。問題を解く前の予習や、まちがえたあとの見直しに使ってください。</p>
+      <p>図と例題で「なぜそうなるか」から読みたいときは<a href="kaisetsu/">解説テキスト</a>へ。</p>
       <p class="note-small">ドリルの問題の解説と出典(条文・告示・国土交通省の資料など)をもとにまとめています(${UPDATED}時点)。法令や告示は改正されることがあるので、試験の前には必ず最新の公式資料で確認してください。</p>
     </div>
 
