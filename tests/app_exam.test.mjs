@@ -120,3 +120,12 @@ test('the review list holds first-try misses with the wrong pick, then the quest
   assert.equal(examMissed(full, ps).length, 1);
   assert.deepEqual(examMissed([], []), []);
 });
+
+test('recommended books: only Rakuten affiliate links, one slot per exam kind', async () => {
+  const { BOOKS } = await import('../app/js/affiliate.js');
+  for (const kind of Object.keys(EXAM)) assert.ok(kind in BOOKS, kind);
+  for (const b of Object.values(BOOKS)) if (b) {
+    assert.match(b.url, /^https:\/\/hb\.afl\.rakuten\.co\.jp\//);
+    assert.ok(b.title);
+  }
+});

@@ -13,6 +13,7 @@ import { SKILLS, SKILL, LANES, DEPTH } from './skills.js';
 import { ORDER, emptyProgress, recordResult, stateOf, masteryRatio, starsOf, nextStar, STAR_MAX, pickCapsule, useCapsule, rustyOf, gradePlan, levelPlan, reviewPlan, problemFor, frontier, isUnlocked, relockTargets, relockSkill, TREE_LAYOUT } from './session.js';
 import * as growth from './growth.js';
 import { buildExam, judgeExam, EXAM, EXAM_MS, PASS_RATE, examRecord, examTrend, examMissed } from './exam.js';
+import { BOOKS } from './affiliate.js';
 import * as qs from './quests.js';
 import * as tr from './trophies.js';
 import * as ul from './unlocks.js';
@@ -1529,6 +1530,12 @@ function missedHtml(list, exam) {
   }).join('');
   return `<details class="exam-missed"><summary>まちがえた問題を見直す（${list.length}問）</summary><ol>${items}</ol></details>`;
 }
+// A recommended book for this kind of exam (affiliate link, marked as PR).
+function bookHtml(b) {
+  if (!b || !/^https:\/\/hb\.afl\.rakuten\.co\.jp\//.test(b.url)) return '';
+  return `<div class="exam-book"><p class="exam-book-head"><span class="pr">PR</span>本番前の仕上げに</p>`
+    + `<a href="${esc(b.url)}" target="_blank" rel="nofollow sponsored noopener">${esc(b.title)}<small>楽天ブックスで見る</small></a></div>`;
+}
 // Weakest field of this exam, with a button straight to practice its skill.
 function weakHtml(w) {
   if (!w || !w.skill || !SKILL[w.skill]) return '';
@@ -1563,6 +1570,7 @@ function renderExamResult(box, exam, missed = []) {
     + (exam.answered < exam.max ? `<p class="exam-timeup">時間切れ：${exam.max - exam.answered}問が未回答（不正解あつかい）</p>` : '')
     + weakHtml(exam.weak)
     + missedHtml(missed, exam)
+    + bookHtml(BOOKS[exam.kind])
     + trendHtml(examTrend(store.load().history, exam.kind))
     + '<p class="exam-note">本試験と同じ分野・問題数・試験時間90分（運行管理者試験センターの受験概要による）。はじめに正解した問題だけを得点にしています。</p>';
 }
