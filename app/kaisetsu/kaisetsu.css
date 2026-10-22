@@ -140,8 +140,8 @@ svg.chart { width:100%; height:auto; display:block; }
 
 /* ○×チェック */
 .okng { display:grid; gap:6px; margin-top:8px; }
-.okng > div { display:grid; grid-template-columns:28px 1fr; gap:6px; align-items:start; border:2px solid var(--ink); border-radius:10px; padding:6px 8px; background:#fff; font-size:14px; line-height:1.6; }
-.okng > div::before { font-weight:900; font-size:16px; text-align:center; }
+.okng > div { position:relative; border:2px solid var(--ink); border-radius:10px; padding:6px 8px 6px 38px; background:#fff; font-size:14px; line-height:1.6; }
+.okng > div::before { position:absolute; left:10px; top:6px; font-weight:900; font-size:16px; }
 .okng .o::before { content:"◯"; color:var(--green); }
 .okng .n::before { content:"✕"; color:var(--red); }
 
