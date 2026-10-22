@@ -752,7 +752,7 @@ body.reduced #guide-help-ring, body.reduced .guide-help-fallback::after { animat
 body:not([data-screen="title"]) #actors { display: none; }
 
 /* The mascot and the crowd are hidden (the game logic still drives them, they are just not drawn). */
-#actors, #actors-back, #actors-front { visibility: hidden; }
+#actors, #actors-back, #actors-front, #guide-actor { visibility: hidden; } /* 使い方の説明(guide)でも出さない */
 #screen-play:has(.sheet.quiz) .stage { min-height: 0; flex: 1 1 auto; }
 .sheet-wrap:has(.sheet.quiz) { max-height: calc(100dvh - 230px); }
 #screen-play:has(.sheet.quiz) .stage { min-height: 24px; }
