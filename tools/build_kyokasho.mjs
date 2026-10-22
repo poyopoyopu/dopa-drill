@@ -129,7 +129,7 @@ ${items.map((x) => `      <li><a href="${x.skill.id}.html"><span class="st">${x.
 // サイトマップ(app/sitemap.xml)も、教科書の章に合わせて作り直す
 const SITEMAP = fileURLToPath(new URL('../app/sitemap.xml', import.meta.url));
 export function renderSitemap() {
-  const paths = ['', 'kyokasho/', ...chapters().map((x) => `kyokasho/${x.skill.id}.html`), 'text.html', 'about.html'];
+  const paths = ['', 'kyokasho/', ...chapters().map((x) => `kyokasho/${x.skill.id}.html`), 'text.html', 'help.html', 'about.html'];
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${paths.map((p) => `  <url><loc>${SITE}/${p}</loc></url>`).join('\n')}

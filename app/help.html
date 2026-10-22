@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2552c9">
+  <title>使い方・ヘルプ｜運行管理ドリル</title>
+  <meta name="description" content="運行管理ドリルの使い方。勉強の進め方、モードの選び方、画面の見方(正解・ミス・コンボ・スコア)、スキルと☆、クエスト・トロフィーなどを説明します。">
+  <link rel="canonical" href="https://unko-drill.pages.dev/help.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="運行管理ドリル">
+  <meta property="og:title" content="使い方・ヘルプ｜運行管理ドリル">
+  <meta property="og:description" content="運行管理ドリルの使い方とヘルプ。">
+  <meta property="og:url" content="https://unko-drill.pages.dev/help.html">
+  <meta property="og:image" content="https://unko-drill.pages.dev/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <style>
+    @font-face { font-family: "Dela Gothic One"; src: url(fonts/dela-gothic-one.woff2) format("woff2"); font-display: swap; }
+    @font-face { font-family: "Zen Maru Gothic"; src: url(fonts/zen-maru-gothic-bold.woff2) format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Zen Maru Gothic"; src: url(fonts/zen-maru-gothic-black.woff2) format("woff2"); font-weight: 900; font-display: swap; }
+    :root { --ink: #1b1d4d; --paper: #fff8ec; --card: #fff; --sign: #2552c9; --pink: #e8558f; --muted: #5b5f8f; --line: #d9daf0;
+      --round: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
+      --chunky: "Dela Gothic One", "Zen Maru Gothic", "Hiragino Sans", sans-serif; color-scheme: light; }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--round); font-weight: 700; font-size: 16px; line-height: 1.8;
+      background-image: linear-gradient(rgba(59,107,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(59,107,255,.07) 1px, transparent 1px); background-size: 28px 28px; }
+    .wrap { max-width: 720px; margin: 0 auto; padding-block: calc(24px + env(safe-area-inset-top, 0px)) calc(48px + env(safe-area-inset-bottom, 0px));
+      padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 18px; }
+    .back { justify-self: start; color: var(--ink); font-weight: 900; text-decoration: none; padding: 6px 14px; border: 3px solid var(--ink); border-radius: 14px; background: var(--card); box-shadow: 0 4px 0 var(--ink); }
+    .plate { justify-self: start; background: var(--sign); color: #fff; border: 4px solid var(--ink); border-radius: 12px; box-shadow: 0 6px 0 var(--ink); padding: 4px; }
+    .plate h1 { margin: 0; padding: 8px 18px 10px; border: 3px solid #fff; border-radius: 8px; font-family: var(--chunky); font-weight: 400; font-size: clamp(24px, 7vw, 36px); line-height: 1.25; text-wrap: balance; }
+    section { background: var(--card); border: 3px solid var(--ink); border-radius: 18px; padding: 18px 20px; box-shadow: 0 5px 0 var(--ink); }
+    h2 { margin: 0 0 8px; font-family: var(--chunky); font-weight: 400; font-size: 22px; line-height: 1.35; }
+    h3 { margin: 14px 0 4px; font-size: 17px; font-weight: 900; }
+    p { margin: 6px 0 0; }
+    ul { margin: 6px 0 0; padding-left: 1.3em; }
+    li + li { margin-top: 4px; }
+    .note { color: var(--muted); font-size: 14px; }
+    .pr { display: inline-block; padding: 0 8px; border-radius: 6px; background: var(--muted); color: #fff; font-size: 12px; line-height: 1.7; margin-right: 6px; vertical-align: 2px; }
+    a { color: var(--sign); }
+    a:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
+    .cta { display: inline-flex; margin-top: 12px; padding: 10px 20px; border-radius: 16px; background: var(--pink); color: #fff; text-decoration: none; font-weight: 900; border: 3px solid var(--ink); box-shadow: 0 5px 0 var(--ink); }
+    footer { text-align: center; color: var(--muted); font-size: 13px; }
+    .mail { font-size: 18px; font-weight: 900; word-break: break-all; }
+      .toc { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+    .toc li + li { margin-top: 0; }
+    .toc a { display: inline-block; padding: 2px 12px; border: 2px solid var(--ink); border-radius: 999px; background: #eef1ff; color: var(--ink); text-decoration: none; font-size: 14px; }
+    .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; }
+    .flow span { padding: 2px 12px; border: 2.5px solid var(--ink); border-radius: 12px; background: #eef1ff; font-weight: 900; }
+    .flow i { font-style: normal; color: var(--muted); }
+    dl { margin: 8px 0 0; display: grid; gap: 8px; }
+    dl div { padding: 8px 12px; border: 2px solid var(--line); border-radius: 12px; }
+    dt { font-weight: 900; }
+    dd { margin: 2px 0 0; font-size: 15px; }
+    a { color: var(--sign); }
+    footer { text-align: center; color: var(--muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <a class="back" href="./">← ドリルにもどる</a>
+    <div class="plate"><h1>使い方・ヘルプ</h1></div>
+
+    <section aria-labelledby="h-toc">
+      <h2 id="h-toc">もくじ</h2>
+      <ul class="toc">
+        <li><a href="#flow">勉強の進め方</a></li>
+        <li><a href="#modes">モードの選び方</a></li>
+        <li><a href="#screen">画面の見方</a></li>
+        <li><a href="#skill">スキルと☆</a></li>
+        <li><a href="#extra">続けるしくみ</a></li>
+        <li><a href="#faq">よくある質問</a></li>
+      </ul>
+    </section>
+
+    <section id="flow" aria-labelledby="h-flow">
+      <h2 id="h-flow">勉強の進め方</h2>
+      <div class="flow"><span>教科書で理解</span><i>→</i><span>ドリルで復習</span><i>→</i><span>模擬試験で本番練習</span></div>
+      <ul>
+        <li><b><a href="kyokasho/">教科書</a></b>：48スキルを1章ずつ、図と例題で解説。問題を解く前に読むと覚えやすくなります。初めてのスキルを解くときは、先に教科書を読むか聞かれます</li>
+        <li><b>ドリル</b>：4択の問題をくり返して覚えます。答えると解説が出ます</li>
+        <li><b>模擬試験</b>：本番と同じ30問・90分。合格ラインに届くか確かめます</li>
+        <li><b><a href="text.html">要点ノート</a></b>：数字やキーワードだけをさっと見直したいときに</li>
+      </ul>
+    </section>
+
+    <section id="modes" aria-labelledby="h-modes">
+      <h2 id="h-modes">モードの選び方</h2>
+      <dl>
+        <div><dt>自分のレベル(迷ったらこれ)</dt><dd>今の実力に合わせて、次に覚えるスキルと、前に覚えたスキルの復習を混ぜて出します。</dd></div>
+        <div><dt>ステージ1〜6</dt><dd>ステージごとの問題をまとめて練習します。</dd></div>
+        <div><dt>模擬試験 貨物／旅客</dt><dd>本試験と同じ分野・問題数(30問)・90分。結果画面で合否、分野ごとの得点、間違えた問題の解説を見られます。「ここを練習」でいちばん弱い分野のスキルをすぐ練習できます。</dd></div>
+        <div><dt>スキルツリー</dt><dd>48のスキルから1つ選んで練習します。長押しするとそのスキルの記録を消せます。</dd></div>
+        <div><dt>復習</dt><dd>間違えた問題があると、タイトル画面に「復習」が出ます。間違えた問題だけをもう一度解きます。</dd></div>
+      </dl>
+      <p class="note">1回に解く問題の数(6・10・14問)は、右上の歯車の「設定」で変えられます。</p>
+    </section>
+
+    <section id="screen" aria-labelledby="h-screen">
+      <h2 id="h-screen">画面の見方</h2>
+      <dl>
+        <div><dt>正解／ミス</dt><dd>正解した問題の数と、まちがえて選んだ回数。まちがえても同じ問題を選び直せます。1回目で正解したものが「初回正解」です。</dd></div>
+        <div><dt>コンボ</dt><dd>続けて初回正解するとコンボが増え、スコアの伸びが大きくなります(画面上の「×1.45」などが倍率)。練習では時間切れはありません。</dd></div>
+        <div><dt>スコア</dt><dd>解くほどどんどん増える、お楽しみの数字です。合否や☆には関係ありません。</dd></div>
+        <div><dt>エクストラ</dt><dd>初回正解率が80%以上だと、最後に制限時間つきのエクストラに挑戦できます(自分で選んだときだけ時間を計ります)。</dd></div>
+        <div><dt>演出が気になるとき</dt><dd>設定の「動きの強さ」を下げると、揺れ・光・紙吹雪を減らせます。0%で止まります。音は♪ボタンや設定で消せます。</dd></div>
+      </dl>
+    </section>
+
+    <section id="skill" aria-labelledby="h-skill">
+      <h2 id="h-skill">スキルと☆</h2>
+      <ul>
+        <li>問題は48の<b>スキル</b>(分野ごとのまとまり)に分かれています。前のスキルをマスターすると、次のスキルが解放されます</li>
+        <li><b>マスター</b>：そのスキルの直近6問のうち5問を初回正解すると、マスター(☆1)になります</li>
+        <li><b>☆2〜☆5</b>：正確さ・速さ・時間をあけても覚えているか、で☆が増えます。条件はスキルツリーでスキルを開くと見られます</li>
+        <li><b>さび</b>：マスターしたスキルを3週間ほど解かないと、さびがつきます。1問初回正解するとピカピカに戻ります</li>
+      </ul>
+    </section>
+
+    <section id="extra" aria-labelledby="h-extra">
+      <h2 id="h-extra">続けるしくみ</h2>
+      <dl>
+        <div><dt>今日のクエスト</dt><dd>毎日変わる小さな目標。全部クリアするとノーカンハンマーがもらえます。</dd></div>
+        <div><dt>ログインボーナス・カレンダー</dt><dd>学習した日にシールがたまります。7日目は特別シール。連続日数もカレンダーで見られます。</dd></div>
+        <div><dt>ノーカンハンマー</dt><dd>学習できなかった日を「ノーカン」にして、連続記録を続けられる道具です(最大3本)。</dd></div>
+        <div><dt>トロフィー・コレクション</dt><dd>学習を続けるともらえます。トロフィーのごほうびで、背景や音楽などを選べるようになります。</dd></div>
+        <div><dt>タイムカプセル・伸びた！</dt><dd>以前に解いた問題がまた出ることがあり、あの日の自分と比べられます。成長が見えると結果画面に「伸びた！」が出ます。</dd></div>
+      </dl>
+    </section>
+
+    <section id="faq" aria-labelledby="h-faq">
+      <h2 id="h-faq">よくある質問</h2>
+      <h3>記録はどこに保存されますか？</h3>
+      <p>使っている端末のブラウザの中だけに保存されます。外部には送信しません。ブラウザのデータを消したり、別の端末やブラウザで開いたりすると、記録は引き継がれません。</p>
+      <h3>最初からやり直したい</h3>
+      <p>設定の「すべてリセット」で、記録をすべて消せます。1つのスキルだけなら、スキルツリーで長押しすると消せます。</p>
+      <h3>最初の説明をもう一度見たい</h3>
+      <p>タイトル画面の右上の「？」ボタンで見られます。</p>
+      <h3>問題や解説がまちがっていたら</h3>
+      <p>法令は改正されることがあります。試験の前には公式の最新資料で確認してください。お気づきの点は<a href="about.html">このサイトについて</a>の連絡先からお知らせください。</p>
+    </section>
+
+    <footer><a href="about.html">このサイトについて・プライバシーポリシー</a></footer>
+  </main>
+</body>
+</html>

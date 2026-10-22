@@ -810,7 +810,7 @@ function celebrate(E, big, lastBasic) {
   fx.burst(cx, cy, { count: n, speed: 500 + 500 * E, kinds: burstKinds(E), up: 250, life: 0.6 });
   fx.ring(cx, cy, { color: '#ffd23f', radius: 120 + 200 * E, width: 10 });
   if (E > 0.25) fxBack.burst(cx, cy, { count: Math.round(100 * Math.min(1.2, E)), speed: 900 + 400 * E, kinds: burstKinds(E), up: 400 });
-  if (E > 0.3) fx.streamers(W, H, Math.round(2 + 6 * E));
+  if (E > 0.3) fxBack.streamers(W, H, Math.round(2 + 6 * E)); // behind the card so the question stays readable
   if (E > 0.5) { fxBack.fireworks(W, H, Math.round(2 + 6 * E) + (big ? 4 : 0), 0.06, 0.3); S.flash = Math.max(S.flash, 0.25 * E); }
   if (E > 0.62) fxBack.rain(W, Math.round(20 + 30 * E), { kinds: ['confetti', 'confetti', 'heart', 'coin'] });
   if (E > 0.74 || big) parade(E, big);
@@ -1011,7 +1011,7 @@ function showCombo() {
   if (!on) return;
   $('#combo').textContent = S.combo;
   const max = comboMaxed(S.combo);
-  $('#combo-mult').textContent = max ? 'スコア×2 MAX' : `スコア×${comboMult(S.combo).toFixed(2)}`;
+  $('#combo-mult').textContent = max ? '×2 MAX' : `×${comboMult(S.combo).toFixed(2)}`;
   box.classList.toggle('hot', max);
 }
 // Only the extra round (a time attack the player opts into) can time a combo out.
@@ -2691,7 +2691,7 @@ $('#open-settings').addEventListener('click', openSettings);
 $('#open-guide').addEventListener('click', () => openGuide(true));
 $('#close-settings').addEventListener('click', closeSettings);
 $('#reset-data').addEventListener('click', askReset);
-$('#demo-play').addEventListener('click', startDemo);
+$('#replay-guide').addEventListener('click', () => { closeSettings(); $('#open-guide').click(); });
 $('#bonus-ok').addEventListener('click', closeBonus);
 $('#hammer-yes').addEventListener('click', () => closeHammer(true));
 $('#tg-ok').addEventListener('click', closeTrophies);

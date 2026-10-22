@@ -80,7 +80,7 @@
         <div class="cal-grid" id="cal-grid" role="grid"></div>
       </section>
       <p class="hint">数字キーとBackspaceでも操作できます</p>
-      <p class="title-foot"><a href="about.html">このサイトについて・プライバシーポリシー</a></p>
+      <p class="title-foot"><a href="help.html">使い方・ヘルプ</a>　<a href="about.html">このサイトについて・プライバシーポリシー</a></p>
     </section>
 
     <!-- Skill tree -->
@@ -127,11 +127,11 @@
         <div class="pips" id="pips" aria-hidden="true"></div>
         <div class="clock calm" aria-live="off"><span id="clock-label"></span><b id="clock">0:00</b></div>
         <span class="demo-tag" aria-hidden="true">DEMO</span>
+        <div class="combo" id="combo-box" aria-hidden="true"><b id="combo">0</b><small>コンボ</small><span class="combo-mult" id="combo-mult"></span><i class="combo-track"><i id="combo-bar"></i></i></div>
         <button type="button" class="icon-btn" id="mute" aria-label="音を消す" aria-pressed="false">♪</button>
       </header>
       <div class="hud2">
         <div class="tally"><span>正解 <b id="ok">0</b><small id="ok-total">/10</small></span><span class="ng">ミス <b id="ng">0</b></span></div>
-        <div class="combo" id="combo-box" aria-hidden="true"><b id="combo">0</b><small>コンボ</small><span class="combo-mult" id="combo-mult"></span><i class="combo-track"><i id="combo-bar"></i></i></div>
         <div class="dopa" id="dopa-box"><small>スコア</small><b id="dopa">0</b></div>
       </div>
       <div class="stage" id="stage" aria-hidden="true">
@@ -228,9 +228,9 @@
         <p class="set-note" id="motion-note">0%で揺れ・光・紙吹雪・移動を止めます</p>
       </div>
       <div class="set-row">
-        <span class="set-label">デモプレイ</span>
-        <button type="button" class="sub-btn demo-btn" id="demo-play">▶ 自動でプレイを見る</button>
-        <p class="set-note">画面をタップするか、キーを押すと終わります（記録には残りません）</p>
+        <span class="set-label">使い方・ヘルプ</span>
+        <a class="sub-btn demo-btn" id="open-help" href="help.html">使い方・ヘルプを読む</a>
+        <button type="button" class="sub-btn demo-btn" id="replay-guide">最初の説明をもう一度見る</button>
       </div>
       <div class="set-row">
         <span class="set-label">データ</span>
