@@ -396,10 +396,12 @@ function startGame(kind = 'level', arg) {
   S.extra = { score: 0, solved: 0, misses: 0, end: 0, over: false };
   S.targetMs = Math.ceil((S.N * 40) / 10) * 10 * 1000;
   S.timeUp = false;
-  $('#clock-label').textContent = `目標 ${fmtTime(S.targetMs)}`;
-  // The mock exam has the real 90-minute limit, counted down.
+  $('#clock-label').textContent = '';
+  // The mock exam has the real 90-minute limit, counted down. Practice has no
+  // clock at all: a first user asked to study without being timed.
   if (S.plan.mode === 'exam') { S.targetMs = EXAM_MS; $('#clock-label').textContent = 'のこり'; }
   $('.clock').classList.remove('over', 'extra', 'hurry');
+  $('.clock').classList.toggle('calm', S.plan.mode !== 'exam');
   $('#ok-total').textContent = `/${S.N}`;
   const pips = $('#pips');
   pips.innerHTML = '';
@@ -984,8 +986,12 @@ function showCombo() {
   $('#combo-mult').textContent = max ? 'スコア×2 MAX' : `スコア×${comboMult(S.combo).toFixed(2)}`;
   box.classList.toggle('hot', max);
 }
+// Only the extra round (a time attack the player opts into) can time a combo out.
+const comboTimed = () => S.mode === 'extra';
 function tickCombo(t) {
+  $('#combo-box').classList.toggle('untimed', !comboTimed());
   if (S.screen !== 'play' || S.combo < 2 || S.confirm) return;
+  if (!comboTimed()) { S.comboEnd = t + S.comboLimit; return; }
   const left = S.comboEnd - t;
   // Only count down while the player can answer.
   if (!S.ready) { S.comboEnd = t + Math.max(left, 0); return; }
@@ -1288,6 +1294,7 @@ function startExtra() {
   questNote({ type: 'extra' });
   S.combo = 0;
   showCombo();
+  $('.clock').classList.remove('calm');
   $('.clock').classList.add('extra');
   $('#clock-label').textContent = 'のこり';
   $('#ok-total').textContent = '';
@@ -1670,10 +1677,7 @@ onFrame((dt, t) => {
       $('.clock').classList.toggle('hurry', left < 5 * 60 * 1000);
       if (left <= 0 && !S.endT && !S.timeUp) examTimeUp();
     } else {
-      const el = (S.endT || t) - S.startT;
-      txt = fmtTime(el);
-      $('.clock').classList.toggle('over', el > S.targetMs);
-      if (el > S.targetMs) $('#clock-label').textContent = '目標超過';
+      txt = fmtTime((S.endT || t) - S.startT); // hidden in practice (.calm)
     }
     if (txt !== lastClockText) { $('#clock').textContent = txt; lastClockText = txt; }
 
@@ -1908,6 +1912,7 @@ function openSkillInfo(id) {
   $('#si-stars').innerHTML = `${starRow(n)}<span>☆${n} / ${STAR_MAX}</span>`;
   $('#si-next').innerHTML = next ? `<p class="si-label">つぎの ☆${next.n}</p><p class="si-text">${next.text}</p><p class="si-now">${next.now}</p>` : '<p class="si-text done">☆5 たっせい！ すごい！</p>';
   $('#si-note').textContent = `${rustyOf(prog).includes(id) ? 'すこし さびているよ。1もん 初回正解で ピカピカ！　' : ''}といた もんだい ${r.n || 0}もん${best != null ? `　いちばん はやい 1もん ${(best / 1000).toFixed(1)}びょう` : ''}`;
+  $('#si-text').href = `text.html#${id}`;
   $('#skill-info').hidden = false;
   const cardEl = $('#skill-info .modal-card');
   if (!S.reduced) tween(260, (k) => { cardEl.style.transform = `translateY(${(1 - k) * 30}px) scale(${0.92 + 0.08 * k})`; }, easeOutBack).then(() => { cardEl.style.transform = ''; });

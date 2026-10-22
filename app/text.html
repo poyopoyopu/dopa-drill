@@ -1,0 +1,958 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2552c9">
+  <title>要点ノート(運行管理者試験のテキスト)｜運行管理ドリル</title>
+  <meta name="description" content="運行管理者試験(貨物・旅客)の要点を、48のスキルごとにまとめた無料のテキスト。貨物自動車運送事業法・道路運送法、道路運送車両法、道路交通法、労働基準法(改善基準告示)、実務上の知識の覚えるポイント。">
+  <link rel="canonical" href="https://unko-drill.pages.dev/text.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="運行管理ドリル">
+  <meta property="og:title" content="要点ノート(運行管理者試験のテキスト)｜運行管理ドリル">
+  <meta property="og:description" content="運行管理者試験の覚えるポイントを、48スキルごとにまとめた無料のテキスト。">
+  <meta property="og:url" content="https://unko-drill.pages.dev/text.html">
+  <meta property="og:image" content="https://unko-drill.pages.dev/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <style>
+    @font-face { font-family: "Dela Gothic One"; src: url(fonts/dela-gothic-one.woff2) format("woff2"); font-display: swap; }
+    @font-face { font-family: "Zen Maru Gothic"; src: url(fonts/zen-maru-gothic-black.woff2) format("woff2"); font-weight: 900; font-display: swap; }
+    :root { --ink: #1b1d4d; --paper: #fff8ec; --card: #fff; --sign: #2552c9; --pink: #e8558f; --muted: #5b5f8f; --line: #d9daf0; --soft: #eef1ff;
+      --text: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", "Noto Sans JP", sans-serif;
+      --round: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
+      --chunky: "Dela Gothic One", "Zen Maru Gothic", "Hiragino Sans", sans-serif; color-scheme: light; }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--text); font-size: 16px; line-height: 1.85;
+      background-image: linear-gradient(rgba(59,107,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(59,107,255,.07) 1px, transparent 1px); background-size: 28px 28px; }
+    .wrap { max-width: 760px; margin: 0 auto; padding-block: calc(24px + env(safe-area-inset-top, 0px)) calc(48px + env(safe-area-inset-bottom, 0px));
+      padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 18px; }
+    .back { justify-self: start; color: var(--ink); font-family: var(--round); font-weight: 900; text-decoration: none; padding: 6px 14px; border: 3px solid var(--ink); border-radius: 14px; background: var(--card); box-shadow: 0 4px 0 var(--ink); }
+    .plate { justify-self: start; background: var(--sign); color: #fff; border: 4px solid var(--ink); border-radius: 12px; box-shadow: 0 6px 0 var(--ink); padding: 4px; }
+    .plate h1 { margin: 0; padding: 8px 18px 10px; border: 3px solid #fff; border-radius: 8px; font-family: var(--chunky); font-weight: 400; font-size: clamp(26px, 8vw, 38px); line-height: 1.25; }
+    .card { background: var(--card); border: 3px solid var(--ink); border-radius: 18px; padding: 16px 18px; box-shadow: 0 5px 0 var(--ink); }
+    .card p { margin: 0; }
+    .card p + p { margin-top: 8px; }
+    .note-small { color: var(--muted); font-size: 14px; }
+    .toc { display: grid; gap: 14px; }
+    .toc h2 { margin: 0; font-family: var(--chunky); font-weight: 400; font-size: 22px; }
+    .toc-group ul { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .toc-head { display: inline-flex; align-items: baseline; gap: 8px; color: var(--ink); text-decoration: none; font-family: var(--round); font-weight: 900; font-size: 17px; }
+    .toc-head small, .group small { font-family: var(--text); font-weight: 400; font-size: 12px; color: var(--muted); }
+    .toc-group li a { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 4px; border: 2px solid var(--ink); border-radius: 999px; background: var(--soft); color: var(--ink); text-decoration: none; font-size: 14px; line-height: 1.5; }
+    .st { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--sign); color: #fff; font-size: 11px; font-weight: 700; }
+    .group { margin: 18px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-family: var(--chunky); font-weight: 400; font-size: 24px; line-height: 1.35; scroll-margin-top: 16px; }
+    .note { background: var(--card); border: 3px solid var(--ink); border-radius: 18px; padding: 16px 18px 14px; box-shadow: 0 5px 0 var(--ink); scroll-margin-top: 16px; display: grid; }
+    .note .meta { margin: 0; font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+    .stage { padding: 0 8px; border-radius: 6px; background: var(--sign); color: #fff; font-size: 12px; line-height: 1.7; }
+    .note h3 { margin: 2px 0 0; font-family: var(--round); font-weight: 900; font-size: 21px; line-height: 1.4; }
+    .lead { margin: 6px 0 0; padding: 8px 12px; border-radius: 10px; background: var(--soft); font-size: 15px; }
+    .note ul { margin: 10px 0 0; padding-left: 1.25em; }
+    .note li + li { margin-top: 6px; }
+    .note li::marker { color: var(--pink); }
+    .src { margin: 10px 0 0; color: var(--muted); font-size: 13px; }
+    .up { justify-self: end; margin-top: 4px; font-size: 13px; color: var(--sign); }
+    a { color: var(--sign); }
+    a:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
+    .cta { justify-self: center; display: inline-flex; padding: 10px 22px; border-radius: 16px; background: var(--pink); color: #fff; text-decoration: none; font-family: var(--round); font-weight: 900; border: 3px solid var(--ink); box-shadow: 0 5px 0 var(--ink); }
+    footer { text-align: center; color: var(--muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <a class="back" href="./">← ドリルにもどる</a>
+    <div class="plate"><h1>要点ノート</h1></div>
+
+    <div class="card">
+      <p>運行管理者試験(貨物・旅客)の覚えるポイントを、ドリルの48スキルごとにまとめたテキストです。問題を解く前の予習や、まちがえたあとの見直しに使ってください。</p>
+      <p class="note-small">ドリルの問題の解説と出典(条文・告示・国土交通省の資料など)をもとにまとめています(2026年10月時点)。法令や告示は改正されることがあるので、試験の前には必ず最新の公式資料で確認してください。</p>
+    </div>
+
+    <nav class="card toc" id="toc" aria-labelledby="toc-title">
+      <h2 id="toc-title">もくじ</h2>
+      <div class="toc-group">
+        <a class="toc-head" href="#g-cg">貨物自動車運送事業法<small>貨物の試験</small></a>
+        <ul><li><a href="#cg-basic"><span class="st">1</span>貨物事業のきほん</a></li><li><a href="#cg-manager"><span class="st">2</span>運行管理者</a></li><li><a href="#cg-permit"><span class="st">2</span>貨物の許可と手続き</a></li><li><a href="#cg-tenko"><span class="st">3</span>貨物の点呼</a></li><li><a href="#cg-care"><span class="st">3</span>貨物の過労防止</a></li><li><a href="#cg-load"><span class="st">3</span>積載と点検整備</a></li><li><a href="#cg-record"><span class="st">4</span>記録と保存</a></li><li><a href="#cg-guide"><span class="st">5</span>指導と健康管理</a></li><li><a href="#cg-crew"><span class="st">5</span>事故時と運転者のきまり</a></li></ul>
+      </div>
+      <div class="toc-group">
+        <a class="toc-head" href="#g-ps">道路運送法<small>旅客の試験</small></a>
+        <ul><li><a href="#ps-basic"><span class="st">1</span>旅客事業のきほん</a></li><li><a href="#ps-duty"><span class="st">2</span>旅客の運行管理者</a></li><li><a href="#ps-tenko"><span class="st">3</span>旅客の点呼</a></li><li><a href="#ps-care"><span class="st">3</span>旅客の過労防止</a></li><li><a href="#ps-relief"><span class="st">4</span>貸切バスの交替運転者</a></li><li><a href="#ps-crew"><span class="st">5</span>事故時と車内のきまり</a></li></ul>
+      </div>
+      <div class="toc-group">
+        <a class="toc-head" href="#g-vh">道路運送車両法<small>貨物・旅客 共通</small></a>
+        <ul><li><a href="#vh-basic"><span class="st">1</span>車両法のきほん</a></li><li><a href="#vh-check"><span class="st">2</span>点検と整備</a></li><li><a href="#vh-shaken"><span class="st">3</span>車検と検査証</a></li><li><a href="#vh-standard"><span class="st">3</span>保安基準</a></li></ul>
+      </div>
+      <div class="toc-group">
+        <a class="toc-head" href="#g-tr">道路交通法<small>貨物・旅客 共通</small></a>
+        <ul><li><a href="#tr-basic"><span class="st">1</span>道交法のきほん</a></li><li><a href="#tr-lane"><span class="st">2</span>通行区分と進入禁止</a></li><li><a href="#tr-stop"><span class="st">2</span>駐停車と追越し</a></li><li><a href="#tr-alcohol"><span class="st">2</span>酒気と免許</a></li><li><a href="#tr-driver"><span class="st">3</span>運転者の心得</a></li><li><a href="#tr-license"><span class="st">3</span>免許の区分</a></li><li><a href="#tr-signal"><span class="st">3</span>合図のきまり</a></li><li><a href="#tr-speed"><span class="st">3</span>速度と積載</a></li><li><a href="#tr-highway"><span class="st">4</span>高速道路のきまり</a></li></ul>
+      </div>
+      <div class="toc-group">
+        <a class="toc-head" href="#g-lb">労働基準法・改善基準告示<small>トラック・バス・タクシー</small></a>
+        <ul><li><a href="#lb-words"><span class="st">1</span>拘束と休息</a></li><li><a href="#lb-truck"><span class="st">2</span>トラックの拘束</a></li><li><a href="#lb-law32"><span class="st">2</span>労働時間と休日</a></li><li><a href="#lb-drive"><span class="st">3</span>運転時間</a></li><li><a href="#lb-bus"><span class="st">3</span>バスの基準</a></li><li><a href="#lb-taxi"><span class="st">3</span>タクシーの基準</a></li><li><a href="#lb-pay"><span class="st">3</span>割増賃金と年休</a></li><li><a href="#lb-contract"><span class="st">3</span>労働契約と賃金</a></li><li><a href="#lb-36"><span class="st">4</span>36協定と上限</a></li><li><a href="#lb-special"><span class="st">4</span>特例のきまり</a></li><li><a href="#lb-protect"><span class="st">4</span>年少者と女性</a></li></ul>
+      </div>
+      <div class="toc-group">
+        <a class="toc-head" href="#g-pr">実務上の知識及び能力<small>貨物・旅客 共通</small></a>
+        <ul><li><a href="#pr-body"><span class="st">1</span>人と体の話</a></li><li><a href="#pr-physics"><span class="st">2</span>速度とカガク</a></li><li><a href="#pr-calc"><span class="st">3</span>距離と時間の計算</a></li><li><a href="#pr-health"><span class="st">3</span>健康と運転</a></li><li><a href="#pr-accident"><span class="st">3</span>事故と対応</a></li><li><a href="#pr-prevent"><span class="st">4</span>事故をふせぐ</a></li><li><a href="#pr-plan"><span class="st">4</span>運行計画の検証</a></li><li><a href="#pr-hazard"><span class="st">5</span>危険予知と指差呼称</a></li></ul>
+      </div>
+      <div class="toc-group">
+        <a class="toc-head" href="#g-mix">総まとめ<small>試験のしくみ</small></a>
+        <ul><li><a href="#mix-final"><span class="st">6</span>総まとめ</a></li></ul>
+      </div>
+    </nav>
+
+    <h2 class="group" id="g-cg">貨物自動車運送事業法<small>貨物の試験</small></h2>
+    <section class="note" id="cg-basic" aria-labelledby="h-cg-basic">
+      <p class="meta"><span class="stage">ステージ1</span>貨物・旅客</p>
+      <h3 id="h-cg-basic">貨物事業のきほん</h3>
+      <p class="lead">貨物自動車運送事業の種類と手続き。「許可」か「届出」かがよく問われます。</p>
+      <ul>
+        <li>貨物自動車運送事業は3種類：一般貨物・特定貨物・貨物軽自動車</li>
+        <li>一般貨物＝不特定多数の荷主、特定貨物＝特定の者の需要に応じる、貨物軽自動車＝軽自動車(三輪以上)と二輪だけを使う</li>
+        <li>一般貨物・特定貨物は国土交通大臣の「許可」、貨物軽自動車は「届出」</li>
+        <li>特別積合せ貨物運送は一般貨物の運送の形の一つ。ポイントは「仕分け・積合せ」と「事業場間の定期的な運送」</li>
+        <li>貨物自動車利用運送 ＝ 他の運送事業者の運送を利用して行う運送</li>
+        <li>欠格事由：許可を取り消されてから5年、1年以上の拘禁刑の執行を終えてから5年を経過しない者</li>
+        <li>目的は、運営の適正化、輸送の安全の確保、利用者の利益の保護、事業の健全な発達</li>
+        <li>事業者は事業計画に従って業務を行う。輸送の安全の確保が最も重要であることを自覚する</li>
+        <li>過労運転の防止は事業者の義務。本人の希望や昼間の運行だからといって免除されない</li>
+      </ul>
+      <p class="src">出典の目安：貨物自動車運送事業法 第1〜5・8・13・15条ほか</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="cg-manager" aria-labelledby="h-cg-manager">
+      <p class="meta"><span class="stage">ステージ2</span>貨物・旅客</p>
+      <h3 id="h-cg-manager">運行管理者</h3>
+      <p class="lead">貨物の運行管理者の選任と業務。人数の計算は「÷30＋1」。</p>
+      <ul>
+        <li>運行管理者は営業所ごとに、運行管理者資格者証を持つ者から選任する。選任・解任は遅滞なく届出(認可ではない)</li>
+        <li>必要な人数 ＝ 事業用自動車の数 ÷ 30(端数切捨て)＋ 1。被けん引自動車は数えない(例：29両→1人、30両→2人、60両→3人、90両→4人)</li>
+        <li>2人以上選任する営業所では、1人を統括運行管理者にする</li>
+        <li>補助者は資格者証を持つ者か、国土交通大臣認定の講習を修了した者から。点呼の少なくとも3分の1は運行管理者が自ら行う</li>
+        <li>資格者証は試験合格者などに交付。返納を命じられた日から5年を経過しない者などには交付されない</li>
+        <li>事業者は運行管理者に必要な権限を与え、助言を尊重する。従業員は運行管理者の指導に従う</li>
+        <li>業務の例：乗務割の作成、点呼、運転者等台帳の作成、事故の記録、運行指示書、業務の記録(車両の整備は整備管理者の仕事)</li>
+        <li>運行管理規程には、運行管理者の職務・権限と業務の処理基準を定める</li>
+      </ul>
+      <p class="src">出典の目安：貨物自動車運送事業法 第16・17・20条、輸送安全規則 第18・20・21条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="cg-permit" aria-labelledby="h-cg-permit">
+      <p class="meta"><span class="stage">ステージ2</span>貨物・旅客</p>
+      <h3 id="h-cg-permit">貨物の許可と手続き</h3>
+      <p class="lead">貨物の事業の手続き。「認可」「事前届出」「事後届出」の使い分けを整理します。</p>
+      <ul>
+        <li>事業計画の変更：原則「認可」。増車・減車など省令で定める事項は「あらかじめ届出」、軽微な変更は「遅滞なく届出」</li>
+        <li>運送約款の設定・変更は「認可」。標準運送約款と同じなら認可を受けたものとみなされる</li>
+        <li>安全管理規程は200両以上(被けん引自動車を除く)の事業者が定めて「届出」。安全統括管理者の選任・解任も遅滞なく届出</li>
+        <li>事業の譲渡し・譲受け、法人の合併・分割は「認可」。相続は死亡後60日以内に認可を申請</li>
+        <li>事業の休止・廃止は、その日の30日前までに「届出」</li>
+        <li>輸送の安全に関する業務の管理の受委託は「許可」。名義貸し・事業の貸渡しは禁止</li>
+        <li>国は事業改善命令(事業計画・運送約款の変更、輸送施設の改善、保険契約の締結など)や、6か月以内の事業停止・許可の取消しができる</li>
+        <li>重大な事故は遅滞なく届出(細目は自動車事故報告規則)</li>
+      </ul>
+      <p class="src">出典の目安：貨物自動車運送事業法 第9・10・14・23・27〜33条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="cg-tenko" aria-labelledby="h-cg-tenko">
+      <p class="meta"><span class="stage">ステージ3</span>貨物・旅客</p>
+      <h3 id="h-cg-tenko">貨物の点呼</h3>
+      <p class="lead">貨物の点呼。乗務前・乗務後・中間で確認することと、記録の保存期間。</p>
+      <ul>
+        <li>点呼は対面が原則(対面と同等の方法を含む)。運行上やむを得ないときは電話などで行う</li>
+        <li>乗務前点呼：酒気帯びの有無、疾病・疲労・睡眠不足などのおそれ、日常点検の実施・確認、運行の安全に必要な指示</li>
+        <li>乗務後点呼：自動車・道路・運行の状況の報告、交替した運転者への通告の内容、酒気帯びの有無</li>
+        <li>中間点呼：乗務前・乗務後とも対面でできない運行では、途中に少なくとも1回、電話などで酒気帯びと健康状態を確認</li>
+        <li>酒気帯びの確認はすべての点呼で、目視などに加えて所属営業所のアルコール検知器を使う(自己申告だけではだめ)。検知器は営業所ごとに備え、常時有効に保つ</li>
+        <li>点呼の記録(行った者・受けた者の氏名、自動車の識別表示、日時、方法など)は1年間保存</li>
+        <li>中間点呼を行う運行では運行指示書を作成して携行させる。変更したら写しと携行分の両方に記載</li>
+        <li>遠隔点呼：生体認証で本人を確実に識別し、検知結果が自動で記録される機器を使う。記録は修正前の情報が残る方法で1年間保存</li>
+        <li>自動点呼：認定された機器を使い、運行管理者等の立会いなしに点呼予定に基づいて行う</li>
+      </ul>
+      <p class="src">出典の目安：貨物自動車運送事業輸送安全規則 第3・7・9条の3、国土交通省 遠隔点呼・自動点呼の資料</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="cg-care" aria-labelledby="h-cg-care">
+      <p class="meta"><span class="stage">ステージ3</span>貨物・旅客</p>
+      <h3 id="h-cg-care">貨物の過労防止</h3>
+      <p class="lead">貨物の過労防止のために事業者がすること。運転者の選任の条件も。</p>
+      <ul>
+        <li>運転者に選任できない者：日々雇い入れられる者、2か月以内の期間を定めて使用される者、試みの使用期間中の者(14日を超えて引き続き使用されれば選任できる)</li>
+        <li>運転者として選任された者以外は、運行業務に従事させない</li>
+        <li>休憩施設と、必要なら睡眠施設を整備・管理・保守する</li>
+        <li>告示の基準に従って勤務時間・乗務時間を定めて守らせる。運行管理者はその範囲内で乗務割を作る</li>
+        <li>健康状態を把握し、疾病・疲労・睡眠不足などで安全に運転できないおそれのある者を乗務させない</li>
+        <li>長距離・夜間の運転で必要なら、あらかじめ交替の運転者を配置する</li>
+        <li>起点から終点まで100kmを超える運行系統では運行基準(主な地点間の運行時分・平均速度、休憩・睡眠の地点と時間など)を定める</li>
+        <li>荷主との適正な取引の確保に努める(条件があいまいな引受けや、荷主都合の待機などが過労運転・過積載の原因になる)</li>
+      </ul>
+      <p class="src">出典の目安：貨物自動車運送事業輸送安全規則 第3・9条の4・20条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="cg-load" aria-labelledby="h-cg-load">
+      <p class="meta"><span class="stage">ステージ3</span>貨物・旅客</p>
+      <h3 id="h-cg-load">積載と点検整備</h3>
+      <p class="lead">過積載の防止、積載の方法、点検整備。どれも「指導・監督」がキーワード。</p>
+      <ul>
+        <li>過積載の防止は、事業者が運転者等を十分に指導・監督して行う。過積載となる運送の引受けや、それを前提にした運行計画・指示は禁止</li>
+        <li>積載は、荷重が偏らないように積み、ロープやシートで落下を防ぐ</li>
+        <li>道路管理者が付した通行の条件に反する通行などを防ぐため、指導・監督する</li>
+        <li>事業者は使用条件を踏まえた点検基準を作り、点検・整備をして記録簿に記載・保存する</li>
+        <li>自動車車庫は原則として営業所に併設する(難しいときは一定の距離の範囲内)</li>
+        <li>異常気象のときは、乗務員への指示など輸送の安全のための措置をとる</li>
+        <li>非常信号用具と消火器の取扱いは、乗務員等に指導する</li>
+        <li>過積載の防止・積載方法についての従業員の指導・監督は、運行管理者の業務</li>
+      </ul>
+      <p class="src">出典の目安：貨物自動車運送事業法 第15条、輸送安全規則 第3条の3・4〜6・10・11・20条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="cg-record" aria-labelledby="h-cg-record">
+      <p class="meta"><span class="stage">ステージ4</span>貨物・旅客</p>
+      <h3 id="h-cg-record">記録と保存</h3>
+      <p class="lead">貨物の記録と保存期間。「1年」と「3年」で2つに分けて覚えます。</p>
+      <ul>
+        <li>1年保存：点呼の記録、業務の記録、運行記録計の記録、運行指示書(とその写し、運行終了の日から)</li>
+        <li>3年保存：事故の記録(運行を管理する営業所で)、指導・監督の記録、運転者台帳(運転者でなくなってから)</li>
+        <li>運行記録計(瞬間速度・運行距離・運行時間)：車両総重量7トン以上または最大積載量4トン以上の普通自動車、そのけん引自動車、特別積合せの運行系統の自動車</li>
+        <li>業務の記録に積載状況(荷主の都合による待機など)を記録するのは、車両総重量8トン以上または最大積載量5トン以上(7・4トンと混同しない)</li>
+        <li>業務の記録：氏名、車両、業務の開始・終了の地点と日時、主な経過地点、距離、交替・休憩・睡眠の地点と日時、事故や異常があればその概要と原因</li>
+        <li>事故の記録：氏名、車両、日時、場所、関係者、概要、原因、再発防止対策</li>
+        <li>運転者台帳：免許の事項、雇入れ日・選任日、事故の概要、健康状態、指導・適性診断の状況などと、作成前6か月以内に撮った写真</li>
+        <li>運行指示書：運行の開始・終了の地点と日時、経路と主な経過地の発着日時、注意を要する箇所、休憩・交替の地点など。運転者に携行させる</li>
+      </ul>
+      <p class="src">出典の目安：貨物自動車運送事業輸送安全規則 第7〜10条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="cg-guide" aria-labelledby="h-cg-guide">
+      <p class="meta"><span class="stage">ステージ5</span>貨物・旅客</p>
+      <h3 id="h-cg-guide">指導と健康管理</h3>
+      <p class="lead">運転者への指導・監督と特別な指導、適性診断。時間数も覚えます。</p>
+      <ul>
+        <li>指導・監督は事業者の義務。告示に従って、運行の状況(主な道路状況など)・安全運転の技術・法令の遵守事項などを指導する</li>
+        <li>特別な指導の対象は3つ：初任運転者、65歳以上の高齢運転者、事故惹起運転者(死者または負傷者を生じた事故を起こした者)</li>
+        <li>適性診断の種類：初任診断(初任運転者)、適齢診断(65歳以上)、特定診断(事故惹起運転者など)。国土交通大臣の認定を受けたものを受けさせる</li>
+        <li>初任運転者の特別な指導：座学15時間以上＋実技20時間以上</li>
+        <li>事故惹起運転者の特別な指導：合計6時間以上(貨物軽自動車運送事業者は合計5時間以上)。実技は可能な限り実施</li>
+        <li>指導・監督の記録(日時・場所・内容・実施者・受けた者)は営業所で3年間保存</li>
+        <li>貨物軽自動車運送事業者は、運転者として初めて乗務する者などが対象</li>
+        <li>健康面：疾病・疲労などで安全に運転できないおそれがあれば乗務させない。深夜業を含む業務の健康診断は6か月以内ごと。睡眠施設を整備・保守</li>
+        <li>運行管理者は補助者を指導・監督し、国などが周知する事故防止対策に基づいて従業員を指導・監督する</li>
+      </ul>
+      <p class="src">出典の目安：貨物自動車運送事業輸送安全規則 第3・10・20条、指導及び監督の指針</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="cg-crew" aria-labelledby="h-cg-crew">
+      <p class="meta"><span class="stage">ステージ5</span>貨物・旅客</p>
+      <h3 id="h-cg-crew">事故時と運転者のきまり</h3>
+      <p class="lead">異常気象時の措置、乗務員・運転者が守ること、事故報告の細かい基準(貨物)。</p>
+      <ul>
+        <li>異常気象(暴風など)や道路障害(土砂崩壊・路肩の軟弱化など)のときは、暴風警報などの伝達、避難箇所の指示、運行中止の指示などをする</li>
+        <li>事業者は、運転者などが守るべき事項を服務規律として定める</li>
+        <li>乗務員(運転者と運転の補助をする者)：酒気を帯びて乗務しない、過積載の車に乗務しない、偏荷重のない積載と落下防止、踏切で動けなくなったら列車に対する防護措置</li>
+        <li>運転者：安全に運転できないおそれがあれば事業者に申し出る、日常点検をする(または確認する)、点呼を受けて報告する、踏切では変速装置を操作しない</li>
+        <li>交替するとき：終える運転者は車両・道路・運行の状況を通告し、交替した運転者は通告を受けて制動装置・走行装置などを点検する</li>
+        <li>運行指示書は乗務中に携行し、変更があれば記載する</li>
+        <li>事故報告の基準：転覆は路面と35度以上傾いたとき、転落は落差0.5m以上、通行止めは高速道路などで3時間以上</li>
+        <li>コンテナの落下、車輪の脱落、運転者の疾病で運行できなくなったものも報告が必要。車輪の脱落などは車両故障事故報告書添付票を付ける(パンク・バッテリー・ヒューズ切れなどは不要)</li>
+        <li>貨物の速報：死者2人以上、重傷者5人以上、負傷者10人以上、酒気帯び運転、危険物が転覆・衝突などで漏えいしたときなど。死者1人や死傷者のない転覆は報告書のみ</li>
+      </ul>
+      <p class="src">出典の目安：貨物自動車運送事業輸送安全規則 第5・11・12・16・17条、自動車事故報告規則</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+
+    <h2 class="group" id="g-ps">道路運送法<small>旅客の試験</small></h2>
+    <section class="note" id="ps-basic" aria-labelledby="h-ps-basic">
+      <p class="meta"><span class="stage">ステージ1</span>貨物・旅客</p>
+      <h3 id="h-ps-basic">旅客事業のきほん</h3>
+      <p class="lead">旅客自動車運送事業(道路運送法)の全体像。運賃の「認可」と「届出」、運行管理者の人数の計算、事故報告がポイント。</p>
+      <ul>
+        <li>一般旅客は3種類：乗合(路線バスなど)・貸切(一個の契約で車を貸し切る)・乗用(タクシー)。どれも国土交通大臣の許可。特定旅客(企業の送迎など)も許可</li>
+        <li>運賃・料金：乗合は上限を定めて「認可」、貸切は定めて「事前届出」、乗用は「認可」。運送約款は認可</li>
+        <li>運賃・約款は公示してから実施し、営業所に掲示する。運送は申込みを受けた順序で(急病人など正当な事由は例外)</li>
+        <li>運送の引受けは原則として拒めない。拒めるのは、設備がない、法令・公序良俗に反する、天災などやむを得ないときなど</li>
+        <li>運行管理者の人数：乗合・乗用は「車両数÷40(切捨て)＋1」、貸切は19両以下なら2人・20〜99両は「÷20＋1」(貨物は÷30)</li>
+        <li>運行管理者を選任・解任したら遅滞なく届出。複数いる営業所では統括運行管理者を選任</li>
+        <li>補助者は資格者証を持つ者か、認定講習の修了者から選べる</li>
+        <li>欠格：許可の取消しから5年。安全管理規程は定めて届出、安全統括管理者の選任・解任も届出</li>
+        <li>路線の休止・廃止は原則6か月前までに届出、営業所などに少なくとも7日前に掲示</li>
+        <li>事故報告書は30日以内。速報(24時間以内)は、転覆・火災など、死者1人以上(旅客の事業用自動車)、旅客の重傷者1人以上、負傷者10人以上など</li>
+      </ul>
+      <p class="src">出典の目安：道路運送法、旅客自動車運送事業運輸規則、自動車事故報告規則</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="ps-duty" aria-labelledby="h-ps-duty">
+      <p class="meta"><span class="stage">ステージ2</span>貨物・旅客</p>
+      <h3 id="h-ps-duty">旅客の運行管理者</h3>
+      <p class="lead">旅客の運行管理者の人数(100両以上)と業務。記録の保存は3年。</p>
+      <ul>
+        <li>100両以上の営業所(乗合・乗用)：(車両数 − 100)÷ 30(端数切捨て)＋ 6 人以上(例：100両→6人、160両→8人)</li>
+        <li>乗車定員10人以下の車両を5両以上管理する営業所も選任が必要(例：30両→30÷40＋1＝1人)</li>
+        <li>補助者は選任できる(義務ではない)。運行管理者は補助者を指導・監督する</li>
+        <li>休憩・睡眠・仮眠の施設を適切に管理する(施設の整備・保守は事業者の義務)</li>
+        <li>健康状態を把握し、疾病・疲労・睡眠不足などのおそれがある運転者を乗務させない</li>
+        <li>運行記録計を管理して記録を保存。記録できない自動車は運行させない</li>
+        <li>事故の記録(日時・場所・概要・原因・再発防止対策)と指導監督の記録は、営業所で3年間保存</li>
+        <li>乗務員等台帳を作成して営業所に備え置く。選任された運転者以外は運転させない</li>
+        <li>事故を起こした者、新たに雇った者、65歳以上の者などには特別な指導と、認定を受けた適性診断を受けさせる</li>
+      </ul>
+      <p class="src">出典の目安：旅客自動車運送事業運輸規則 第47条の9・第48条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="ps-tenko" aria-labelledby="h-ps-tenko">
+      <p class="meta"><span class="stage">ステージ3</span>貨物・旅客</p>
+      <h3 id="h-ps-tenko">旅客の点呼</h3>
+      <p class="lead">旅客の点呼と記録。一般貸切は保存期間が長いのが特徴です。</p>
+      <ul>
+        <li>乗務前・乗務後の点呼は対面が原則(同等の方法を含む)。やむを得ないときは電話など</li>
+        <li>乗務前点呼：酒気帯び・健康状態・日常点検などを確認して指示。乗務後点呼：自動車・道路・運行の状況の報告と酒気帯びの確認</li>
+        <li>中間点呼は、一般貸切の夜間・長距離の運行が対象</li>
+        <li>酒気帯びの確認は、目視などに加えて営業所のアルコール検知器で。検知器は営業所ごとに常時有効に保つ</li>
+        <li>点呼の記録：乗合・乗用は1年間、一般貸切は電磁的記録で3年間。一般貸切は点呼の録音・録画(電話は録音)を90日間保存</li>
+        <li>業務の記録：乗合・乗用は1年間、一般貸切は3年間(旅客が乗車した区間も記録)。乗用は業務の開始・終了時の走行距離の積算キロ数も記録</li>
+        <li>事故の記録は3年間。運転者台帳は営業所に備え、運転者でなくなってから3年間保存(写真は作成前6か月以内に撮影)</li>
+        <li>運行指示書(一般貸切)：運行ごとに作成して携行させ、終了の日から3年間保存</li>
+        <li>書類の種類：運行基準図(乗合・営業所に備える)、運行表(乗合・携行)、運行指示書(貸切)、乗務員証(乗用)</li>
+        <li>運行記録計は速度・距離・時間を記録。保存は原則1年(一般貸切は3年)</li>
+      </ul>
+      <p class="src">出典の目安：旅客自動車運送事業運輸規則 第24〜26条の2・28条の2・37・48条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="ps-care" aria-labelledby="h-ps-care">
+      <p class="meta"><span class="stage">ステージ3</span>貨物・旅客</p>
+      <h3 id="h-ps-care">旅客の過労防止</h3>
+      <p class="lead">旅客の過労防止と、運転者への指導監督。</p>
+      <ul>
+        <li>睡眠・仮眠・休憩の施設を整備し、管理・保守する。営業所で勤務を終えられない運行では、終了する場所の付近に睡眠施設を確保</li>
+        <li>告示の基準に従って勤務時間・乗務時間を定めて守らせる。運行管理者はその範囲内で乗務割を作る</li>
+        <li>疲労や病気で安全に運転できないおそれがある者は乗務させない。日々の健康状態の把握も必要</li>
+        <li>一般乗合・一般貸切で長距離・夜間の運転のときは、あらかじめ交替の運転者を配置</li>
+        <li>高速道路の実車運行区間は、連続運転をおおむね2時間までにするのが目安</li>
+        <li>タクシー：指定地域では地方運輸局長が乗務距離の最高限度を定める。運賃・料金の水揚げを理由に乗務を強制してはならない</li>
+        <li>指導監督の記録は営業所で3年間保存</li>
+        <li>特別な指導と適性診断の対象：死者・重傷者を出す事故を起こした者、新たに雇い入れた者、乗務経験のない者、65歳以上の者</li>
+        <li>深夜業を含む業務に従事する運転者の健康診断は6か月以内ごとに1回</li>
+      </ul>
+      <p class="src">出典の目安：旅客自動車運送事業運輸規則 第21〜24・38・48条、道路運送法 第27条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="ps-relief" aria-labelledby="h-ps-relief">
+      <p class="meta"><span class="stage">ステージ4</span>貨物・旅客</p>
+      <h3 id="h-ps-relief">貸切バスの交替運転者</h3>
+      <p class="lead">貸切バスの交替運転者の配置基準。ワンマン運行の距離と時間の上限。</p>
+      <ul>
+        <li>夜間ワンマン運行 ＝ 旅客の最初の乗車または最後の降車が午前2時〜4時の間にある運行(またぐものを含む)。それ以外が昼間ワンマン運行</li>
+        <li>夜間ワンマンの一運行の実車距離：400kmまで(条件を満たせば500kmまで)</li>
+        <li>昼間ワンマンの一運行の実車距離：500kmまで。途中に合計1時間以上の休憩(1回20分以上で分割可)をとれば600kmまで</li>
+        <li>1日の合計実車距離は原則600km以内(週2回までは超えられる)</li>
+        <li>一運行の運転時間は9時間以内(昼間ワンマンは週2回まで10時間)</li>
+        <li>夜間の休憩：実車運行区間の運転2時間ごとに、一運行400km以下なら15分以上、400km超なら20分以上</li>
+        <li>夜間ワンマンの連続乗務：4回まで(400km超の運行は2回まで)</li>
+        <li>改善基準告示の上限(1日の拘束15時間、2日平均の運転9時間、連続運転4時間など)を超える運行には交替運転者が必要</li>
+        <li>乗務中の体調報告と、夜間400km超または1日600km超の運行でのデジタル式運行記録計による管理も定められている</li>
+      </ul>
+      <p class="src">出典の目安：国土交通省「貸切バスの交替運転者の配置基準」</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="ps-crew" aria-labelledby="h-ps-crew">
+      <p class="meta"><span class="stage">ステージ5</span>貨物・旅客</p>
+      <h3 id="h-ps-crew">事故時と車内のきまり</h3>
+      <p class="lead">旅客の事故時の措置、運転者の選任、乗務員と旅客の禁止事項。</p>
+      <ul>
+        <li>運行を中断したら、旅客の運送の継続、出発地までの送還、その他の保護のいずれかをする</li>
+        <li>死傷者が出たら、応急手当、死者・重傷者の家族への通知、遺留品の保管など</li>
+        <li>異常気象(大雨・大雪・暴風など)や路線障害のときは指示などの措置。雪道を走るおそれがあれば、滑り止めや冬用タイヤの溝の確認も</li>
+        <li>運転者に選任できない者：日々雇い入れられる者、2か月以内の期間で使用される者、試みの使用期間中の者(14日を超えて使用されれば可)、14日未満の期間ごとに賃金を受ける者</li>
+        <li>新たに雇い入れた者は、指導・監督と特別な指導をし、適性診断を受けさせてから選任。事業計画の遂行に十分な数の運転者を常時選任しておく</li>
+        <li>乗務員の禁止事項：酒気を帯びて乗務、旅客が乗っている車内での喫煙、危険物の持込み。バスでは運行時刻前の発車、走行中の職務外の話も禁止</li>
+        <li>運転者：踏切で変速装置を操作しない。踏切で動けなくなったら旅客を退避させ、列車に対する防護措置。重大な故障や事故のおそれがあればただちに運行を中止</li>
+        <li>携行するもの：乗合(路線定期)は運行表、貸切は運行指示書、タクシーは乗務員証。タクシーは地方運輸局長が指定する規格の地図を備える</li>
+        <li>バスの発車は、安全を確認した場合を除き警音器を鳴らす。車掌は踏切の手前で降りて誘導し、扉を閉めてから発車の合図</li>
+        <li>旅客の持込み禁止：危険物、動物(身体障害者補助犬・愛玩用の小動物は除く)、100gを超える玩具用煙火など。旅客は走行中にみだりに運転者に話しかけない</li>
+      </ul>
+      <p class="src">出典の目安：旅客自動車運送事業運輸規則 第14・15・18〜20・29・35・36・49〜53条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+
+    <h2 class="group" id="g-vh">道路運送車両法<small>貨物・旅客 共通</small></h2>
+    <section class="note" id="vh-basic" aria-labelledby="h-vh-basic">
+      <p class="meta"><span class="stage">ステージ1</span>車両・道交</p>
+      <h3 id="h-vh-basic">車両法のきほん</h3>
+      <p class="lead">道路運送車両法の骨組み。保安基準・登録・検査証・番号標の決まりと、「15日以内」「5日以内」の数字。</p>
+      <ul>
+        <li>目的は、自動車の安全性の確保と公害の防止その他の環境の保全など(第1条)</li>
+        <li>法律上の種別は5種類：普通・小型・軽・大型特殊・小型特殊(事業用・自家用は使い方の区別)</li>
+        <li>自動車は保安基準に適合していなければ運行できない。使用者には点検・整備して保安基準に適合させる義務がある(整備工場ではなく使用者の責任)</li>
+        <li>自動車検査証を備え付けていない自動車は運行の用に供してはならない。一般に「車検」と呼ぶのは継続検査</li>
+        <li>登録の申請はどれも「15日以内」：変更登録・移転登録・永久抹消登録(解体報告記録を知った日から)・一時抹消後の解体の届出</li>
+        <li>整備管理者は「使用の本拠ごと」に選任。仕事は点検・整備と車庫の管理(点呼は運行管理者の仕事)</li>
+        <li>大きさの上限は長さ12m・幅2.5m・高さ3.8m(告示で定めるセミトレーラは長さ13m)</li>
+        <li>臨時運行許可の有効期間は原則5日以内。満了した日から5日以内に返納。番号標を表示し許可証を備え付けて運行する</li>
+        <li>整備命令に従わず保安基準にも適合しないときは使用停止。適合したら直ちに取り消される</li>
+      </ul>
+      <p class="src">出典の目安：道路運送車両法、道路運送車両の保安基準</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="vh-check" aria-labelledby="h-vh-check">
+      <p class="meta"><span class="stage">ステージ2</span>車両・道交</p>
+      <h3 id="h-vh-check">点検と整備</h3>
+      <p class="lead">日常点検・定期点検と整備管理者。「何か月ごと」と「15日以内」がよく出ます。</p>
+      <ul>
+        <li>事業用自動車などは、1日1回、運行の開始前に日常点検。目視などの簡単な点検で、不具合があれば整備する</li>
+        <li>日常点検の項目：ブレーキ、タイヤ、バッテリ、原動機、灯火装置・方向指示器、ウインド・ウォッシャとワイパー、エア・タンク、運行で異状があった箇所</li>
+        <li>定期点検の間隔：事業用自動車(バス・トラック・タクシー)は3か月ごと。車両総重量8トン以上は自家用でも3か月ごと。一般の自家用乗用車は1年ごと</li>
+        <li>レンタカーのバス・トラックは3か月ごと、乗用車と軽トラックは6か月ごと</li>
+        <li>点検整備記録簿は自動車に備え置き、点検・整備をしたら遅滞なく記載する(費用は記載事項ではない)</li>
+        <li>整備管理者は点検・整備と車庫の管理をする。使用者は必要な権限を与える。乗車定員11人以上の事業用バスは1両から選任</li>
+        <li>整備管理者の要件：同種の自動車の整備などの実務経験2年以上＋研修の修了、または整備士(1〜3級)の合格など</li>
+        <li>整備管理者の選任・変更は、その日から15日以内に地方運輸局長へ届出。地方運輸局長は解任を命じられる</li>
+        <li>分解整備は「特定整備」に。自動ブレーキのカメラ・レーダーの調整などの電子制御装置整備も含む。特定整備事業は地方運輸局長の認証</li>
+      </ul>
+      <p class="src">出典の目安：道路運送車両法 第47〜53条、同施行規則</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="vh-shaken" aria-labelledby="h-vh-shaken">
+      <p class="meta"><span class="stage">ステージ3</span>車両・道交</p>
+      <h3 id="h-vh-shaken">車検と検査証</h3>
+      <p class="lead">自動車検査証の有効期間と備付け。用途と重さで期間が変わります。</p>
+      <ul>
+        <li>旅客運送事業用(バス・タクシー)：1年</li>
+        <li>貨物運送用：車両総重量8トン以上は初回から1年。8トン未満は初回2年、以後1年</li>
+        <li>自家用乗用自動車：初回3年、以後2年</li>
+        <li>自動車検査証は自動車に備え付ける。検査標章は前面ガラスなど外から見やすい位置に表示</li>
+        <li>新規検査は登録の前、継続検査(いわゆる車検)は有効期間の満了時に受ける。有効な検査証がなければ運行できない</li>
+        <li>継続検査は満了日の2か月前から受けられ、残りの有効期間は失われない(令和7年4月から。それまでは1か月前)</li>
+        <li>記載事項が変わったら15日以内に変更記録(住所の表示が変わっただけなら期限なし)。構造などの変更で保安基準に合わなくなるおそれがあれば構造等変更検査</li>
+        <li>臨時運行許可：地方運輸局長、市・特別区の長などが許可。有効期間は原則5日以内</li>
+      </ul>
+      <p class="src">出典の目安：道路運送車両法 第34・35・58〜67条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="vh-standard" aria-labelledby="h-vh-standard">
+      <p class="meta"><span class="stage">ステージ3</span>車両・道交</p>
+      <h3 id="h-vh-standard">保安基準</h3>
+      <p class="lead">保安基準の数字。灯火の「何mから確認できるか」と色、大型車の装置がよく出ます。</p>
+      <ul>
+        <li>速度抑制装置(時速90km)と運行記録計：貨物運送用の普通自動車で車両総重量8トン以上または最大積載量5トン以上(緊急自動車などは除く)</li>
+        <li>運行記録計は24時間以上連続して、瞬間速度と2時刻間の走行距離を記録できること</li>
+        <li>タイヤの溝は1.6mm以上(二輪は0.8mm以上)。スリップサインで判定してよい。最高速度40km/h未満の自動車は対象外</li>
+        <li>大きさ：長さ12m・幅2.5m・高さ3.8m以下。最小回転半径は最外側のわだちで12m以下。軸重10トン・輪荷重5トン以下</li>
+        <li>灯火の確認距離：前照灯 走行用100m・すれ違い用40m(白)、尾灯・車幅灯 300m、制動灯・後退灯 昼間100m、番号灯 20m(白)、後部反射器 150m(赤)</li>
+        <li>方向指示器：毎分60〜120回の点滅、橙色、昼間100mから確認できる</li>
+        <li>停止表示器材：中空の正立正三角形、夜間200mから反射光を確認できる</li>
+        <li>警音器：前方7mで87〜112dB、音の大きさと音色が一定。紛らわしい音の装置は禁止</li>
+        <li>巻込防止装置(下縁450mm以下など)と突入防止装置。車両総重量7トン以上の貨物車は大型後部反射器</li>
+        <li>乗車定員11人以上の自動車には消火器。前面ガラスには自動式の窓ふき器</li>
+      </ul>
+      <p class="src">出典の目安：道路運送車両の保安基準、同細目告示</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+
+    <h2 class="group" id="g-tr">道路交通法<small>貨物・旅客 共通</small></h2>
+    <section class="note" id="tr-basic" aria-labelledby="h-tr-basic">
+      <p class="meta"><span class="stage">ステージ1</span>車両・道交</p>
+      <h3 id="h-tr-basic">道交法のきほん</h3>
+      <p class="lead">道路交通法の基本ルールと標識。「数字の決まりがないもの」をしっかり区別するのがコツ。</p>
+      <ul>
+        <li>徐行 ＝ すぐ停止できる速度(○km以下という数字の決まりはない)。車間距離も「追突を避けられる距離」で、数字の決まりはない</li>
+        <li>徐行する場所：左右の見通しがきかない交差点(信号のある交差点・優先道路通行中は除く)、曲がり角付近、上り坂の頂上付近、勾配の急な下り坂</li>
+        <li>黄信号は「止まれ」が原則。停止位置に近く安全に止まれないときだけ進める</li>
+        <li>横断歩道：歩行者がいないことが明らかでなければ直前で止まれる速度。横断中・横断しようとしている歩行者がいれば一時停止</li>
+        <li>横断歩道の手前で止まっている車の横を通って前に出るときは、前に出る前に一時停止</li>
+        <li>信号のない同じ道幅の交差点は「左方優先」。右折車は直進車・左折車の進行を妨げない</li>
+        <li>右折は道路の中央に寄って交差点の中心の直近の内側を徐行、左折は左側端に寄って徐行</li>
+        <li>踏切は直前で停止して安全確認(遮断機が上がっていても同じ)。止まらずに進めるのは踏切の信号機に従うときだけ</li>
+        <li>急ブレーキ・みだりな進路変更は禁止。運転中に携帯電話を手に持って通話・画面を注視するのも禁止</li>
+        <li>本標識は規制・指示・警戒・案内の4種類。最高速度は規制、横断歩道の位置は指示、前方の踏切は警戒</li>
+        <li>赤い斜線1本＝駐車禁止(短時間の停車はできる)、赤い×＝駐停車禁止。速度の数字の下に青い線＝最低速度</li>
+      </ul>
+      <p class="src">出典の目安：道路交通法、交通の方法に関する教則</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="tr-lane" aria-labelledby="h-tr-lane">
+      <p class="meta"><span class="stage">ステージ2</span>車両・道交</p>
+      <h3 id="h-tr-lane">通行区分と進入禁止</h3>
+      <p class="lead">車がどこを走るか(通行区分)と、交差点・横断歩道などへの進入のきまり。</p>
+      <ul>
+        <li>車両は原則として車道を通行する。道路外の施設に出入りするため歩道等を横断するときは、直前で一時停止</li>
+        <li>道路の中央から左の部分(左側部分)を通行する。右側にはみ出せるのは、一方通行・左側が狭い・工事などの場合</li>
+        <li>幅員6m未満の道路では、見通しがよく反対方向の交通を妨げないとき、追越しのため右側にはみ出せる(禁止の標識等があれば不可)</li>
+        <li>歩行者の側方を通るときは、安全な間隔をあけるか徐行する</li>
+        <li>車両通行帯は、原則として左から1番目を通行。追越しのときは直近の右側の通行帯を使う</li>
+        <li>追いつかれた車両は、追越しが終わるまで速度を上げてはならない。速い車に追いつかれたら、左側端に寄って進路を譲る</li>
+        <li>交差点内で止まって交差道路の通行を妨げるおそれがあるときは、交差点に進入してはならない</li>
+        <li>横断歩道・自転車横断帯・踏切・道路標示で区画された部分の中で止まるおそれがあるときも、進入してはならない</li>
+      </ul>
+      <p class="src">出典の目安：道路交通法 第17・18・20・27・50条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="tr-stop" aria-labelledby="h-tr-stop">
+      <p class="meta"><span class="stage">ステージ2</span>車両・道交</p>
+      <h3 id="h-tr-stop">駐停車と追越し</h3>
+      <p class="lead">駐停車禁止・追越し禁止の場所と距離。5m・10m・30mの区別がカギ。</p>
+      <ul>
+        <li>駐停車禁止(5m以内)：交差点、道路の曲がり角、横断歩道・自転車横断帯とその前後</li>
+        <li>駐停車禁止(10m以内)：踏切とその前後、安全地帯の左側とその前後、バス停留所の標示柱(運行時間中)</li>
+        <li>トンネル、坂の頂上付近、勾配の急な坂も駐停車禁止</li>
+        <li>火災報知機から1m以内は「駐車」禁止(停車はできる)</li>
+        <li>追越し禁止：交差点・踏切・横断歩道とその手前30m以内、曲がり角付近、上り坂の頂上付近、急な下り坂、車両通行帯のない道路のトンネル</li>
+        <li>追越しは前車の右側から。前車が右折のため中央に寄っているときは左側。前車が他を追い越そうとしているときは追越しを始めない(二重追越しの禁止)</li>
+        <li>停留所から発進しようとする路線バスの進路変更を妨げない。路線バス等優先通行帯では、路線バスが近づいたらすみやかに外に出る</li>
+        <li>緊急自動車：交差点付近では交差点を避けて左に寄って一時停止、それ以外の場所では左に寄って進路を譲る</li>
+        <li>停車・駐車は、道路の左側端に沿い、他の交通の妨害にならないようにする</li>
+      </ul>
+      <p class="src">出典の目安：道路交通法 第20条の2・28〜31条の2・40・44・45・47条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="tr-alcohol" aria-labelledby="h-tr-alcohol">
+      <p class="meta"><span class="stage">ステージ2</span>車両・道交</p>
+      <h3 id="h-tr-alcohol">酒気と免許</h3>
+      <p class="lead">酒気帯び・過労運転の禁止と、運転免許(第一種・第二種)の基本。</p>
+      <ul>
+        <li>酒気帯び運転の基準：呼気1リットル中0.15mg以上(血液1ml中0.3mg以上)</li>
+        <li>酒酔い運転は数値ではなく「アルコールの影響で正常な運転ができないおそれがある状態」かどうかで判断</li>
+        <li>車両や酒類を提供した者、同乗した者も罰則の対象。酒気帯び運転となるおそれがある者への酒類の提供・すすめは何人も禁止</li>
+        <li>過労運転は禁止。使用者は、最高速度違反・酒気帯び・過労・過積載などの運転を命じたり容認したりしてはならない</li>
+        <li>事業者は、酒気を帯びた乗務員を乗務させてはならない(輸送安全規則)</li>
+        <li>トラック(貨物)は第一種免許、旅客を乗せるバス・タクシーは第二種免許</li>
+        <li>大型・中型の免許の受験資格は原則21歳以上・普通免許等の保有3年以上(特例教習で19歳以上・1年以上)</li>
+        <li>運転するときは免許証を携帯し、警察官に求められたら提示する</li>
+        <li>車を離れるときはエンジンを止めブレーキをかけ、無断で運転されない措置をとる。通学通園バスの側方は徐行</li>
+      </ul>
+      <p class="src">出典の目安：道路交通法 第65・66・71・75・95・117条の2ほか、同施行令 第44条の3</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="tr-driver" aria-labelledby="h-tr-driver">
+      <p class="meta"><span class="stage">ステージ3</span>車両・道交</p>
+      <h3 id="h-tr-driver">運転者の心得</h3>
+      <p class="lead">運転者の義務と、安全運転管理者の制度。</p>
+      <ul>
+        <li>安全運転の義務：ハンドル・ブレーキを確実に操作し、状況に応じて他人に危害を及ぼさない速度と方法で運転する</li>
+        <li>無免許運転のおそれがある者に自動車を提供してはならない(何人も)</li>
+        <li>免許の更新：満了日の直前の誕生日の1か月前から満了日まで</li>
+        <li>目や耳の不自由な人、付き添いのない児童・幼児などが通るときは、一時停止か徐行。歩行者のいる安全地帯の側方は徐行</li>
+        <li>ドアを閉め、荷物を確実に積んで転落・落下を防ぐ。落とした積荷は速やかに取り除く。安全を確かめずにドアを開けない</li>
+        <li>座席ベルトは運転者も同乗者も装着させる。幼児にはチャイルドシートを使わせる</li>
+        <li>初心運転者標識：普通免許を受けて通算1年未満は表示が義務。高齢運転者標識(70歳以上)は努力義務</li>
+        <li>安全運転管理者：乗車定員11人以上の自動車1台以上、またはその他の自動車5台以上を使う使用の本拠ごとに選任。20台以上なら20台ごとに副安全運転管理者</li>
+        <li>安全運転管理者の選任・解任は15日以内に都道府県公安委員会へ届出</li>
+        <li>環状交差点では徐行し、中を通る車両の進行を妨げない。中は右回り(時計回り)</li>
+      </ul>
+      <p class="src">出典の目安：道路交通法 第64・70〜71条の5・74条の3・101条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="tr-license" aria-labelledby="h-tr-license">
+      <p class="meta"><span class="stage">ステージ3</span>車両・道交</p>
+      <h3 id="h-tr-license">免許の区分</h3>
+      <p class="lead">運転免許の区分。車両総重量・最大積載量・乗車定員の3つで決まります。</p>
+      <ul>
+        <li>大型：車両総重量11トン以上、最大積載量6.5トン以上、乗車定員30人以上のいずれか</li>
+        <li>中型：車両総重量7.5〜11トン未満、最大積載量4.5〜6.5トン未満、乗車定員11〜29人</li>
+        <li>準中型：車両総重量3.5〜7.5トン未満、最大積載量2〜4.5トン未満(平成29年に新設)</li>
+        <li>普通：車両総重量3.5トン未満、最大積載量2トン未満、乗車定員10人以下</li>
+        <li>上位の免許は下位の自動車も運転できる(大型免許で中型・準中型・普通も可。中型免許では大型は不可)</li>
+        <li>受験できる年齢：大型21歳、中型20歳、準中型・普通18歳(特例教習で大型・中型も19歳から)</li>
+        <li>旅客を運ぶには第二種免許。区分は大型・中型・普通・大型特殊などで、準中型の旅客は中型第二種</li>
+        <li>車両総重量750kgを超える車をけん引するには、けん引する車の免許に加えてけん引免許が必要</li>
+      </ul>
+      <p class="src">出典の目安：道路交通法 第85・86・88条、同施行規則 第2条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="tr-signal" aria-labelledby="h-tr-signal">
+      <p class="meta"><span class="stage">ステージ3</span>車両・道交</p>
+      <h3 id="h-tr-signal">合図のきまり</h3>
+      <p class="lead">合図を出す時期と方法。「30m手前」と「3秒前」の区別がポイント。</p>
+      <ul>
+        <li>左折・右折・転回：その地点(交差点では手前の側端)から30m手前に達したとき</li>
+        <li>進路変更：変えようとするときの3秒前</li>
+        <li>徐行・停止・後退：その行為をしようとするとき</li>
+        <li>右折・転回の方法：右側の方向指示器、または右腕を水平に伸ばす(左腕なら外に出してひじを垂直に上に曲げる)</li>
+        <li>左折の方法：左側の方向指示器、または左腕を水平に伸ばす(右腕なら外に出してひじを垂直に上に曲げる)</li>
+        <li>徐行・停止：腕を斜め下に伸ばす、または制動灯。後退：腕を斜め下に伸ばし手のひらを後ろに向けて前後に動かす、または後退灯</li>
+        <li>環状交差点から出るとき：出ようとする出口の直前の出口の側方を通過したときに左折の合図(直後の出口で出るときは入ったときに合図)</li>
+      </ul>
+      <p class="src">出典の目安：道路交通法 第53条、同施行令 第21条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="tr-speed" aria-labelledby="h-tr-speed">
+      <p class="meta"><span class="stage">ステージ3</span>車両・道交</p>
+      <h3 id="h-tr-speed">速度と積載</h3>
+      <p class="lead">法定速度と積載の制限。「1.2倍」「10分の1」「3.8m」を押さえます。</p>
+      <ul>
+        <li>一般道路の法定速度：自動車は時速60km(標識があれば標識に従う)</li>
+        <li>高速道路(本線車道)の最高速度：大型乗用(バス)・中型乗用は100km、大型貨物などは90km(2019年に80→90)、けん引する自動車は80km</li>
+        <li>高速道路の最低速度：時速50km(標識があればその速度)</li>
+        <li>積載の長さ：自動車の長さ＋その10分の2(1.2倍)まで。前後にはみ出せるのはそれぞれ長さの10分の1まで</li>
+        <li>積載の幅：自動車の幅＋その10分の2(1.2倍)まで。左右へのはみ出しは幅の10分の1まで</li>
+        <li>積載の高さ：地上3.8mまで(公安委員会が指定した道路では4.1mまで)</li>
+        <li>自動車検査証の最大積載量を超えて積んではならない。超えて積むには出発地を管轄する警察署長の許可</li>
+        <li>荷台に人を乗せるのは原則禁止。貨物を看守するための最小限の人員は乗せられる</li>
+      </ul>
+      <p class="src">出典の目安：道路交通法 第55・57・75条の4、同施行令 第11・22・27条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="tr-highway" aria-labelledby="h-tr-highway">
+      <p class="meta"><span class="stage">ステージ4</span>車両・道交</p>
+      <h3 id="h-tr-highway">高速道路のきまり</h3>
+      <p class="lead">高速道路でしてはいけないことと、故障したときの対応。</p>
+      <ul>
+        <li>本線車道では横断・転回・後退をしてはならない</li>
+        <li>停車・駐車は原則禁止。例外は、駐車区画、故障などのとき十分な幅の路肩・路側帯、バス停留所、料金所での支払いなど(荷物の積卸しは例外ではない)</li>
+        <li>本線車道に入るときは、本線車道を走る自動車の進行を妨げない。緊急自動車の通行も妨げない</li>
+        <li>入るときは加速車線、出るときは減速車線を通行する</li>
+        <li>故障などで止まったら、停止表示器材などで停止していることを表示し、本線車道等(加速・減速・登坂車線を含む)の外へ移す措置をとる</li>
+        <li>最高速度・最低速度は「速度と積載」を参照(大型貨物90km、けん引80km、最低50km)</li>
+      </ul>
+      <p class="src">出典の目安：道路交通法 第75条の5〜75条の11</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+
+    <h2 class="group" id="g-lb">労働基準法・改善基準告示<small>トラック・バス・タクシー</small></h2>
+    <section class="note" id="lb-words" aria-labelledby="h-lb-words">
+      <p class="meta"><span class="stage">ステージ1</span>労働時間</p>
+      <h3 id="h-lb-words">拘束と休息</h3>
+      <p class="lead">改善基準告示のことばの意味。ここが分かると、あとの「拘束時間」「運転時間」の問題がすっと読めます。</p>
+      <ul>
+        <li>正式名称は「自動車運転者の労働時間等の改善のための基準」(改善基準告示)。トラック・バス・タクシーなど、自動車の運転者を使う事業者が対象</li>
+        <li>拘束時間 ＝ 労働時間 ＋ 休憩時間。始業から終業まで、会社に拘束されている全部の時間</li>
+        <li>労働時間 ＝ 作業時間 ＋ 手待ち時間。荷待ち(積み下ろしを待つ時間)は手待ち時間なので労働時間に入る</li>
+        <li>休息期間 ＝ 勤務と次の勤務の間の、睡眠を含む自由な時間。勤務中の休憩とは別もの</li>
+        <li>運転時間 ＝ 実際にハンドルを握っている時間。荷役や荷待ちは含まない</li>
+        <li>「1日」は暦日ではなく、始業時刻から数えて24時間。「2日平均」の2日は始業時刻から48時間</li>
+        <li>休息期間(トラック)は継続11時間以上が基本、下限9時間(改正前は継続8時間)</li>
+        <li>休日 ＝ 休息期間 ＋ 24時間の連続した時間で、30時間以上。2日続けて休むときの2日目は24時間以上でよい</li>
+      </ul>
+      <p class="src">出典の目安：改善基準告示</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="lb-truck" aria-labelledby="h-lb-truck">
+      <p class="meta"><span class="stage">ステージ2</span>労働時間</p>
+      <h3 id="h-lb-truck">トラックの拘束</h3>
+      <p class="lead">トラック運転者の拘束時間と休息期間。改正後の数字(令和6年4月〜)で覚えます。</p>
+      <ul>
+        <li>1年の拘束時間：3,300時間以内(労使協定で3,400時間まで)。3,516時間は改正前の数字</li>
+        <li>1か月の拘束時間：284時間以内(労使協定で310時間まで、年6か月まで)。293時間は改正前</li>
+        <li>284時間を超える月は連続3か月まで。時間外・休日労働は月100時間未満となるよう努める</li>
+        <li>1日の拘束時間：13時間以内が基本、延長は最大15時間まで。14時間を超えるのは週2回まで(目安)</li>
+        <li>休息期間：継続11時間以上を与えるよう努め、9時間を下回らない</li>
+        <li>分割休息(継続9時間が困難なとき)：1回3時間以上、2分割なら合計10時間以上、3分割なら合計12時間以上。3分割は連続しないよう努める。1か月程度の全勤務回数の2分の1が限度</li>
+        <li>休日労働は2週間に1回まで。休日労働をしても、1日・1か月・1年の拘束時間の上限は超えられない</li>
+        <li>まぎらわしい数字：「1回4時間以上・合計11時間以上・2分割まで」はバスの分割休息</li>
+      </ul>
+      <p class="src">出典の目安：改善基準告示(トラック)</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="lb-law32" aria-labelledby="h-lb-law32">
+      <p class="meta"><span class="stage">ステージ2</span>労働時間</p>
+      <h3 id="h-lb-law32">労働時間と休日</h3>
+      <p class="lead">労働基準法の基本。法定労働時間・休憩・休日と、解雇予告や休業手当の数字。</p>
+      <ul>
+        <li>法定労働時間は1日8時間・1週40時間。超えるには36協定を結んで労働基準監督署長に届け出る</li>
+        <li>休憩：労働時間が6時間を超えるときは45分以上、8時間を超えるときは1時間以上。労働時間の途中に与え、自由に利用させる</li>
+        <li>労働から離れることが保障されていない待機(手待ち時間)は、休憩ではなく労働時間</li>
+        <li>法定休日：毎週少なくとも1回、または4週間を通じて4日以上(「2週間に1回」は改善基準告示の休日労働の限度で別の話)</li>
+        <li>常時10人以上の労働者を使う使用者は、就業規則を作って労働基準監督署長に届け出る</li>
+        <li>労働契約を結ぶときは、賃金・労働時間などの労働条件を明示する</li>
+        <li>解雇は少なくとも30日前に予告するか、30日分以上の平均賃金を払う(足りない日数分を払ってもよい)</li>
+        <li>使用者の都合による休業は、平均賃金の6割以上の休業手当</li>
+        <li>健康診断：雇入れ時と、1年以内ごとに1回。深夜業に常時従事する者は6か月以内ごとに1回</li>
+      </ul>
+      <p class="src">出典の目安：労働基準法 第15・20・26・32・34〜36・89条、労働安全衛生規則</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="lb-drive" aria-labelledby="h-lb-drive">
+      <p class="meta"><span class="stage">ステージ3</span>労働時間</p>
+      <h3 id="h-lb-drive">運転時間</h3>
+      <p class="lead">トラックの運転時間と連続運転。「2日平均」「2週平均」の判定方法が計算問題でよく出ます。</p>
+      <ul>
+        <li>運転時間は2日(始業から48時間)を平均して1日9時間以内。「1日8時間」という基準はない</li>
+        <li>2日平均の判定：「特定日と前日」と「特定日と翌日」の平均が、どちらも9時間を超えたときだけ違反</li>
+        <li>例：前日10・特定日9・翌日8時間 → 前日との平均9.5、翌日との平均8.5 → 違反ではない</li>
+        <li>2週間を平均して1週44時間以内(2週間の合計88時間以内)。特定の日から2週間ごとに区切って判断</li>
+        <li>連続運転時間は4時間以内。運転の中断は1回おおむね連続10分以上・合計30分以上</li>
+        <li>10分未満の中断は3回以上連続させない</li>
+        <li>SA・PAに駐車できないなどやむを得ないときは、連続運転を最大30分延長できる(4時間30分まで)</li>
+        <li>運転時間 ＝ 実際にハンドルを握る時間。荷待ち・荷役は運転時間ではなく拘束時間に入る</li>
+      </ul>
+      <p class="src">出典の目安：改善基準告示(トラック)</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="lb-bus" aria-labelledby="h-lb-bus">
+      <p class="meta"><span class="stage">ステージ3</span>労働時間</p>
+      <h3 id="h-lb-bus">バスの基準</h3>
+      <p class="lead">バス運転者の基準。トラックと似ていて数字が少しずつ違うので、比べて覚えます。</p>
+      <ul>
+        <li>1か月の拘束時間：281時間以内(トラックは284)。貸切バス等は労使協定で294時間まで・年6か月まで、281時間超は連続4か月まで</li>
+        <li>1年の拘束時間：3,300時間以内(貸切バス等は協定で3,400時間まで)</li>
+        <li>または52週で3,300時間・4週平均1週65時間以内(協定で3,400時間・68時間、52週のうち24週まで、65時間超は連続16週まで)</li>
+        <li>1日の拘束時間：13時間以内が基本、最大15時間。14時間超は週3回まで(トラックは週2回)</li>
+        <li>休息期間：継続11時間以上を基本とし、9時間を下回らない(「継続8時間」は改正前)</li>
+        <li>分割休息：1回4時間以上・合計11時間以上・2分割まで(トラックは1回3時間以上)</li>
+        <li>運転時間：2日平均9時間以内。4週平均1週40時間以内(貸切バス等は協定で44時間まで・52週のうち16週まで、52週で2,080時間まで)</li>
+        <li>連続運転4時間以内(中断は1回10分以上・合計30分以上)。高速バス・貸切バスの高速道路の実車運行区間はおおむね2時間までに努める</li>
+        <li>リクライニング方式の座席がある2人乗務：拘束時間19時間まで延長、休息期間5時間まで短縮</li>
+        <li>緊急車両の通行に伴う軽微な移動などは、30分まで連続運転時間から除ける(記録が必要)</li>
+      </ul>
+      <p class="src">出典の目安：改善基準告示(バス)</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="lb-taxi" aria-labelledby="h-lb-taxi">
+      <p class="meta"><span class="stage">ステージ3</span>労働時間</p>
+      <h3 id="h-lb-taxi">タクシーの基準</h3>
+      <p class="lead">タクシー運転者の基準。日勤と隔日勤務で数字が違います。</p>
+      <ul>
+        <li>日勤の1か月の拘束時間：288時間以内(トラック284、バス281)</li>
+        <li>日勤の1日の拘束時間：13時間以内が原則で最大15時間。14時間超は週3回まで</li>
+        <li>日勤の休息期間：継続11時間以上を基本とし、9時間を下回らない</li>
+        <li>隔日勤務の1回の拘束時間：22時間以内、2回の平均で21時間以内</li>
+        <li>隔日勤務の休息期間：継続24時間以上を基本とし、22時間を下回らない</li>
+        <li>隔日勤務の1か月の拘束時間：262時間以内(地域的事情など特別な事情があれば労使協定で270時間まで・年6か月まで)。1回が長いので日勤より短い</li>
+        <li>休日労働は2週間に1回まで。休日は休息期間＋24時間以上の連続した時間</li>
+      </ul>
+      <p class="src">出典の目安：改善基準告示(タクシー)</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="lb-pay" aria-labelledby="h-lb-pay">
+      <p class="meta"><span class="stage">ステージ3</span>労働時間</p>
+      <h3 id="h-lb-pay">割増賃金と年休</h3>
+      <p class="lead">割増賃金の率と年次有給休暇。率は足し算で組み合わせます。</p>
+      <ul>
+        <li>時間外労働：2割5分以上。月60時間を超える部分は5割以上(中小企業も2023年4月から)</li>
+        <li>法定休日の労働：3割5分以上</li>
+        <li>深夜労働(午後10時〜午前5時)：2割5分以上</li>
+        <li>重なるときは足し算：時間外＋深夜＝5割以上、法定休日＋深夜＝6割以上</li>
+        <li>年次有給休暇：6か月継続勤務・全労働日の8割以上出勤で10労働日。その後は勤続年数に応じて増える</li>
+        <li>年10日以上付与される労働者には、使用者が年5日を時季を指定して取得させる(2019年4月から)</li>
+        <li>有給は請求された時季に与える。事業の正常な運営を妨げるときだけ時季を変更できる(時季変更権)</li>
+        <li>平均賃金 ＝ 算定事由の発生日以前3か月間の賃金総額 ÷ その期間の総日数(解雇予告手当・休業手当の基礎)</li>
+      </ul>
+      <p class="src">出典の目安：労働基準法 第12・37・39条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="lb-contract" aria-labelledby="h-lb-contract">
+      <p class="meta"><span class="stage">ステージ3</span>労働時間</p>
+      <h3 id="h-lb-contract">労働契約と賃金</h3>
+      <p class="lead">労働契約・解雇・賃金のルール。「禁止されているもの」をまとめて覚えると効率的。</p>
+      <ul>
+        <li>契約時に賃金・労働時間などの労働条件を明示する。事実と違えば労働者は即時に解除でき、帰郷旅費は使用者が負担</li>
+        <li>禁止：違約金・損害賠償額の予定(実際の損害の請求は別)、前借金との相殺、強制貯金、強制労働、中間搾取、国籍・信条・社会的身分による差別</li>
+        <li>解雇制限：業務上のけがや病気の休業期間とその後30日間、産前産後の休業期間とその後30日間は解雇できない</li>
+        <li>解雇は30日前に予告するか、30日分以上の平均賃金を払う</li>
+        <li>賃金支払いの五原則：通貨で・直接・全額を・毎月1回以上・一定の期日に。控除は法令の定めか労使協定がある場合だけ</li>
+        <li>出来高払制でも、労働時間に応じた一定額を保障する(保障給)</li>
+        <li>退職時の証明は請求があれば遅滞なく交付。退職・死亡のとき、請求があれば7日以内に賃金を払い金品を返す</li>
+        <li>有期労働契約の上限は原則3年(専門的知識を持つ者・60歳以上は5年)</li>
+        <li>就業規則は常時10人以上で作成・届出し、掲示・備付け・書面交付などで周知する</li>
+        <li>療養開始から3年たっても治らないときは、平均賃金1,200日分の打切補償</li>
+      </ul>
+      <p class="src">出典の目安：労働基準法 第3〜6・14〜24・27・81・89・106条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="lb-36" aria-labelledby="h-lb-36">
+      <p class="meta"><span class="stage">ステージ4</span>労働時間</p>
+      <h3 id="h-lb-36">36協定と上限</h3>
+      <p class="lead">36協定と時間外労働の上限。運転者には特例があります。</p>
+      <ul>
+        <li>時間外・休日労働をさせるには36協定を結び、事業場を管轄する労働基準監督署長に届け出る(運輸支局ではない)</li>
+        <li>36協定がなければ、本人が同意していても違反。罰則は6か月以下の拘禁刑または30万円以下の罰金</li>
+        <li>時間外労働の原則の上限：月45時間・年360時間</li>
+        <li>一般の特別条項：年720時間以内、月45時間を超えるのは年6か月まで</li>
+        <li>自動車運転の業務の特例：年960時間</li>
+        <li>労働基準法の上限と、改善基準告示の拘束時間などは別々に守る(片方だけでは足りない)</li>
+      </ul>
+      <p class="src">出典の目安：労働基準法 第32・36・119条、改善基準告示</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="lb-special" aria-labelledby="h-lb-special">
+      <p class="meta"><span class="stage">ステージ4</span>労働時間</p>
+      <h3 id="h-lb-special">特例のきまり</h3>
+      <p class="lead">トラックの特例(隔日勤務・2人乗務・フェリー・予期しえない事象・長距離)。</p>
+      <ul>
+        <li>隔日勤務(業務上やむを得ない場合)：2暦日の拘束時間21時間以内、勤務後に継続20時間以上の休息。夜間4時間以上の仮眠を与えれば24時間まで(2週間に3回まで)。2週間の拘束時間は126時間以内</li>
+        <li>隔日勤務の休日は、休息期間20時間＋24時間＝44時間</li>
+        <li>2人乗務：拘束時間20時間まで延長、休息期間4時間まで短縮できる。車両内ベッド(長さ198cm以上・幅80cm以上など)があれば24時間まで、8時間以上の仮眠を与えれば28時間まで</li>
+        <li>休日はどんな場合も30時間を下回らない(休息4時間＋24時間＝28時間は休日にならない)</li>
+        <li>フェリーの乗船時間は原則として休息期間。休息期間から減算できるが、下船から勤務終了までの時間の2分の1を下回らない。乗船が8時間を超えれば下船後に次の勤務が始まる</li>
+        <li>予期しえない事象(予期せぬ車両故障、フェリーの欠航、災害・事故による道路の封鎖や渋滞、警報が出た異常気象)：対応した時間を1日の拘束時間・2日平均の運転時間・連続運転時間から除ける。運転日報＋公的機関の情報などの客観的な記録が必要</li>
+        <li>長距離貨物運送(1週間の運行がすべて1運行450km以上で、休息が住所地以外)：休息期間を週2回まで継続8時間以上にできる。そのあとは継続12時間以上の休息</li>
+      </ul>
+      <p class="src">出典の目安：改善基準告示(トラック)</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="lb-protect" aria-labelledby="h-lb-protect">
+      <p class="meta"><span class="stage">ステージ4</span>労働時間</p>
+      <h3 id="h-lb-protect">年少者と女性</h3>
+      <p class="lead">年少者と女性の保護。「請求があれば」かどうかに注意します。</p>
+      <ul>
+        <li>満15歳になった日以後の最初の3月31日が終わるまでは、原則として使用できない</li>
+        <li>18歳未満：午後10時〜午前5時の深夜業は原則禁止。36協定による時間外・休日労働も原則できない</li>
+        <li>産前休業：請求があれば就業させてはならない</li>
+        <li>産後休業：請求がなくても就業させてはならない。産後6週間を過ぎ、本人が請求し医師が支障ないと認めた業務は可</li>
+        <li>妊産婦が請求したら、時間外労働・休日労働・深夜業をさせてはならない(36協定があっても)</li>
+        <li>育児時間：生後1年未満の子を育てる女性が請求したら、休憩とは別に1日2回各30分以上</li>
+        <li>生理日の就業が著しく困難な女性が請求したら就業させてはならない(賃金を払うかは法律に定めなし)</li>
+      </ul>
+      <p class="src">出典の目安：労働基準法 第56・60・61・65〜68条</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+
+    <h2 class="group" id="g-pr">実務上の知識及び能力<small>貨物・旅客 共通</small></h2>
+    <section class="note" id="pr-body" aria-labelledby="h-pr-body">
+      <p class="meta"><span class="stage">ステージ1</span>実務</p>
+      <h3 id="h-pr-body">人と体の話</h3>
+      <p class="lead">運転するときの「人の体」の性質。視野・疲労・眠気・アルコールの数字を押さえます。</p>
+      <ul>
+        <li>速度が上がるほど視野は狭く、注視点は遠くなる(時速40kmで約100度 → 時速130kmで約30度)</li>
+        <li>蒸発現象 ＝ 夜間、自車と対向車のライトが重なり、道路の中央付近の歩行者が見えにくくなる現象</li>
+        <li>年齢とともに、明るさの変化に目が慣れるまでの時間が長くなる(トンネルの出入口など)</li>
+        <li>疲労がたまると、見落としや判断・反応の遅れが増える。眠気は安全な場所に停車して仮眠をとる</li>
+        <li>疲労回復には夜間を中心に7時間程度の連続した睡眠。20分程度の仮眠は眠気覚ましに効くが、夜の睡眠の代わりにはならない</li>
+        <li>居眠りの兆候：あくびの増加、まばたきが長くなる、速度が不安定、蛇行。感じたら運転を中断</li>
+        <li>少量の飲酒でも判断力・注意力は下がる。飲酒は認知・判断・操作のすべてに影響する</li>
+        <li>アルコール1単位(純アルコール約20g)の分解にはおよそ4時間。1単位＝ビール500ml、日本酒180ml、ウイスキー60ml、ワイン200mlなど</li>
+      </ul>
+      <p class="src">出典の目安：国土交通省 過労運転防止対策マニュアル・飲酒運転防止マニュアルほか</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="pr-physics" aria-labelledby="h-pr-physics">
+      <p class="meta"><span class="stage">ステージ2</span>実務</p>
+      <h3 id="h-pr-physics">速度とカガク</h3>
+      <p class="lead">速度と力の関係。「速度に比例」か「速度の2乗に比例」かを区別します。</p>
+      <ul>
+        <li>停止距離 ＝ 空走距離 ＋ 制動距離</li>
+        <li>空走距離 ＝ 危険を感じてからブレーキが効き始めるまでの距離。速度に比例(速度2倍→2倍)</li>
+        <li>制動距離 ＝ ブレーキが効き始めてから止まるまでの距離。速度の2乗に比例(30→60km/hで約4倍)。濡れた路面では長くなる</li>
+        <li>衝撃力・運動エネルギーは速度の2乗に比例(速度2倍→約4倍、3倍→約9倍)。運動エネルギーは質量にも比例</li>
+        <li>遠心力は速度の2乗に比例し、カーブの半径に反比例(急なカーブほど大きい)</li>
+        <li>内輪差 ＝ 曲がるとき後輪が前輪より内側を通る差。ホイールベースの長い大型車ほど大きい</li>
+        <li>ハイドロプレーニング：水の膜でタイヤが浮きハンドル・ブレーキが効かない。摩耗タイヤ・高速で起きやすい</li>
+        <li>ベーパーロック(ブレーキ液に気泡)とフェード(摩擦材の過熱)：どちらも下り坂でのブレーキの多用が原因。エンジンブレーキを併用する</li>
+        <li>スタンディングウェーブ：空気圧不足のタイヤが高速で波打ち、バーストのおそれ</li>
+        <li>歩行者の生存率：衝突速度が時速30kmなら約9割、時速50kmでは約2割に下がる</li>
+      </ul>
+      <p class="src">出典の目安：運行管理者の実務知識、内閣府資料</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="pr-calc" aria-labelledby="h-pr-calc">
+      <p class="meta"><span class="stage">ステージ3</span>実務</p>
+      <h3 id="h-pr-calc">距離と時間の計算</h3>
+      <p class="lead">速度・距離・時間の計算。「÷3.6」を使いこなせば怖くありません。</p>
+      <ul>
+        <li>時速(km/h)を3.6で割ると秒速(m/s)。例：36km/h＝10m/s、54km/h＝15m/s、72km/h＝20m/s、90km/h＝25m/s、108km/h＝30m/s</li>
+        <li>秒速に3.6をかけると時速に戻る(15m/s × 3.6 ＝ 54km/h)</li>
+        <li>空走距離 ＝ 秒速 × 反応時間(例：72km/hで0.8秒 → 20 × 0.8 ＝ 16m)</li>
+        <li>停止距離 ＝ 空走距離 ＋ 制動距離。車間距離より長ければ追突する</li>
+        <li>制動距離は速度の2乗に比例：速度2倍なら4倍、3倍なら9倍</li>
+        <li>所要時間 ＝ 距離 ÷ 速度(220km ÷ 50km/h ＝ 4.4時間 ＝ 4時間24分)。0.1時間 ＝ 6分</li>
+        <li>距離 ＝ 速度 × 時間(2時間40分 ＝ 8/3時間)</li>
+        <li>運行計画の問題では、連続運転が4時間を超えないか、休憩を足した到着時刻はいつかも確認する</li>
+      </ul>
+      <p class="src">出典の目安：運行管理者の実務知識(計算)</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="pr-health" aria-labelledby="h-pr-health">
+      <p class="meta"><span class="stage">ステージ3</span>実務</p>
+      <h3 id="h-pr-health">健康と運転</h3>
+      <p class="lead">運転者の健康管理。睡眠時無呼吸症候群(SAS)・脳血管疾患・視野障害の資料がよく出ます。</p>
+      <ul>
+        <li>健康状態は、健康診断の結果と点呼での日々の確認を組み合わせて把握する</li>
+        <li>運転中に体調が急変したら、ただちに安全な場所に停車して運行管理者に連絡する</li>
+        <li>脳卒中の前兆：手足のしびれ、ろれつが回らない、片側に力が入らない。脳健診は正常でも3年に1回程度</li>
+        <li>SAS：大きないびき、睡眠中の呼吸停止、起床時の頭痛、日中の強い眠気。重症は1時間あたりの無呼吸・低呼吸の回数(AHI)が30以上</li>
+        <li>SASの治療はCPAPなど。適切に治療すれば乗務できる。点呼で睡眠やCPAPの使用状況を確認</li>
+        <li>緑内障などの視野障害は脳が見えない部分を補うため気づきにくい。眼底検査・眼圧検査を含む眼科検診が有効</li>
+        <li>風邪薬などの市販薬でも眠気が出ることがある。前日の飲酒が翌日まで残ることもある</li>
+        <li>健康診断は1年以内ごとに1回(深夜業は6か月以内ごと)。健康診断個人票は5年間保存</li>
+        <li>体調不良などに備え、代わりの運転者を手配する方法をあらかじめ決めておく</li>
+      </ul>
+      <p class="src">出典の目安：国土交通省 SAS対応マニュアル・脳血管疾患対策ガイドライン・健康管理マニュアルほか、労働安全衛生規則</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="pr-accident" aria-labelledby="h-pr-accident">
+      <p class="meta"><span class="stage">ステージ3</span>実務</p>
+      <h3 id="h-pr-accident">事故と対応</h3>
+      <p class="lead">事故が起きたときの対応と、自動車事故報告規則。「報告書」と「速報」の区別が大事。</p>
+      <ul>
+        <li>事故を起こしたら、ただちに運転を止めて負傷者を救護し、危険防止の措置をとる。そのあと警察官に日時・場所・死傷者の数・損壊の程度・積載物・講じた措置を報告</li>
+        <li>警察官が着くまで現場を離れないよう命じられることがある</li>
+        <li>高速道路で故障したら停止表示器材を置くなどして後続車に知らせ、車を本線車道等の外へ移す措置をとる</li>
+        <li>事故報告書：事故の日から30日以内に3通。対象は転覆・転落・火災、10台以上の衝突・接触、死者または重傷者、負傷者10人以上、運転者の疾病で運行できなくなったものなど</li>
+        <li>速報：24時間以内にできる限り速やかに(電話・FAXなど)。死者2人以上(旅客は1人以上)、重傷者5人以上、旅客の重傷者1人以上、負傷者10人以上、酒気帯び運転を伴う事故など</li>
+        <li>転覆・転落・火災・鉄道車両との衝突は、旅客の事業用自動車が起こしたものだけ速報も必要(貨物は報告書のみ)</li>
+        <li>10台以上の衝突、高速道路の3時間以上の通行止め、運転者の疾病による運行不能は、報告書は必要だが速報の対象外</li>
+        <li>報告された事故は、事故警報として事故防止対策の周知に使われる。ヒヤリ・ハットは叱るためでなく対策に使う</li>
+      </ul>
+      <p class="src">出典の目安：自動車事故報告規則 第2〜5条、道路交通法 第72条・75条の11</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="pr-prevent" aria-labelledby="h-pr-prevent">
+      <p class="meta"><span class="stage">ステージ4</span>実務</p>
+      <h3 id="h-pr-prevent">事故をふせぐ</h3>
+      <p class="lead">事故を防ぐための運転と指導。ドライブレコーダーの活用もよく出ます。</p>
+      <ul>
+        <li>大型車の左折は内輪差と左側の死角に注意(自転車・二輪車の巻き込み)</li>
+        <li>重い荷物は下に積んで重心を低くする。出発前に積み荷を確認し、ロープやシートで固定</li>
+        <li>長い下り坂はエンジンブレーキを併用(フェード・ベーパーロックを防ぐ)</li>
+        <li>速度が高いほど停止距離が長い → 車間距離を長くとる。追突は停止距離が車間距離より長いときに起きる(例：時速60kmなら60−15＝45mが目安)</li>
+        <li>衝突被害軽減ブレーキなどの先進安全装置は支援装置。過信しない</li>
+        <li>運行計画は道路状況・気象・休憩や睡眠時間を考えて無理のないものに。事故は原因を分析し、再発防止策を全員で共有(個人の責任追及ではない)</li>
+        <li>ドライブレコーダーの指導：運転者自身に問題点と原因を考えさせる。運転者・相手・車両・走行環境・運行管理の5つの観点。1〜2週間後に映像で確認</li>
+        <li>ヒヤリ・ハットを自分から申告したことは、危険を正しく認知できている証として評価する</li>
+        <li>右折四輪車と直進二輪車の事故(右直事故)が多い。二輪車は「遠く・遅く」見える</li>
+      </ul>
+      <p class="src">出典の目安：国土交通省 追突事故防止マニュアル・ドライブレコーダー指導マニュアル、警察庁資料ほか</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="pr-plan" aria-labelledby="h-pr-plan">
+      <p class="meta"><span class="stage">ステージ4</span>実務</p>
+      <h3 id="h-pr-plan">運行計画の検証</h3>
+      <p class="lead">運行計画が改善基準告示に合っているかを確かめる計算問題の解き方。</p>
+      <ul>
+        <li>連続運転：運転の中断(1回おおむね10分以上)の間の運転時間が4時間以内か。5分の休憩は中断にならない。ちょうど4時間は適合</li>
+        <li>2日平均の運転時間：特定日と前日、特定日と翌日の両方を計算。どちらも9時間を超えたら違反</li>
+        <li>2週平均の運転時間：2週間の合計 ÷ 2 が44時間以内か。1週ごとに44時間を超えてもよい</li>
+        <li>1日の拘束時間：始業から終業まで(休憩を含む)。13時間以内が原則、最大15時間、14時間超は週2回まで</li>
+        <li>休息期間：終業から次の始業まで。継続11時間以上が基本、9時間未満は違反</li>
+        <li>1か月の拘束時間：原則284時間以内(協定で310時間まで)</li>
+        <li>到着時刻：走行時間(距離 ÷ 速度)＋休憩時間を出発時刻に足す</li>
+      </ul>
+      <p class="src">出典の目安：改善基準告示(トラック)、厚生労働省リーフレット</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+    <section class="note" id="pr-hazard" aria-labelledby="h-pr-hazard">
+      <p class="meta"><span class="stage">ステージ5</span>実務</p>
+      <h3 id="h-pr-hazard">危険予知と指差呼称</h3>
+      <p class="lead">危険予知訓練(KYT)と指差呼称、ヒヤリ・ハット。</p>
+      <ul>
+        <li>危険予知訓練(KYT)は、危険を予測して回避する力をつける訓練。悪天候・内輪差・視界の制約・ジャックナイフ現象などを題材にする</li>
+        <li>指差呼称：確認する対象を指で差し、声に出して確認する。見落としや思い込みを防ぐ</li>
+        <li>ヒヤリ・ハット：事故にはならなかったが、衝突・接触しそうになったと運転者が認識した事例。集めて再発防止に生かす</li>
+        <li>ハインリッヒの法則(1：29：300)：重大事故1件の裏に軽い事故29件、ヒヤリ・ハット300件。ヒヤリ・ハットの段階で対策をとる</li>
+        <li>事故惹起運転者の指導では、事故の要因となった運転行動上の問題点を把握させ、再発防止策を理解させる</li>
+        <li>適性診断などで自分の運転の特性を自覚させ、ストレスなど心身の状態にも配慮する</li>
+      </ul>
+      <p class="src">出典の目安：国土交通省 指導及び監督の指針ほか</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+
+    <h2 class="group" id="g-mix">総まとめ<small>試験のしくみ</small></h2>
+    <section class="note" id="mix-final" aria-labelledby="h-mix-final">
+      <p class="meta"><span class="stage">ステージ6</span>実務</p>
+      <h3 id="h-mix-final">総まとめ</h3>
+      <p class="lead">全分野からまんべんなく出題されます。弱い分野は、上の各スキルのノートで復習してから挑戦しましょう。</p>
+      <ul>
+        <li>本試験は30問・90分。貨物自動車運送事業法または道路運送法(8問)・道路運送車両法(4問)・道路交通法(5問)・労働基準法(6問)・実務上の知識及び能力(7問)</li>
+        <li>合格基準：総得点18問以上、各分野1問以上、実務上の知識は2問以上</li>
+        <li>よく出る数字：運行管理者の人数(貨物 ÷30＋1)、記録の保存(1年と3年)、拘束時間(トラック284時間・13時間/最大15時間)、休息期間(11時間基本・9時間下限)</li>
+        <li>「認可」「届出」「許可」の区別と、「15日以内」「30日以内」「遅滞なく」の区別は分野をまたいで問われる</li>
+        <li>模擬試験の結果画面の「ここを練習」で、いちばん弱い分野のスキルをすぐ練習できます</li>
+      </ul>
+      <p class="src">出典の目安：本サイトの模擬試験の仕様</p>
+      <a class="up" href="#toc">もくじへ</a>
+    </section>
+
+    <a class="cta" href="./">ドリルで問題を解く</a>
+    <footer><a href="about.html">このサイトについて・プライバシーポリシー</a></footer>
+  </main>
+</body>
+</html>

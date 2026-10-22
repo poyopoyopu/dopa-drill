@@ -60,6 +60,9 @@
           <button type="button" id="open-trophy" class="sub-btn">トロフィー <b id="trophy-badge"></b></button>
           <button type="button" id="open-collect" class="sub-btn">コレクション <b id="collect-badge"></b></button>
         </div>
+        <div class="mode-row">
+          <a class="sub-btn text-btn" href="text.html">要点ノート<small>覚えるポイントを読む</small></a>
+        </div>
       </div>
       <section class="quest-card" id="quests" aria-labelledby="quest-title">
         <div class="quest-head"><h2 id="quest-title">きょうの クエスト</h2><span class="quest-reward" id="quest-reward"></span></div>
@@ -121,7 +124,7 @@
     <section id="screen-play" class="screen" aria-label="プレイ画面">
       <header class="hud">
         <div class="pips" id="pips" aria-hidden="true"></div>
-        <div class="clock" aria-live="off"><span id="clock-label">目標 2:40</span><b id="clock">0:00</b></div>
+        <div class="clock calm" aria-live="off"><span id="clock-label"></span><b id="clock">0:00</b></div>
         <span class="demo-tag" aria-hidden="true">DEMO</span>
         <button type="button" class="icon-btn" id="mute" aria-label="音を消す" aria-pressed="false">♪</button>
       </header>
@@ -259,6 +262,7 @@
       <p class="si-stars" id="si-stars"></p>
       <div class="si-next" id="si-next"></div>
       <p class="si-note" id="si-note"></p>
+      <p class="si-text-link"><a id="si-text" href="text.html">このスキルの要点ノートを読む</a></p>
       <div class="confirm-actions">
         <button type="button" class="sub-btn" id="si-close">とじる</button>
         <button type="button" class="sub-btn si-go" id="si-go">れんしゅう する</button>
