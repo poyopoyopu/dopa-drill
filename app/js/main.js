@@ -12,7 +12,7 @@ import { createGuide } from './guide.js';
 import { SKILLS, SKILL, LANES, DEPTH } from './skills.js';
 import { ORDER, emptyProgress, recordResult, stateOf, masteryRatio, starsOf, nextStar, STAR_MAX, pickCapsule, useCapsule, rustyOf, gradePlan, levelPlan, reviewPlan, problemFor, frontier, isUnlocked, relockTargets, relockSkill, TREE_LAYOUT } from './session.js';
 import * as growth from './growth.js';
-import { buildExam, judgeExam, EXAM, EXAM_MS, PASS_RATE, examRecord, examTrend } from './exam.js';
+import { buildExam, judgeExam, EXAM, EXAM_MS, PASS_RATE, examRecord, examTrend, examMissed } from './exam.js';
 import * as qs from './quests.js';
 import * as tr from './trophies.js';
 import * as ul from './unlocks.js';
@@ -452,7 +452,7 @@ async function setupProblem() {
   if (S.screen !== 'play' || run !== S.run) return;
   S.ready = true;
   // Answer time counts only while input is open (id033).
-  S.qStart = now(); S.qMisses = 0; S.qMs = 0;
+  S.qStart = now(); S.qMisses = 0; S.qMs = 0; S.firstPick = null;
   activate(0);
 }
 
@@ -516,6 +516,7 @@ function press(key, btn = padButtons[key]) {
     cell.classList.add('bad', 'has', 'pending');
     cell.textContent = key;
     if (p.kind === 'quiz') S.cells[`ch${key}`]?.classList.add('nope');
+    if (p.kind === 'quiz' && S.firstPick == null) S.firstPick = Number(key);
     S.shownWrong = key;
     carry(from, cell, key, () => { cell.classList.remove('pending'); onWrong(cell, st); });
   }
@@ -655,7 +656,7 @@ function noteProblem(p, firstTry) {
     else S.wrongList.push(p);
   }
   if (S.plan.placement && S.mode !== 'extra') S.plan.answer(firstTry);
-  if (S.plan.mode === 'exam' && S.mode !== 'extra' && p.examField != null) S.examLog.push({ field: p.examField, ok: firstTry, pool: p.pool });
+  if (S.plan.mode === 'exam' && S.mode !== 'extra' && p.examField != null) S.examLog.push({ field: p.examField, ok: firstTry, pool: p.pool, ...(firstTry ? {} : { problem: p, pick: S.firstPick }) });
   const timing = { at: Date.now(), day: store.dayKey(), ms: S.qMs, cells: p.steps.length, misses: S.qMisses || 0, problem: stripProblem(p) };
   questNote({ type: 'solve', firstTry, review: S.plan.mode === 'review', extra: S.mode === 'extra', skill: p.skill, skillState: p.skill && SKILL[p.skill] ? stateOf(prog, p.skill) : null });
   if (recording()) {
@@ -1251,7 +1252,7 @@ function showResult() {
   if (recording()) { growth.notePlay(stats(), { mode: S.plan.mode, day: store.dayKey(), timeMs: Math.round(t), dopaL: S.dopa.L, firstRate: rate }); store.save(); }
   questNote({ type: 'play', mode: S.plan.mode });
   $('#result-title').textContent = review ? 'ふくしゅう クリア' : exam ? `模擬試験(${exam.name}) ${exam.pass ? '合格' : '不合格'}${S.timeUp ? '（時間切れ）' : ''}` : `${modeName(S.plan)} クリア`;
-  renderExamResult($('#r-exam'), exam);
+  renderExamResult($('#r-exam'), exam, exam ? examMissed(S.examLog, S.plan.items) : []);
   const un = $('#r-unlock');
   un.textContent = review || exam ? '' : ok ? 'エクストラ解放' : '初回正解率80%以上でエクストラ';
   un.classList.toggle('yes', ok);
@@ -1512,6 +1513,22 @@ function renderSkillNews(el) {
   if (S.plan.placement) items.unshift(`<p>じつりょくチェック おわり　${SKILLS.filter((x) => stateOf(progress(), x.id) === 'mastered').length}こ クリア</p>`);
   el.innerHTML = items.slice(0, 5).join('');
 }
+const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+// Every question missed (or left unanswered) in this mock exam, with the right answer and the explanation.
+function missedHtml(list, exam) {
+  if (!list.length) return '';
+  const items = list.map(({ problem: p, pick, unanswered }) => {
+    const right = Number(p.steps[0].digit);
+    const yours = unanswered ? '<p class="mx-pick none">未回答（時間切れ）</p>'
+      : pick ? `<p class="mx-pick">あなたの答え　${CHOICE_MARK[pick - 1]} ${esc(p.choices[pick - 1])}</p>` : '';
+    return `<li><span class="mx-field">${esc(exam.fields[p.examField]?.label || p.title || '')}</span>`
+      + `<p class="mx-q">${esc(p.text)}</p>${yours}`
+      + `<p class="mx-right">正解　${CHOICE_MARK[right - 1]} ${esc(p.choices[right - 1])}</p>`
+      + (p.explain ? `<p class="mx-explain">${esc(p.explain)}</p>` : '')
+      + (p.source ? `<p class="mx-source">出典：${esc(p.source)}</p>` : '') + '</li>';
+  }).join('');
+  return `<details class="exam-missed"><summary>まちがえた問題を見直す（${list.length}問）</summary><ol>${items}</ol></details>`;
+}
 // Weakest field of this exam, with a button straight to practice its skill.
 function weakHtml(w) {
   if (!w || !w.skill || !SKILL[w.skill]) return '';
@@ -1536,7 +1553,7 @@ function trendHtml(list) {
 }
 
 // Mock exam verdict: total against the pass line, then each field against its minimum.
-function renderExamResult(box, exam) {
+function renderExamResult(box, exam, missed = []) {
   box.hidden = !exam;
   if (!exam) { box.innerHTML = ''; return; }
   const rows = exam.fields.map((f) => `<li class="${f.pass ? 'ok' : 'ng'}"><span>${f.label}</span><b>${f.ok}<small>/${f.n}</small></b><em>${f.pass ? '○' : `× ${f.need}問以上`}</em></li>`).join('');
@@ -1545,6 +1562,7 @@ function renderExamResult(box, exam) {
     + `<ol class="exam-fields">${rows}</ol>`
     + (exam.answered < exam.max ? `<p class="exam-timeup">時間切れ：${exam.max - exam.answered}問が未回答（不正解あつかい）</p>` : '')
     + weakHtml(exam.weak)
+    + missedHtml(missed, exam)
     + trendHtml(examTrend(store.load().history, exam.kind))
     + '<p class="exam-note">本試験と同じ分野・問題数・試験時間90分（運行管理者試験センターの受験概要による）。はじめに正解した問題だけを得点にしています。</p>';
 }

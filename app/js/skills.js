@@ -66,11 +66,12 @@ export const SKILLS = [
 
   // ---------------------------------------------------------------- stage 5
   { id: 'cg-guide', name: '指導と健康管理', grade: 5, lane: 0, req: ['cg-record'], gen: q('cg_guide') },
+  { id: 'cg-crew', name: '事故時と運転者のきまり', grade: 5, lane: 0, req: ['cg-tenko', 'cg-care'], gen: q('cg_crew') },
   { id: 'ps-crew', name: '事故時と車内のきまり', grade: 5, lane: 0, side: 1, req: ['ps-tenko', 'ps-care'], gen: q('ps_crew') },
   { id: 'pr-hazard', name: '危険予知と指差呼称', grade: 5, lane: 3, req: ['pr-prevent'], gen: q('pr_hazard') },
 
   // ---------------------------------------------------------------- stage 6
-  { id: 'mix-final', name: '総まとめ', grade: 6, lane: 3, req: ['cg-guide', 'lb-36', 'lb-bus', 'lb-drive', 'vh-shaken', 'tr-speed', 'tr-alcohol', 'ps-tenko', 'ps-care', 'ps-crew', 'pr-prevent'], gen: ['quiz', { all: true }] },
+  { id: 'mix-final', name: '総まとめ', grade: 6, lane: 3, req: ['cg-guide', 'cg-crew', 'lb-36', 'lb-bus', 'lb-drive', 'vh-shaken', 'tr-speed', 'tr-alcohol', 'ps-tenko', 'ps-care', 'ps-crew', 'pr-prevent'], gen: ['quiz', { all: true }] },
 ];
 
 export const SKILL = Object.fromEntries(SKILLS.map((s) => [s.id, s]));

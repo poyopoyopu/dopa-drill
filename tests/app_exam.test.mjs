@@ -1,7 +1,7 @@
 // The mock exam: field sizes, no repeats, and the pass rule.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { EXAM, EXAM_MS, buildExam, judgeExam, examSize, passLine, weakSpot, skillOfPool, examRecord, examTrend } from '../app/js/exam.js';
+import { EXAM, EXAM_MS, buildExam, judgeExam, examSize, passLine, weakSpot, skillOfPool, examRecord, examTrend, examMissed } from '../app/js/exam.js';
 import { SKILL } from '../app/js/skills.js';
 import { makeRng } from '../app/js/problems.js';
 import { POOLS } from '../app/js/bank.js';
@@ -101,4 +101,22 @@ test('exam records keep the score per field, and the trend lists one kind, oldes
   ];
   assert.deepEqual(examTrend(hist, 'cargo').map((h) => h.total), [15, 21]);
   assert.deepEqual(examTrend(hist, 'cargo', 1).map((h) => h.total), [21]);
+});
+
+test('the review list holds first-try misses with the wrong pick, then the questions left when time ran out', () => {
+  const ps = buildExam('cargo', makeRng(3));
+  const log = [
+    { field: 0, ok: true, pool: ps[0].pool },
+    { field: 0, ok: false, pool: ps[1].pool, problem: ps[1], pick: 2 },
+    { field: 0, ok: true, pool: ps[2].pool },
+  ];
+  const all = examMissed(log, ps);
+  assert.equal(all.length, 1 + 27);
+  assert.deepEqual(all[0], { problem: ps[1], pick: 2, unanswered: false });
+  assert.equal(all[1].problem, ps[3]);
+  assert.ok(all.slice(1).every((m) => m.unanswered && m.pick === null));
+  // Finished in time: only the miss.
+  const full = ps.map((p, i) => (i === 1 ? log[1] : { field: p.examField, ok: true, pool: p.pool }));
+  assert.equal(examMissed(full, ps).length, 1);
+  assert.deepEqual(examMissed([], []), []);
 });

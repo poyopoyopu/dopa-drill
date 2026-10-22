@@ -107,3 +107,12 @@ export const examRecord = (r) => ({ exam: r.kind, total: r.total, max: r.max, pa
 
 // The last `n` mock exams of one kind from the play history, oldest first.
 export const examTrend = (history, kind, n = 10) => history.filter((h) => h.mode === 'exam' && h.exam === kind && Number.isFinite(h.total)).slice(-n);
+
+// Questions to look back at after a mock exam, in the order they were asked:
+// every one missed on the first try (with the first wrong choice, `pick`, 1-4)
+// and, when time ran out, every one left unanswered.
+export function examMissed(log, items = []) {
+  const out = log.filter((e) => !e.ok && e.problem).map((e) => ({ problem: e.problem, pick: e.pick ?? null, unanswered: false }));
+  for (const p of items.slice(log.length)) out.push({ problem: p, pick: null, unanswered: true });
+  return out;
+}

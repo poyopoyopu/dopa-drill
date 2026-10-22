@@ -804,3 +804,15 @@ body:not([data-screen="title"]) #actors { display: none; }
 .exam-bars li.now i { outline: 2px solid #1b1d4d; outline-offset: 1px; }
 .exam-bars li b { font-size: 11px; line-height: 1.2; }
 .exam-bars li small { position: absolute; bottom: 0; font-size: 9px; opacity: .7; white-space: nowrap; }
+.exam-missed { margin: 12px 0 0; border-radius: 10px; background: rgba(27, 29, 77, .06); }
+.exam-missed summary { cursor: pointer; padding: 10px 12px; font-size: 14px; font-weight: 900; list-style-position: inside; }
+.exam-missed ol { list-style: none; margin: 0; padding: 0 10px 10px; display: grid; gap: 8px; }
+.exam-missed li { padding: 10px; border-radius: 8px; background: #fff; font-size: 13px; line-height: 1.6; }
+.exam-missed li p { margin: 4px 0 0; }
+.mx-field { display: inline-block; padding: 1px 8px; border-radius: 99px; background: var(--pink-soft); font-size: 11px; font-weight: 900; }
+.mx-q { white-space: pre-wrap; font-weight: 700; }
+.mx-pick { color: #d6334f; font-weight: 900; }
+.mx-pick.none { color: #5b5f8f; }
+.mx-right { color: #1f9e6b; font-weight: 900; }
+.mx-explain { opacity: .85; }
+.mx-source { font-size: 11px; opacity: .6; }
