@@ -5,13 +5,13 @@
 import { TROPHY } from './trophies.js';
 
 export const CATS = [
-  { key: 'bg', name: 'はいけい' },
-  { key: 'mark', name: 'せいかいの しるし' },
-  { key: 'particle', name: 'かみふぶき' },
-  { key: 'music', name: 'おんがく' },
-  { key: 'costume', name: 'きせかえ' },
-  { key: 'color', name: 'ドパキチの いろ' },
-  { key: 'crowd', name: 'おきゃくさん' },
+  { key: 'bg', name: '背景' },
+  { key: 'mark', name: '正解の印' },
+  { key: 'particle', name: '紙吹雪' },
+  { key: 'music', name: '音楽' },
+  { key: 'costume', name: '着せ替え' },
+  { key: 'color', name: 'ドパキチの色' },
+  { key: 'crowd', name: 'お客さん' },
   { key: 'finale', name: 'フィナーレ' },
 ];
 
@@ -25,65 +25,65 @@ export function addItems(list) {
   }
 }
 addItems([
-  { id: 'bg:classic', cat: 'bg', name: 'ほうしゃせん', base: true },
-  { id: 'mark:hanamaru', cat: 'mark', name: 'はなまる', base: true },
-  { id: 'particle:classic', cat: 'particle', name: 'かみふぶき', base: true },
-  { id: 'music:classic', cat: 'music', name: 'マリンバ マーチ', base: true },
+  { id: 'bg:classic', cat: 'bg', name: '放射線', base: true },
+  { id: 'mark:hanamaru', cat: 'mark', name: '花丸', base: true },
+  { id: 'particle:classic', cat: 'particle', name: '紙吹雪', base: true },
+  { id: 'music:classic', cat: 'music', name: 'マリンバマーチ', base: true },
   { id: 'costume:none', cat: 'costume', name: 'なし', base: true },
   { id: 'color:pink', cat: 'color', name: 'ピンク', base: true },
-  { id: 'crowd:classic', cat: 'crowd', name: 'いろちがい', base: true },
-  { id: 'finale:classic', cat: 'finale', name: 'ふつう', base: true },
+  { id: 'crowd:classic', cat: 'crowd', name: '色違い', base: true },
+  { id: 'finale:classic', cat: 'finale', name: '標準', base: true },
 ]);
 // id041: one sample per category, to prove the pipeline end to end.
 // Rewards follow effort and coming back (plays, days, streaks, stars earned by
 // practice), not the placement check, which can master many skills at once.
 addItems([
-  { id: 'costume:cap', cat: 'costume', name: 'ぼうし', trophy: 'days-1' },
-  { id: 'particle:note', cat: 'particle', name: 'おんぷ', trophy: 'days-3' },
-  { id: 'mark:stamp', cat: 'mark', name: 'せいかいスタンプ', trophy: 'plays-3' },
-  { id: 'bg:night', cat: 'bg', name: 'よぞら', trophy: 'streak-3' },
-  { id: 'color:blue', cat: 'color', name: 'あお', trophy: 'plays-5' },
-  { id: 'finale:fireworks', cat: 'finale', name: 'はなびたいかい', trophy: 'extras-5' },
+  { id: 'costume:cap', cat: 'costume', name: '帽子', trophy: 'days-1' },
+  { id: 'particle:note', cat: 'particle', name: '音符', trophy: 'days-3' },
+  { id: 'mark:stamp', cat: 'mark', name: '正解スタンプ', trophy: 'plays-3' },
+  { id: 'bg:night', cat: 'bg', name: '夜空', trophy: 'streak-3' },
+  { id: 'color:blue', cat: 'color', name: '青', trophy: 'plays-5' },
+  { id: 'finale:fireworks', cat: 'finale', name: '花火大会', trophy: 'extras-5' },
   { id: 'music:chip', cat: 'music', name: '8ビット', trophy: 'plays-10' },
-  { id: 'crowd:costume', cat: 'crowd', name: 'きせかえ おきゃくさん', trophy: 'firstTry-50' },
+  { id: 'crowd:costume', cat: 'crowd', name: '着せ替えお客さん', trophy: 'firstTry-50' },
 ]);
 // id042: backgrounds, correct marks and particles.
 addItems([
-  { id: 'bg:sea', cat: 'bg', name: 'うみと あわ', trophy: 'problems-100' },
-  { id: 'bg:festival', cat: 'bg', name: 'おまつり', trophy: 'days-15' },
-  { id: 'bg:paper', cat: 'bg', name: 'かみの こうさく', trophy: 'problems-200' },
-  { id: 'bg:space', cat: 'bg', name: 'うちゅう', trophy: 'extras-10' },
+  { id: 'bg:sea', cat: 'bg', name: '海と泡', trophy: 'problems-100' },
+  { id: 'bg:festival', cat: 'bg', name: 'お祭り', trophy: 'days-15' },
+  { id: 'bg:paper', cat: 'bg', name: '紙の工作', trophy: 'problems-200' },
+  { id: 'bg:space', cat: 'bg', name: '宇宙', trophy: 'extras-10' },
   { id: 'mark:medal', cat: 'mark', name: 'メダル', trophy: 'streak-7' },
-  { id: 'mark:crown', cat: 'mark', name: 'おうかん', trophy: 'perfects-3' },
-  { id: 'mark:ring', cat: 'mark', name: 'はなびの わ', trophy: 'combo-30' },
-  { id: 'particle:petal', cat: 'particle', name: 'はなびら', trophy: 'stickers-7' },
-  { id: 'particle:digit', cat: 'particle', name: 'すうじ', trophy: 'cells-1000' },
-  { id: 'particle:bubble', cat: 'particle', name: 'あわ', trophy: 'review-10' },
-  { id: 'particle:candy', cat: 'particle', name: 'おかし', trophy: 'extraBest-10' },
+  { id: 'mark:crown', cat: 'mark', name: '王冠', trophy: 'perfects-3' },
+  { id: 'mark:ring', cat: 'mark', name: '花火の輪', trophy: 'combo-30' },
+  { id: 'particle:petal', cat: 'particle', name: '花びら', trophy: 'stickers-7' },
+  { id: 'particle:digit', cat: 'particle', name: '数字', trophy: 'cells-1000' },
+  { id: 'particle:bubble', cat: 'particle', name: '泡', trophy: 'review-10' },
+  { id: 'particle:candy', cat: 'particle', name: 'お菓子', trophy: 'extraBest-10' },
 ]);
 // id043: songs (8ビット is the id041 sample).
 addItems([
-  { id: 'music:matsuri', cat: 'music', name: 'おまつり ばやし', trophy: 'streak-5' },
+  { id: 'music:matsuri', cat: 'music', name: '祭りばやし', trophy: 'streak-5' },
   { id: 'music:brass', cat: 'music', name: 'ブラスバンド', trophy: 'days-5' },
   { id: 'music:electro', cat: 'music', name: 'エレクトロ', trophy: 'extras-3' },
 ]);
 // id044: costumes, colours, crowd and finales (id045 moved three rewards to the new series).
 addItems([
-  { id: 'costume:hachimaki', cat: 'costume', name: 'はちまき', trophy: 'problems-50' },
+  { id: 'costume:hachimaki', cat: 'costume', name: '鉢巻', trophy: 'problems-50' },
   { id: 'costume:cape', cat: 'costume', name: 'マント', trophy: 'combo-20' },
-  { id: 'costume:glasses', cat: 'costume', name: 'まるめがね', trophy: 'firstTry-100' },
+  { id: 'costume:glasses', cat: 'costume', name: '丸眼鏡', trophy: 'firstTry-100' },
   { id: 'costume:ribbon', cat: 'costume', name: 'リボン', trophy: 'stickers-14' },
-  { id: 'costume:crown', cat: 'costume', name: 'おうかん', trophy: 'streak-14' },
-  { id: 'costume:wizard', cat: 'costume', name: 'まほうの ぼうし', trophy: 'star5-1' },
+  { id: 'costume:crown', cat: 'costume', name: '王冠', trophy: 'streak-14' },
+  { id: 'costume:wizard', cat: 'costume', name: '魔法の帽子', trophy: 'star5-1' },
   { id: 'costume:headphones', cat: 'costume', name: 'ヘッドホン', trophy: 'capsules-1' },
-  { id: 'color:mint', cat: 'color', name: 'みどり', trophy: 'days-7' },
-  { id: 'color:snow', cat: 'color', name: 'ゆきいろ', trophy: 'questDays-7' },
-  { id: 'color:yellow', cat: 'color', name: 'きいろ', trophy: 'problems-300' },
-  { id: 'color:violet', cat: 'color', name: 'むらさき', trophy: 'extraSolved-100' },
-  { id: 'color:gold', cat: 'color', name: 'きんいろ', trophy: 'streak-30' },
-  { id: 'color:rainbow', cat: 'color', name: 'にじいろ', trophy: 'days-100' },
-  { id: 'crowd:rainbow', cat: 'crowd', name: 'にじいろ おきゃくさん', trophy: 'days-30' },
-  { id: 'crowd:twins', cat: 'crowd', name: 'おそろい おきゃくさん', trophy: 'starsTotal-100' },
+  { id: 'color:mint', cat: 'color', name: '緑', trophy: 'days-7' },
+  { id: 'color:snow', cat: 'color', name: '雪色', trophy: 'questDays-7' },
+  { id: 'color:yellow', cat: 'color', name: '黄色', trophy: 'problems-300' },
+  { id: 'color:violet', cat: 'color', name: '紫', trophy: 'extraSolved-100' },
+  { id: 'color:gold', cat: 'color', name: '金色', trophy: 'streak-30' },
+  { id: 'color:rainbow', cat: 'color', name: '虹色', trophy: 'days-100' },
+  { id: 'crowd:rainbow', cat: 'crowd', name: '虹色お客さん', trophy: 'days-30' },
+  { id: 'crowd:twins', cat: 'crowd', name: 'おそろいお客さん', trophy: 'starsTotal-100' },
   { id: 'finale:parade', cat: 'finale', name: 'パレード', trophy: 'streak-10' },
   { id: 'finale:rocket', cat: 'finale', name: 'ロケット', trophy: 'extras-20' },
 ]);

@@ -166,7 +166,7 @@ function questRows(list) {
 }
 function questRewardText(q) {
   if (q.rewarded) return '<b class="qdone">コンプリート！</b>';
-  return `ぜんぶで <i class="qham">${HAMMER_SVG}</i>+1`;
+  return `全部で <i class="qham">${HAMMER_SVG}</i>+1`;
 }
 function renderQuests() {
   const q = quests();
@@ -180,7 +180,7 @@ function renderQuestMini(el) {
   const q = quests();
   const got = S.questReward;
   S.questReward = null;
-  el.innerHTML = `<p class="qm-head">きょうの クエスト <span>${questRewardText(q)}</span></p><ol class="quest-list">${questRows(q.list)}</ol>${got ? `<p class="qm-got">${got.hammer ? `<i class="qham">${HAMMER_SVG}</i>ノーカンハンマーを 1本 もらったよ！` : 'ハンマーは もう いっぱい！ おいわいだけ するよ'}</p>` : ''}`;
+  el.innerHTML = `<p class="qm-head">今日のクエスト <span>${questRewardText(q)}</span></p><ol class="quest-list">${questRows(q.list)}</ol>${got ? `<p class="qm-got">${got.hammer ? `<i class="qham">${HAMMER_SVG}</i>ノーカンハンマーを1本もらいました！` : 'ハンマーはもう満タンです。お祝いだけ！'}</p>` : ''}`;
   if (got && !S.reduced) setTimeout(() => { const c = centerOf(el); fx.burst(c.x, c.y, { count: 50, kinds: ['star', 'confetti', 'coin'], speed: 600, up: 180 }); audio.unit(0.7); popEl(el, 0.12, 400); }, 900);
 }
 // A small banner at the top of the screen; it never covers the problem or the keypad.
@@ -201,7 +201,7 @@ function questPop(q) {
   })();
 }
 const REVIEW_MAX = 40;
-const MODE_LABEL = { level: 'じぶんレベル', grade: (g) => `ステージ${g}`, review: 'ふくしゅう', practice: 'れんしゅう', drill: 'ドリル', exam: '模擬試験' };
+const MODE_LABEL = { level: '自分のレベル', grade: (g) => `ステージ${g}`, review: '復習', practice: '練習', drill: 'ドリル', exam: '模擬試験' };
 
 // kind: 'level' | 'grade' | 'review' | 'practice' | 'drill'
 function makePlan(kind, arg) {
@@ -262,7 +262,7 @@ function renderQuiz(p) {
   const c = p.cells[0];
   const cell = document.createElement('div');
   cell.className = `cell ${c.kind}`;
-  cell.setAttribute('aria-label', 'こたえの番号');
+  cell.setAttribute('aria-label', '答えの番号');
   cell.dataset.id = c.id;
   top.appendChild(cell);
   S.cells[c.id] = cell;
@@ -375,7 +375,7 @@ function activate(k) {
 
 // ---------------------------------------------------------------- flow
 // Before a skill is played for the first time, offer its 教科書 chapter
-// (app/kyokasho/<id>.html). Each skill is offered once; "このまま とく" starts
+// (app/kyokasho/<id>.html). Each skill is offered once; "このまま解く" starts
 // the game as before.
 const INTRO_KEY = 'unko-kyokasho-intro';
 function introSeen() { try { return new Set(JSON.parse(localStorage.getItem(INTRO_KEY) || '[]')); } catch { return new Set(); } }
@@ -393,9 +393,9 @@ function offerKyokasho(ids, kind, arg) {
   markIntro(ids);
   const list = ids.map((id) => `<li><a href="kyokasho/${id}.html">${SKILL[id].name}</a></li>`).join('');
   openConfirm({
-    title: 'はじめての スキル',
-    msg: 'とく まえに 教科書を よむと<br>ぐっと わかりやすく なるよ',
-    list, yes: '教科書へ', no: 'このまま とく', danger: false,
+    title: '初めてのスキル',
+    msg: '解く前に教科書を読むと、<br>ぐっとわかりやすくなります',
+    list, yes: '教科書へ', no: 'このまま解く', danger: false,
     onYes: () => { location.href = `kyokasho/${ids[0]}.html`; },
     onNo: () => startGame(kind, arg, true),
   });
@@ -427,7 +427,7 @@ function startGame(kind = 'level', arg, introDone = false) {
   $('#clock-label').textContent = '';
   // The mock exam has the real 90-minute limit, counted down. Practice has no
   // clock at all: a first user asked to study without being timed.
-  if (S.plan.mode === 'exam') { S.targetMs = EXAM_MS; $('#clock-label').textContent = 'のこり'; }
+  if (S.plan.mode === 'exam') { S.targetMs = EXAM_MS; $('#clock-label').textContent = '残り'; }
   $('.clock').classList.remove('over', 'extra', 'hurry');
   $('.clock').classList.toggle('calm', S.plan.mode !== 'exam');
   $('#ok-total').textContent = `/${S.N}`;
@@ -714,7 +714,7 @@ function announceUnlock(id) {
   setTimeout(() => {
     audio.unit(Math.min(1, S.E + 0.3));
     if (S.reduced) return;
-    cutin(`かいほう！ ${name}`, Math.max(0.6, S.E));
+    cutin(`解放！ ${name}`, Math.max(0.6, S.E));
     const r = stage.getBoundingClientRect();
     fx.burst(r.left + r.width / 2, r.top + r.height * 0.4, { count: 40, kinds: ['star', 'confetti', 'coin'], speed: 700, up: 200 });
   }, 700);
@@ -864,7 +864,7 @@ function hanamaru(E, el = $('#stamp'), style = ul.variant(S.look && S.look.mark)
 // Correct marks other than the hanamaru. Stroked parts ("sp") are drawn in,
 // filled parts ("fl") pop in after; all grow with E and turn rainbow near the top.
 const MARKS = {
-  stamp: (c) => `<circle class="sp" r="56" fill="none" stroke="${c}" stroke-width="8"/><circle class="sp" r="45" fill="none" stroke="${c}" stroke-width="2.8"/><text class="fl" y="9" text-anchor="middle" font-family="Dela Gothic One, sans-serif" font-size="24" fill="${c}" transform="rotate(-12)">せいかい</text><path class="fl" d="M-30 -30 l3 6 6 1 -4.5 4 1 6.5 -5.5 -3 -5.5 3 1 -6.5 -4.5 -4 6 -1z M30 26 l3 6 6 1 -4.5 4 1 6.5 -5.5 -3 -5.5 3 1 -6.5 -4.5 -4 6 -1z" fill="${c}"/>`,
+  stamp: (c) => `<circle class="sp" r="56" fill="none" stroke="${c}" stroke-width="8"/><circle class="sp" r="45" fill="none" stroke="${c}" stroke-width="2.8"/><text class="fl" y="9" text-anchor="middle" font-family="Dela Gothic One, sans-serif" font-size="24" fill="${c}" transform="rotate(-12)">正解</text><path class="fl" d="M-30 -30 l3 6 6 1 -4.5 4 1 6.5 -5.5 -3 -5.5 3 1 -6.5 -4.5 -4 6 -1z M30 26 l3 6 6 1 -4.5 4 1 6.5 -5.5 -3 -5.5 3 1 -6.5 -4.5 -4 6 -1z" fill="${c}"/>`,
   crown: (c) => `<path class="sp" d="M-50 30 L-58 -28 L-26 -2 L0 -46 L26 -2 L58 -28 L50 30 Z" fill="none" stroke="${c}" stroke-width="7" stroke-linejoin="round"/><path class="fl" d="M-50 30 L-58 -28 L-26 -2 L0 -46 L26 -2 L58 -28 L50 30 Z" fill="#ffd23f" opacity=".85"/><path class="sp" d="M-48 44 L48 44" stroke="${c}" stroke-width="7" stroke-linecap="round"/><circle class="fl" cx="0" cy="-46" r="7" fill="#ff4f6d"/><circle class="fl" cx="-58" cy="-28" r="6" fill="#3b6bff"/><circle class="fl" cx="58" cy="-28" r="6" fill="#3fdcb0"/><circle class="fl" cx="0" cy="12" r="9" fill="#ff7ab6"/>`,
   ring: (c) => `${Array.from({ length: 12 }, (_, i) => { const a = (i / 12) * Math.PI * 2; return `<path class="sp" d="M${(Math.cos(a) * 20).toFixed(1)} ${(Math.sin(a) * 20).toFixed(1)} L${(Math.cos(a) * 52).toFixed(1)} ${(Math.sin(a) * 52).toFixed(1)}" stroke="${['#ff4f6d', '#ffb000', '#3fdcb0', '#3b6bff'][i % 4]}" stroke-width="7" stroke-linecap="round"/>`; }).join('')}${Array.from({ length: 12 }, (_, i) => { const a = ((i + 0.5) / 12) * Math.PI * 2; return `<circle class="fl" cx="${(Math.cos(a) * 60).toFixed(1)}" cy="${(Math.sin(a) * 60).toFixed(1)}" r="5" fill="${c}"/>`; }).join('')}<circle class="fl" r="12" fill="#ffd23f"/>`,
   medal: (c) => `<path class="fl" d="M-30 -66 L-8 -18 L8 -18 L-14 -66Z" fill="#3b6bff"/><path class="fl" d="M30 -66 L8 -18 L-8 -18 L14 -66Z" fill="#ff4f6d"/><circle class="sp" cy="18" r="40" fill="none" stroke="${c}" stroke-width="8"/><circle class="fl" cy="18" r="34" fill="#ffd23f"/><path class="sp" d="M0 -6 L7 9 L23 10 L11 21 L15 37 L0 28 L-15 37 L-11 21 L-23 10 L-7 9Z" fill="none" stroke="${c}" stroke-width="5" stroke-linejoin="round"/>`,
@@ -1002,7 +1002,7 @@ function breakCombo(timeout = false) {
   audio.play('blip', audio.now(), { m: 60, v: 0.07 });
   if (S.reduced) return;
   const c = centerOf(box);
-  fx.text(c.x, c.y + 20, timeout ? `${had}コンボ おわり` : `${had}コンボ`, { color: '#b9bbd9', size: 15, vy: 40, life: 0.8 });
+  fx.text(c.x, c.y + 20, timeout ? `${had}コンボ終了` : `${had}コンボ`, { color: '#b9bbd9', size: 15, vy: 40, life: 0.8 });
 }
 function showCombo() {
   const box = $('#combo-box');
@@ -1220,7 +1220,7 @@ const FINALES = {
       actors.push(m); band.push(m);
     }
     const banner = document.createElement('div');
-    banner.className = 'finale-banner'; banner.textContent = '100てん！';
+    banner.className = 'finale-banner'; banner.textContent = '100点！';
     $('#cutins').appendChild(banner);
     audio.gong();
     const span = W + 80 + n * 70 + 80;
@@ -1286,7 +1286,7 @@ function showResult() {
   S.record = S.demo ? null : store.addRecord({ mode: S.plan.mode, grade: S.plan.grade, skill: S.plan.skill, count: S.N, score: BASIC_SCORE, ok: S.solved, ng: S.misses, firstRate: rate, timeMs: Math.round(t), dopaL: S.dopa.L, ...(exam ? examRecord(exam) : {}) });
   if (recording()) { growth.notePlay(stats(), { mode: S.plan.mode, day: store.dayKey(), timeMs: Math.round(t), dopaL: S.dopa.L, firstRate: rate }); store.save(); }
   questNote({ type: 'play', mode: S.plan.mode });
-  $('#result-title').textContent = review ? 'ふくしゅう クリア' : exam ? `模擬試験(${exam.name}) ${exam.pass ? '合格' : '不合格'}${S.timeUp ? '（時間切れ）' : ''}` : `${modeName(S.plan)} クリア`;
+  $('#result-title').textContent = review ? '復習クリア' : exam ? `模擬試験(${exam.name}) ${exam.pass ? '合格' : '不合格'}${S.timeUp ? '（時間切れ）' : ''}` : `${modeName(S.plan)}クリア`;
   renderExamResult($('#r-exam'), exam, exam ? examMissed(S.examLog, S.plan.items) : []);
   const un = $('#r-unlock');
   un.textContent = review || exam ? '' : ok ? 'エクストラ解放' : '初回正解率80%以上でエクストラ';
@@ -1324,7 +1324,7 @@ function startExtra() {
   showCombo();
   $('.clock').classList.remove('calm');
   $('.clock').classList.add('extra');
-  $('#clock-label').textContent = 'のこり';
+  $('#clock-label').textContent = '残り';
   $('#ok-total').textContent = '';
   updateTally();
   audio.play('musicGain', audio.now(), { v: 0.8, ramp: 0.2 });
@@ -1423,7 +1423,7 @@ addEventListener('pointerdown', (e) => {
 
 function modeName(plan) {
   if (plan.mode === 'grade') return MODE_LABEL.grade(plan.grade);
-  if (plan.mode === 'practice') return `れんしゅう`;
+  if (plan.mode === 'practice') return `練習`;
   if (plan.mode === 'demo') return 'デモ';
   return MODE_LABEL[plan.mode] || 'ドリル';
 }
@@ -1447,7 +1447,7 @@ async function capsuleIntro(info) {
   const r = card.getBoundingClientRect();
   const el = document.createElement('div');
   el.className = 'capsule-intro';
-  el.innerHTML = `<div class="ci-env">${ENVELOPE_SVG}<div class="ci-letter"><small>タイムカプセル</small><b>${fmtDay(info.d)}の もんだい</b><span>はじめて といた ころの もんだいだよ</span></div></div>`;
+  el.innerHTML = `<div class="ci-env">${ENVELOPE_SVG}<div class="ci-letter"><small>タイムカプセル</small><b>${fmtDay(info.d)}の問題</b><span>初めて解いたころの問題です</span></div></div>`;
   el.style.left = `${r.left + r.width / 2}px`; el.style.top = `${r.top + r.height / 2}px`;
   $('#cutins').appendChild(el);
   const env = el.querySelector('.ci-env'); const letter = el.querySelector('.ci-letter'); const flap = el.querySelector('.env-flap');
@@ -1471,14 +1471,14 @@ function capsuleDone(info) {
   const cmp = growth.capsuleCompare(info, S.qMs, S.qMisses || 0);
   const st = stats(); st.capsules = (st.capsules || 0) + 1; if (cmp.what === 'time') st.capsuleFaster = (st.capsuleFaster || 0) + 1;
   const day = fmtDay(info.d);
-  const sec = (ms) => `${Math.max(0.1, ms / 1000).toFixed(1)}びょう`;
-  const line = cmp.what === 'time' ? `${day} ${sec(cmp.from)} → きょう ${sec(cmp.to)}` : cmp.what === 'miss' ? `${day} おしい ${cmp.from}回 → きょう ${cmp.to}回` : `${day}の もんだいを もう一度 といたよ`;
+  const sec = (ms) => `${Math.max(0.1, ms / 1000).toFixed(1)}秒`;
+  const line = cmp.what === 'time' ? `${day} ${sec(cmp.from)} → 今日 ${sec(cmp.to)}` : cmp.what === 'miss' ? `${day} ミス${cmp.from}回 → 今日 ${cmp.to}回` : `${day}の問題をもう一度解きました`;
   S.capsuleNews = line;
   const r = stage.getBoundingClientRect();
   const el = document.createElement('div');
   el.className = 'capsule-result';
-  el.innerHTML = cmp.what === 'none' ? `<small>タイムカプセル</small><b>${day}の もんだい</b><span>また とけたね！</span>`
-    : `<small>タイムカプセル</small><span class="cr-row"><span class="cr-old"><i>あの日</i>${cmp.what === 'time' ? sec(cmp.from) : `おしい ${cmp.from}回`}</span><span class="cr-arrow">→</span><span class="cr-new"><i>きょう</i>${cmp.what === 'time' ? sec(cmp.to) : `おしい ${cmp.to}回`}</span></span>`;
+  el.innerHTML = cmp.what === 'none' ? `<small>タイムカプセル</small><b>${day}の問題</b><span>また解けました！</span>`
+    : `<small>タイムカプセル</small><span class="cr-row"><span class="cr-old"><i>あの日</i>${cmp.what === 'time' ? sec(cmp.from) : `ミス${cmp.from}回`}</span><span class="cr-arrow">→</span><span class="cr-new"><i>今日</i>${cmp.what === 'time' ? sec(cmp.to) : `ミス${cmp.to}回`}</span></span>`;
   el.style.left = `${r.left + r.width / 2}px`; el.style.top = `${r.top + 6}px`;
   $('#cutins').appendChild(el);
   audio.unit(0.7);
@@ -1514,9 +1514,9 @@ function renderGrowth(el) {
   const lines = growth.growthLines(S.sessionTimes || {}, progress().skills, today);
   if (!lines.length) return;
   const gst = stats(); gst.grew = (gst.grew || 0) + 1; store.save();
-  const when = (x) => (x.kind === 'first' ? `はじめて（${fmtDay(x.d)}）` : growth.daysBetween(x.d, today) === 1 ? 'きのう' : fmtDay(x.d));
-  const val = (what, v) => (what === 'time' ? `${Math.max(0.1, v / 1000).toFixed(1)}びょう` : `${Math.round(v * 100)}%`);
-  el.innerHTML = `<p class="gb-head">のびたよ！</p>${lines.map((x) => `<div class="gb-line"><b>${SKILL[x.skill].name}</b><span class="gb-row"><span class="gb-what">${x.what === 'time' ? '1もん' : '初回正解'}</span><span class="gb-old"><small>${when(x)}</small>${val(x.what, x.from)}</span><span class="gb-arrow">→</span><span class="gb-new"><small>きょう</small><em data-what="${x.what}" data-from="${x.from}" data-to="${x.to}">${val(x.what, S.reduced ? x.to : x.from)}</em></span></span></div>`).join('')}`;
+  const when = (x) => (x.kind === 'first' ? `初回（${fmtDay(x.d)}）` : growth.daysBetween(x.d, today) === 1 ? '昨日' : fmtDay(x.d));
+  const val = (what, v) => (what === 'time' ? `${Math.max(0.1, v / 1000).toFixed(1)}秒` : `${Math.round(v * 100)}%`);
+  el.innerHTML = `<p class="gb-head">伸びた！</p>${lines.map((x) => `<div class="gb-line"><b>${SKILL[x.skill].name}</b><span class="gb-row"><span class="gb-what">${x.what === 'time' ? '1問' : '初回正解'}</span><span class="gb-old"><small>${when(x)}</small>${val(x.what, x.from)}</span><span class="gb-arrow">→</span><span class="gb-new"><small>今日</small><em data-what="${x.what}" data-from="${x.from}" data-to="${x.to}">${val(x.what, S.reduced ? x.to : x.from)}</em></span></span></div>`).join('')}`;
   if (S.reduced) return;
   const run = S.run;
   setTimeout(() => {
@@ -1542,11 +1542,11 @@ function renderSkillNews(el) {
   const items = [
     ...(S.capsuleNews ? [`<p class="capsule-news"><b>タイムカプセル</b>${S.capsuleNews}</p>`] : []),
     ...(S.polished || []).map((id) => `<p class="polish-news">ピカピカ！ ${SKILL[id].name}</p>`),
-    ...Object.entries(S.newStars || {}).map(([id, n]) => `<p class="star-up">${starRow(n)}<span>☆${n}に なった！ ${SKILL[id].name}</span></p>`),
+    ...Object.entries(S.newStars || {}).map(([id, n]) => `<p class="star-up">${starRow(n)}<span>☆${n}になった！ ${SKILL[id].name}</span></p>`),
     ...S.newMastered.map((id) => `<p class="mastered">マスター！ ${SKILL[id].name}</p>`),
-    ...S.newUnlocks.map((id) => `<p>かいほう！ ${SKILL[id].name}</p>`),
+    ...S.newUnlocks.map((id) => `<p>解放！ ${SKILL[id].name}</p>`),
   ];
-  if (S.plan.placement) items.unshift(`<p>じつりょくチェック おわり　${SKILLS.filter((x) => stateOf(progress(), x.id) === 'mastered').length}こ クリア</p>`);
+  if (S.plan.placement) items.unshift(`<p>実力チェック終了　${SKILLS.filter((x) => stateOf(progress(), x.id) === 'mastered').length}個クリア</p>`);
   el.innerHTML = items.slice(0, 5).join('');
 }
 const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -1563,11 +1563,11 @@ function missedHtml(list, exam) {
       + (p.explain ? `<p class="mx-explain">${esc(p.explain)}</p>` : '')
       + (p.source ? `<p class="mx-source">出典：${esc(p.source)}</p>` : '') + '</li>';
   }).join('');
-  return `<details class="exam-missed"><summary>まちがえた問題を見直す（${list.length}問）</summary><ol>${items}</ol></details>`;
+  return `<details class="exam-missed"><summary>間違えた問題を見直す（${list.length}問）</summary><ol>${items}</ol></details>`;
 }
 // Post this result on X (opens X's compose screen only when tapped).
 function shareHtml(exam) {
-  const text = `運行管理ドリルの模擬試験(${exam.name})で ${exam.total}/${exam.max}問${exam.pass ? '、合格ライン クリア！' : '。'}\n#運行管理者試験 #運行管理ドリル`;
+  const text = `運行管理ドリルの模擬試験(${exam.name})で ${exam.total}/${exam.max}問${exam.pass ? '、合格ラインクリア！' : '。'}\n#運行管理者試験 #運行管理ドリル`;
   const url = `https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent('https://unko-drill.pages.dev/')}`;
   return `<a class="sub-btn exam-share" href="${esc(url)}" target="_blank" rel="noopener">結果をXでシェア</a>`;
 }
@@ -1585,7 +1585,7 @@ function bookHtml(b) {
 // Weakest field of this exam, with a button straight to practice its skill.
 function weakHtml(w) {
   if (!w || !w.skill || !SKILL[w.skill]) return '';
-  return `<div class="exam-weak"><p>いちばん弱いのは <b>${w.label}</b>（${w.ok}/${w.n}問）${w.misses ? `。とくに「${SKILL[w.skill].name}」で${w.misses}問まちがえました` : ''}</p>`
+  return `<div class="exam-weak"><p>いちばん弱いのは<b>${w.label}</b>（${w.ok}/${w.n}問）${w.misses ? `。特に「${SKILL[w.skill].name}」で${w.misses}問間違えました` : ''}</p>`
     + `<button type="button" class="sub-btn exam-practice" data-skill="${w.skill}">ここを練習：${SKILL[w.skill].name}</button></div>`;
 }
 const BAR_PX = 50;
@@ -1601,7 +1601,7 @@ function trendHtml(list) {
   const line = Math.round(BAR_PX * PASS_RATE);
   const best = Math.max(...list.map((h) => h.total));
   const passes = list.filter((h) => h.pass).length;
-  return `<div class="exam-trend"><p class="exam-trend-head">これまでの模擬試験（最近${list.length}回）<span>さいこう ${best}問・合格 ${passes}回</span></p>`
+  return `<div class="exam-trend"><p class="exam-trend-head">これまでの模擬試験（最近${list.length}回）<span>最高 ${best}問・合格 ${passes}回</span></p>`
     + `<ol class="exam-bars" style="--line:${line}px">${bars}</ol></div>`;
 }
 
@@ -1610,21 +1610,21 @@ function renderExamResult(box, exam, missed = []) {
   box.hidden = !exam;
   if (!exam) { box.innerHTML = ''; return; }
   const rows = exam.fields.map((f) => `<li class="${f.pass ? 'ok' : 'ng'}"><span>${f.label}</span><b>${f.ok}<small>/${f.n}</small></b><em>${f.pass ? '○' : `× ${f.need}問以上`}</em></li>`).join('');
-  box.innerHTML = `<p class="exam-verdict ${exam.pass ? 'pass' : 'fail'}">${exam.pass ? '合格ライン クリア' : '合格ラインに とどかず'}</p>`
+  box.innerHTML = `<p class="exam-verdict ${exam.pass ? 'pass' : 'fail'}">${exam.pass ? '合格ラインクリア' : '合格ラインに届かず'}</p>`
     + `<p class="exam-total">初回正解 <b>${exam.total}</b>/${exam.max}問（合格は${exam.line}問以上、かつ各分野の基準）</p>`
     + `<ol class="exam-fields">${rows}</ol>`
     + shareHtml(exam)
-    + (exam.answered < exam.max ? `<p class="exam-timeup">時間切れ：${exam.max - exam.answered}問が未回答（不正解あつかい）</p>` : '')
+    + (exam.answered < exam.max ? `<p class="exam-timeup">時間切れ：${exam.max - exam.answered}問が未回答（不正解扱い）</p>` : '')
     + weakHtml(exam.weak)
     + missedHtml(missed, exam)
     + bookHtml(BOOKS[exam.kind])
     + trendHtml(examTrend(store.load().history, exam.kind))
-    + '<p class="exam-note">本試験と同じ分野・問題数・試験時間90分（運行管理者試験センターの受験概要による）。はじめに正解した問題だけを得点にしています。</p>';
+    + '<p class="exam-note">本試験と同じ分野・問題数・試験時間90分（運行管理者試験センターの受験概要による）。1回目で正解した問題だけを得点にしています。</p>';
 }
 
 function setReviewButton(btn, n) {
   btn.hidden = !n;
-  btn.textContent = `まちがえた ${n}問を やりなおす`;
+  btn.textContent = `間違えた${n}問をやり直す`;
 }
 function startReview() {
   const prog = progress();
@@ -1636,7 +1636,7 @@ function refreshTitle() {
   const n = prog.review.length;
   $('#start-review').hidden = !n;
   $('#review-count').textContent = n;
-  $('#level-sub').textContent = prog.placed ? `つぎは「${SKILL[frontier(prog)[0] || ORDER[ORDER.length - 1]].name}」` : 'はじめは じつりょくチェック';
+  $('#level-sub').textContent = prog.placed ? `次は「${SKILL[frontier(prog)[0] || ORDER[ORDER.length - 1]].name}」` : '最初は実力チェック';
   const done = SKILLS.filter((x) => stateOf(prog, x.id) === 'mastered').length;
   $('#tree-badge').textContent = `${done}/${SKILLS.length}`;
   $$('.exam-row button').forEach((b) => {
@@ -1889,7 +1889,7 @@ function renderTree(justIds = [], starIds = []) {
     b.dataset.id = sk.id;
     b.style.cssText = `left:${pos[sk.id].x}px;top:${pos[sk.id].y}px;width:${nodeW}px;height:${NODE_H}px;--p:${masteryRatio(prog, sk.id)}`;
     b.innerHTML = `<i class="hold"></i><span class="g">S${sk.grade}</span><span>${sk.name}</span>${st === 'learning' ? '<i class="ring"></i>' : ''}${st === 'mastered' ? `<i class="stars s${stars}">${starRow(stars)}</i>` : ''}${rusty ? '<i class="rust" aria-hidden="true">さび</i>' : ''}`;
-    b.setAttribute('aria-label', `${sk.name} ${{ locked: 'まだ', new: 'あたらしい', learning: 'れんしゅうちゅう', mastered: `マスター ほし${stars}こ${rusty ? ' さびついている' : ''}` }[st]}`);
+    b.setAttribute('aria-label', `${sk.name} ${{ locked: '未解放', new: '新しい', learning: '練習中', mastered: `マスター 星${stars}個${rusty ? ' さびている' : ''}` }[st]}`);
     tree.appendChild(b);
   }
   $('#tree-count').textContent = `${SKILLS.filter((x) => stateOf(prog, x.id) === 'mastered').length} / ${SKILLS.length}`;
@@ -1938,8 +1938,8 @@ function openSkillInfo(id) {
   $('#si-grade').textContent = `ステージ${sk.grade}　${LANES[sk.lane]}`;
   $('#si-title').textContent = sk.name;
   $('#si-stars').innerHTML = `${starRow(n)}<span>☆${n} / ${STAR_MAX}</span>`;
-  $('#si-next').innerHTML = next ? `<p class="si-label">つぎの ☆${next.n}</p><p class="si-text">${next.text}</p><p class="si-now">${next.now}</p>` : '<p class="si-text done">☆5 たっせい！ すごい！</p>';
-  $('#si-note').textContent = `${rustyOf(prog).includes(id) ? 'すこし さびているよ。1もん 初回正解で ピカピカ！　' : ''}といた もんだい ${r.n || 0}もん${best != null ? `　いちばん はやい 1もん ${(best / 1000).toFixed(1)}びょう` : ''}`;
+  $('#si-next').innerHTML = next ? `<p class="si-label">次の☆${next.n}</p><p class="si-text">${next.text}</p><p class="si-now">${next.now}</p>` : '<p class="si-text done">☆5達成！</p>';
+  $('#si-note').textContent = `${rustyOf(prog).includes(id) ? '少しさびています。1問初回正解でピカピカに！　' : ''}解いた問題 ${r.n || 0}問${best != null ? `　最速 1問${(best / 1000).toFixed(1)}秒` : ''}`;
   $('#si-text').href = `text.html#${id}`;
   $('#si-kyokasho').href = `kyokasho/${id}.html`;
   $('#skill-info').hidden = false;
@@ -2036,7 +2036,7 @@ function askRelock(id) {
   const ids = relockTargets(progress(), id);
   audio.unlock();
   if (!ids.length) {
-    toast('まだ きろくが ないので けせないよ');
+    toast('まだ記録がないので消せません');
     audio.play('boing', audio.now(), { v: 0.12 });
     return;
   }
@@ -2044,10 +2044,10 @@ function askRelock(id) {
   const deps = ids.length - (ids[0] === id ? 1 : 0);
   const MAX = 6;
   openConfirm({
-    title: 'スキルを けす',
-    msg: `「${SKILL[id].name}」の きろくを けします。${deps ? `<br>これに つながる <b>${deps}こ</b> の スキルも きえて、ロックに もどります。` : ''}`,
-    list: ids.slice(0, MAX).map((x) => `<li>${SKILL[x].name}</li>`).join('') + (ids.length > MAX ? `<li class="more">ほか ${ids.length - MAX}こ</li>` : ''),
-    yes: 'けす', no: 'やめる',
+    title: 'スキルを消す',
+    msg: `「${SKILL[id].name}」の記録を消します。${deps ? `<br>これにつながる<b>${deps}個</b>のスキルも消えて、ロックに戻ります。` : ''}`,
+    list: ids.slice(0, MAX).map((x) => `<li>${SKILL[x].name}</li>`).join('') + (ids.length > MAX ? `<li class="more">ほか${ids.length - MAX}個</li>` : ''),
+    yes: '消す', no: 'やめる',
     onYes: () => doRelock(id),
     focusBack: $(`.node[data-id="${id}"]`),
   });
@@ -2059,7 +2059,7 @@ function doRelock(id) {
   renderTree();
   audio.erase();
   audio.play('boing', audio.now() + 0.08, { v: 0.12 });
-  toast(`${gone.length}こ の スキルを けしたよ`);
+  toast(`${gone.length}個のスキルを消しました`);
   gone.forEach((x, i) => {
     const el = $(`.node[data-id="${x}"]`);
     if (!el || S.reduced) return;
@@ -2074,9 +2074,9 @@ function doRelock(id) {
 function askToTitle() {
   const playing = S.screen === 'play';
   openConfirm({
-    title: 'タイトルに もどる？',
-    msg: playing ? 'いまの プレイは ここで おわります。' : 'タイトル画面に もどります。',
-    yes: 'もどる', no: 'つづける', danger: playing,
+    title: 'タイトルに戻りますか？',
+    msg: playing ? '今のプレイはここで終わります。' : 'タイトル画面に戻ります。',
+    yes: '戻る', no: '続ける', danger: playing,
     onYes: () => { audio.play('blip', audio.now(), { m: 72, v: 0.08 }); toTitle(); },
     focusBack: document.activeElement && document.activeElement !== document.body ? document.activeElement : null,
   });
@@ -2092,7 +2092,7 @@ function toast(msg) {
 
 // ---------------------------------------------------------------- calendar
 const cal = { y: new Date().getFullYear(), m: new Date().getMonth(), seen: new Set() };
-const MODE_NAMES = { drill: (h) => `${h.count || ''}問ドリル`, level: () => 'じぶんレベル', grade: (h) => `ステージ${h.grade}`, review: () => 'ふくしゅう', practice: (h) => `れんしゅう（${SKILL[h.skill]?.name || ''}）`, exam: (h) => `模擬試験（${EXAM[h.exam]?.name || ''}）${Number.isFinite(h.total) ? ` ${h.total}/${h.max}問${h.pass ? ' 合格' : ''}` : ''}` };
+const MODE_NAMES = { drill: (h) => `${h.count || ''}問ドリル`, level: () => '自分のレベル', grade: (h) => `ステージ${h.grade}`, review: () => '復習', practice: (h) => `練習（${SKILL[h.skill]?.name || ''}）`, exam: (h) => `模擬試験（${EXAM[h.exam]?.name || ''}）${Number.isFinite(h.total) ? ` ${h.total}/${h.max}問${h.pass ? ' 合格' : ''}` : ''}` };
 const stampSvg = (score) => {
   const gold = score > 100;
   const col = gold ? '#ffb000' : '#ff4f6d';
@@ -2116,7 +2116,7 @@ function renderCalendar(animateNew = false) {
     const cls = ['cal-day'];
     if (key === todayKey) cls.push('today');
     if (info) { cls.push('played'); if (animateNew && !cal.seen.has(`${key}:${info.best}`)) cls.push('pop'); }
-    const label = info ? `${m + 1}月${d}日 ${info.plays}回 さいこう${info.best}点${questDays[key] ? ' クエスト コンプリート' : ''}` : `${m + 1}月${d}日`;
+    const label = info ? `${m + 1}月${d}日 ${info.plays}回 最高${info.best}点${questDays[key] ? ' クエストコンプリート' : ''}` : `${m + 1}月${d}日`;
     const sticker = store.stickerOn(key);
     const stk = sticker ? `<span class="stk">${stickerSvg(sticker)}</span>` : '';
     const nc = !info && nocount[key];
@@ -2135,10 +2135,10 @@ function renderCalendar(animateNew = false) {
   const best = store.bestStreak();
   const bonus = store.bonusState();
   const badges = [];
-  if (n >= 1) badges.push(`<span class="cal-badge${n >= 3 ? ' hot' : ''}">れんぞく<b>${n}</b>日${playedToday ? '' : '（きょうで' + (n + 1) + '日）'}</span>`);
-  else badges.push(`<span class="cal-badge">きょうから れんぞく記録スタート</span>`);
-  if (best >= 2) badges.push(`<span class="cal-badge best">さいこう<b>${best}</b>日</span>`);
-  if (bonus.total) badges.push(`<span class="cal-badge stk">シール<b>${bonus.total}</b>まい</span>`);
+  if (n >= 1) badges.push(`<span class="cal-badge${n >= 3 ? ' hot' : ''}">連続<b>${n}</b>日${playedToday ? '' : '（今日で' + (n + 1) + '日）'}</span>`);
+  else badges.push(`<span class="cal-badge">今日から連続記録スタート</span>`);
+  if (best >= 2) badges.push(`<span class="cal-badge best">最高<b>${best}</b>日</span>`);
+  if (bonus.total) badges.push(`<span class="cal-badge stk">シール<b>${bonus.total}</b>枚</span>`);
   const hammers = store.items().hammer;
   badges.push(`<span class="cal-badge hmr" aria-label="ノーカンハンマー ${hammers}本"><i>${HAMMER_SVG}</i><b>${hammers}</b>本</span>`);
   $('#cal-badges').innerHTML = badges.join('');
@@ -2171,15 +2171,15 @@ function openBonus(res) {
   S.bonusOpen = true;
   const m = $('#bonus');
   m.hidden = false;
-  $('#bonus-run').innerHTML = res.run >= 2 ? `れんぞく<b>${res.run}</b>日め` : 'きょうの ボーナス';
+  $('#bonus-run').innerHTML = res.run >= 2 ? `連続<b>${res.run}</b>日目` : '今日のボーナス';
   const slots = [];
   for (let i = 1; i <= 7; i++) {
     const got = i <= res.slot;
     const type = store.STICKERS[i - 1];
-    slots.push(`<div class="bonus-slot${got ? ' got' : ''}${i === res.slot ? ' today stamping' : ''}${i === 7 ? ' big' : ''}"><span class="d">${i}日め</span>${got ? stickerSvg(type) : i === 7 ? '？' : i}</div>`);
+    slots.push(`<div class="bonus-slot${got ? ' got' : ''}${i === res.slot ? ' today stamping' : ''}${i === 7 ? ' big' : ''}"><span class="d">${i}日目</span>${got ? stickerSvg(type) : i === 7 ? '？' : i}</div>`);
   }
   $('#bonus-grid').innerHTML = slots.join('');
-  $('#bonus-note').textContent = res.slot === 7 ? 'とくべつシール！ カレンダーに はったよ' : `あと${7 - res.slot}日で とくべつシール`;
+  $('#bonus-note').textContent = res.slot === 7 ? '特別シール！ カレンダーに貼りました' : `あと${7 - res.slot}日で特別シール`;
   audio.unlock();
   requestAnimationFrame(() => {
     layoutActors();
@@ -2278,11 +2278,11 @@ function openTrophies() {
   if (!list.length) return;
   S.trophyOpen = true;
   $('#tg-title').textContent = 'トロフィー ゲット！';
-  $('#tg-sub').innerHTML = batch.length ? `これまでの きろくで <b>${batch.length}</b>こ ゲット！` : list.length > 1 ? `<b>${list.length}</b>こ ゲット！` : '';
+  $('#tg-sub').innerHTML = batch.length ? `これまでの記録で<b>${batch.length}</b>個獲得！` : list.length > 1 ? `<b>${list.length}</b>個獲得！` : '';
   const MAX = 6;
   const rewards = list.map((x) => x.reward && ul.ITEM[x.reward]).filter(Boolean);
   $('#tg-list').innerHTML = list.slice(0, MAX).map((x) => `<li class="r-${x.rank}"><i>${trophySvg(x.rank)}</i><span><b>${x.name}</b><small>${x.desc}</small></span></li>`).join('') + (list.length > MAX ? `<li class="more">ほか ${list.length - MAX}こ</li>` : '')
-    + rewards.map((it) => `<li class="reward"><i>${itemThumb(it)}</i><span><b>${catName(it.cat)}「${it.name}」を てにいれた！</b><small>コレクションで えらべるよ</small></span></li>`).join('');
+    + rewards.map((it) => `<li class="reward"><i>${itemThumb(it)}</i><span><b>${catName(it.cat)}「${it.name}」を手に入れた！</b><small>コレクションで選べます</small></span></li>`).join('');
   $('#trophy-got').hidden = false;
   audio.unlock();
   audio.unit(Math.min(1, 0.4 + list.length * 0.1));
@@ -2308,10 +2308,10 @@ function closeTrophies() {
 // The list screen: one card per series, folded; filters for earned / not yet.
 const trFilter = { f: 'all' };
 function trophyValueText(t, v) {
-  if (t.metric === 'bestDopaL') return `いま ${fmtDopa(stats().bestDopaL || 0)}`;
-  if (t.metric === 'minutes') return `いま ${v}ふん`;
+  if (t.metric === 'bestDopaL') return `現在 ${fmtDopa(stats().bestDopaL || 0)}`;
+  if (t.metric === 'minutes') return `現在 ${v}分`;
   if (/^(flag:|gradeDone|laneDone|allModes)/.test(t.metric)) return '';
-  return `いま ${v.toLocaleString('ja-JP')}`;
+  return `現在 ${v.toLocaleString('ja-JP')}`;
 }
 function renderTrophyList() {
   const ts = trophyState();
@@ -2326,24 +2326,24 @@ function renderTrophyList() {
     html += `<h3 class="tr-cat">${cat}</h3>`;
     for (const v of cards) {
       const s = v.series;
-      const secret = s.cat === 'ひみつ';
+      const secret = s.cat === '秘密';
       const dots = s.items.map((x) => `<i class="${got[x.id] ? `on r-${x.rank}` : ''}"></i>`).join('');
-      const next = v.next ? `<span class="tr-next">つぎ：${secret ? '？？？' : v.next.name}${!secret && trophyValueText(v.next, v.value) ? `（${trophyValueText(v.next, v.value)}）` : ''}</span>` : '<span class="tr-next done">コンプリート！</span>';
+      const next = v.next ? `<span class="tr-next">次：${secret ? '？？？' : v.next.name}${!secret && trophyValueText(v.next, v.value) ? `（${trophyValueText(v.next, v.value)}）` : ''}</span>` : '<span class="tr-next done">コンプリート！</span>';
       const items = s.items.filter((x) => trFilter.f !== 'got' || got[x.id]).map((x) => {
         const hide = x.secret && !got[x.id];
         const rw = x.reward && ul.ITEM[x.reward];
-        return `<li class="${got[x.id] ? 'got' : ''}"><i>${trophySvg(got[x.id] ? x.rank : 'none')}</i><span><b>${hide ? '？？？' : x.name}</b><small>${hide ? 'ひみつの トロフィー' : x.desc}</small>${rw && !hide ? `<small class="rw">ごほうび：${catName(rw.cat)}「${rw.name}」</small>` : ''}</span><em>${got[x.id] ? day(got[x.id]) : ''}</em></li>`;
+        return `<li class="${got[x.id] ? 'got' : ''}"><i>${trophySvg(got[x.id] ? x.rank : 'none')}</i><span><b>${hide ? '？？？' : x.name}</b><small>${hide ? '秘密のトロフィー' : x.desc}</small>${rw && !hide ? `<small class="rw">ごほうび：${catName(rw.cat)}「${rw.name}」</small>` : ''}</span><em>${got[x.id] ? day(got[x.id]) : ''}</em></li>`;
       }).join('');
       html += `<details class="tr-series"><summary><i class="tr-icon">${trophySvg(v.top ? v.top.rank : 'none')}</i><span class="tr-t"><b>${s.title}</b>${next}</span><span class="tr-n">${v.got.length}/${s.items.length}</span><span class="tr-dots">${dots}</span></summary><ul>${items}</ul></details>`;
     }
   }
   if (trFilter.f === 'soon') {
     // Closest next steps first (secrets and yes/no goals left out).
-    const soon = tr.SERIES.map((s) => tr.seriesView(s, ts, m)).filter((v) => v.next && v.series.cat !== 'ひみつ' && v.next.need > 1 && v.next.metric !== 'bestDopaL')
+    const soon = tr.SERIES.map((s) => tr.seriesView(s, ts, m)).filter((v) => v.next && v.series.cat !== '秘密' && v.next.need > 1 && v.next.metric !== 'bestDopaL')
       .map((v) => ({ v, k: Math.min(0.999, v.value / v.next.need) })).sort((a, b) => b.k - a.k).slice(0, 12);
     html = soon.map(({ v, k }) => `<div class="tr-soon"><i class="tr-icon">${trophySvg(v.top ? v.top.rank : 'none')}</i><span class="tr-t"><b>${v.next.name}</b><span class="tr-next">${v.series.title}　${trophyValueText(v.next, v.value)} / ${v.next.need.toLocaleString('ja-JP')}</span></span><span class="tr-pct" style="--p:${k.toFixed(3)}"><b>${Math.floor(k * 100)}%</b></span></div>`).join('');
   }
-  $('#tr-list').innerHTML = html || '<p class="tr-empty">まだ ないよ</p>';
+  $('#tr-list').innerHTML = html || '<p class="tr-empty">まだありません</p>';
   $('#trophy-count').textContent = `${tr.earnedCount(ts)} / ${tr.TROPHIES.length}`;
 }
 function openTrophyList() {
@@ -2412,13 +2412,13 @@ function renderCollection() {
   $('#co-tabs').innerHTML = shownCats().map((c) => { const own = ul.unlockedIn(c.key, got).length; const all = ul.ITEMS.filter((it) => it.cat === c.key).length; return `<button type="button" data-cat="${c.key}" aria-pressed="${c.key === co.cat}">${c.name}<small>${own}/${all}</small></button>`; }).join('');
   const items = ul.ITEMS.filter((it) => it.cat === co.cat);
   const auto = eq[co.cat] === 'auto';
-  $('#co-note').textContent = auto ? '「おまかせ」は もっている ものから まいかい かわるよ' : 'えらんだ ものを いつも つかうよ';
-  $('#co-grid').innerHTML = `<button type="button" class="co-item auto${auto ? ' on' : ''}" data-id="auto"><span class="co-th"><b>？</b></span><span class="co-name">おまかせ</span><small>まいかい かわる</small></button>`
+  $('#co-note').textContent = auto ? '「おまかせ」は持っているものから毎回変わります' : '選んだものをいつも使います';
+  $('#co-grid').innerHTML = `<button type="button" class="co-item auto${auto ? ' on' : ''}" data-id="auto"><span class="co-th"><b>？</b></span><span class="co-name">おまかせ</span><small>毎回変わる</small></button>`
     + items.map((it) => {
       const own = ul.isUnlocked(it, got);
       const on = !auto && eq[co.cat] === it.id;
       const tro = it.trophy && tr.TROPHY[it.trophy];
-      return `<button type="button" class="co-item${own ? '' : ' locked'}${on ? ' on' : ''}" data-id="${it.id}"${own ? '' : ` aria-label="まだ　トロフィー ${tro ? tro.name : ''}で もらえる"`}><span class="co-th">${itemThumb(it)}</span><span class="co-name">${own ? it.name : '？？？'}</span>${own ? '<small>&nbsp;</small>' : `<small class="co-lock">トロフィー「${tro ? tro.name : ''}」</small>`}</button>`;
+      return `<button type="button" class="co-item${own ? '' : ' locked'}${on ? ' on' : ''}" data-id="${it.id}"${own ? '' : ` aria-label="未獲得　トロフィー「${tro ? tro.name : ''}」でもらえる"`}><span class="co-th">${itemThumb(it)}</span><span class="co-name">${own ? it.name : '？？？'}</span>${own ? '<small>&nbsp;</small>' : `<small class="co-lock">トロフィー「${tro ? tro.name : ''}」</small>`}</button>`;
     }).join('');
   const shown = ul.ITEMS.filter((it) => !HIDDEN_CATS.has(it.cat)); const all = shown.length; const own = shown.filter((it) => ul.isUnlocked(it, got)).length;
   $('#collect-count').textContent = `${own} / ${all}`;
@@ -2474,10 +2474,10 @@ function openHammer(offer) {
   S.hammerOpen = offer;
   $('#hammer-art').innerHTML = HAMMER_SVG;
   const days = offer.days.map(fmtDay).join('と');
-  $('#hammer-msg').innerHTML = `${days}は あそばなかったね。<br>ハンマーで <b>ノーカン</b>に すると<br>れんぞく<b>${offer.run}</b>日が つづくよ！`;
+  $('#hammer-msg').innerHTML = `${days}は学習しませんでした。<br>ハンマーで<b>ノーカン</b>にすると<br>連続<b>${offer.run}</b>日が続きます`;
   const max = store.HAMMER.max;
-  $('#hammer-have').innerHTML = `もっている ハンマー ${Array.from({ length: max }, (_, i) => `<i class="${i < offer.hammers ? 'on' : ''}">${HAMMER_SVG}</i>`).join('')}`;
-  $('#hammer-yes').textContent = `つかう（${offer.days.length}本）`;
+  $('#hammer-have').innerHTML = `持っているハンマー ${Array.from({ length: max }, (_, i) => `<i class="${i < offer.hammers ? 'on' : ''}">${HAMMER_SVG}</i>`).join('')}`;
+  $('#hammer-yes').textContent = `使う（${offer.days.length}本）`;
   $('#hammer').hidden = false;
   audio.unlock();
   audio.play('boing', audio.now(), { v: 0.12 });
@@ -2520,7 +2520,7 @@ async function runHammer(offer) {
   const badge = $('.cal-badge');
   if (badge) {
     const c = centerOf(badge);
-    if (!S.reduced) { fx.text(c.x, c.y - 30, `れんぞく${offer.run}日 キープ！`, { color: '#ff7ab6', size: 26, vy: -70, life: 1.4 }); fx.burst(c.x, c.y, { count: 40, kinds: ['star', 'confetti', 'heart'], speed: 520, up: 160 }); }
+    if (!S.reduced) { fx.text(c.x, c.y - 30, `連続${offer.run}日キープ！`, { color: '#ff7ab6', size: 26, vy: -70, life: 1.4 }); fx.burst(c.x, c.y, { count: 40, kinds: ['star', 'confetti', 'heart'], speed: 520, up: 160 }); }
     audio.unit(0.6);
     popEl(badge, 0.5, 400);
   }
@@ -2593,12 +2593,12 @@ function moveMonth(dir) {
 function openDay(key) {
   const [y, m, d] = key.split('-').map(Number);
   const list = store.monthSummary(y, m - 1)[key]?.entries || [];
-  $('#day-title').textContent = `${m}月${d}日のきろく`;
+  $('#day-title').textContent = `${m}月${d}日の記録`;
   $('#day-list').innerHTML = list.slice().reverse().map((h) => {
     const t = new Date(h.at);
     const name = (MODE_NAMES[h.mode] || (() => h.mode))(h);
     const extra = h.extraOk ? `　エクストラ ${h.extraOk}問` : '';
-    return `<li><span class="t">${t.getHours()}:${String(t.getMinutes()).padStart(2, '0')}</span><span class="m">${name}</span><span class="s">${(h.score || 0).toLocaleString('ja-JP')}点</span><span class="d">正解 ${h.ok ?? '-'}　おしい ${h.ng ?? '-'}${extra}　${fmtTime(h.timeMs || 0)}</span></li>`;
+    return `<li><span class="t">${t.getHours()}:${String(t.getMinutes()).padStart(2, '0')}</span><span class="m">${name}</span><span class="s">${(h.score || 0).toLocaleString('ja-JP')}点</span><span class="d">正解 ${h.ok ?? '-'}　ミス ${h.ng ?? '-'}${extra}　${fmtTime(h.timeMs || 0)}</span></li>`;
   }).join('');
   $('#day-log').hidden = false;
   audio.unlock();
@@ -2635,13 +2635,13 @@ function askReset() {
   if (S.demo || !S.settingsOpen) return;
   closeSettings();
   openConfirm({
-    title: 'すべて リセット',
-    msg: 'きろく・スキル・トロフィー・コレクション・シール・せっていを ぜんぶ けします。',
-    yes: 'けす', no: 'やめる', focusBack: $('#open-settings'),
+    title: 'すべてリセット',
+    msg: '記録・スキル・トロフィー・コレクション・シール・設定をすべて消します。',
+    yes: '消す', no: 'やめる', focusBack: $('#open-settings'),
     onYes: () => openConfirm({
-      title: 'ほんとうに けしますか？',
-      msg: 'けしたら もとに もどせません。',
-      yes: 'ぜんぶ けす', no: 'やめる', urgent: true, focusBack: $('#open-settings'),
+      title: '本当に消しますか？',
+      msg: '消したら元に戻せません。',
+      yes: 'すべて消す', no: 'やめる', urgent: true, focusBack: $('#open-settings'),
       onYes: () => { store.reset(); location.reload(); },
     }),
   });
@@ -2742,7 +2742,7 @@ $('#tree').addEventListener('click', (e) => {
   const id = b.dataset.id; const st = stateOf(progress(), id);
   if (st === 'locked') {
     const need = SKILL[id].req.filter((q) => stateOf(progress(), q) !== 'mastered').map((q) => `「${SKILL[q].name}」`);
-    toast(`${need.join('と')}を マスターすると ひらくよ`);
+    toast(`${need.join('と')}をマスターすると解放されます`);
     audio.play('boing', audio.now(), { v: 0.12 });
     if (!S.reduced) tween(300, (k) => { b.style.translate = `${Math.sin(k * 20) * 5 * (1 - k)}px 0`; }).then(() => { b.style.translate = ''; });
     return;

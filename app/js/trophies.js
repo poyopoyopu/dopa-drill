@@ -7,12 +7,12 @@
 import { SKILLS, LANES } from './skills.js';
 import { isUnlocked, isMastered, starsOf } from './session.js';
 
-export const CATS = ['つづける', 'たくさん', 'スキル', 'せいちょう', 'エクストラ', 'コンボ', 'せいかく', 'スコア', 'ふくしゅう', 'ステージ', 'コレクション', 'ひみつ'];
+export const CATS = ['継続', '回数', 'スキル', '成長', 'エクストラ', 'コンボ', '正確さ', 'スコア', '復習', 'ステージ', 'コレクション', '秘密'];
 
 const fmt = (n) => (n >= 10000 && n % 10000 === 0 ? `${n / 10000}万` : n.toLocaleString('ja-JP'));
 const DOPA_LABEL = { 2: '100', 3: '1000', 4: '1万', 5: '10万', 6: '100万', 7: '1000万', 8: '1億', 9: '10億' };
 const RANKS = ['bronze', 'silver', 'gold', 'rainbow'];
-export const RANK_NAME = { bronze: 'どう', silver: 'ぎん', gold: 'きん', rainbow: 'にじ', secret: 'ひみつ' };
+export const RANK_NAME = { bronze: '銅', silver: '銀', gold: '金', rainbow: '虹', secret: '秘密' };
 
 // Rank by position in its series: first ~30% bronze, then silver, gold, and the last step rainbow.
 function rankAt(i, n) {
@@ -23,34 +23,34 @@ function rankAt(i, n) {
 
 // A series: { key, cat, title, metric, steps, name(v), desc(v) } or explicit items.
 const SERIES_DEFS = [
-  { key: 'streak', cat: 'つづける', title: 'れんぞくで あそぶ', metric: 'bestStreak', steps: [3, 5, 7, 10, 14, 21, 30, 50, 75, 100, 150, 200, 365], name: (v) => `${v}日 れんぞく`, desc: (v) => `${v}日 つづけて あそぶ` },
-  { key: 'days', cat: 'つづける', title: 'あそんだ日', metric: 'days', steps: [1, 3, 5, 7, 10, 15, 20, 30, 40, 50, 75, 100, 150, 200, 300, 365, 500, 730, 1000], name: (v) => `あそんだ日 ${fmt(v)}日`, desc: (v) => `あそんだ日が ぜんぶで ${fmt(v)}日` },
-  { key: 'stickers', cat: 'つづける', title: 'ログインシール', metric: 'stickers', steps: [1, 7, 14, 30, 50, 100, 200, 365], name: (v) => `シール ${v}まい`, desc: (v) => `ログインボーナスの シールを ${v}まい あつめる` },
-  { key: 'crowns', cat: 'つづける', title: 'おうかんシール', metric: 'crowns', steps: [1, 3, 5, 10, 20, 52], name: (v) => `おうかん ${v}こ`, desc: (v) => `7日めの おうかんシールを ${v}まい あつめる` },
-  { key: 'problems', cat: 'たくさん', title: 'といた もんだい', metric: 'problems', steps: [10, 30, 50, 100, 200, 300, 500, 750, 1000, 1500, 2000, 3000, 5000, 7500, 10000, 20000, 30000, 50000, 100000], name: (v) => `${fmt(v)}もん とく`, desc: (v) => `もんだいを ぜんぶで ${fmt(v)}もん とく` },
-  { key: 'cells', cat: 'たくさん', title: 'いれた すうじ', metric: 'cells', steps: [100, 500, 1000, 3000, 5000, 10000, 30000, 50000, 100000, 300000], name: (v) => `${fmt(v)}けた いれる`, desc: (v) => `正しい すうじを ぜんぶで ${fmt(v)}けた いれる` },
-  { key: 'plays', cat: 'たくさん', title: 'あそんだ回数', metric: 'plays', steps: [1, 3, 5, 10, 20, 30, 50, 100, 200, 300, 500, 1000, 2000], name: (v) => `${fmt(v)}回 あそぶ`, desc: (v) => `ドリルを ぜんぶで ${fmt(v)}回 さいごまで とく` },
-  { key: 'minutes', cat: 'たくさん', title: 'あそんだ時間', metric: 'minutes', steps: [10, 30, 60, 120, 300, 600, 1200, 3000], name: (v) => (v >= 60 ? `あわせて ${v / 60}時間` : `あわせて ${v}ふん`), desc: (v) => `あそんだ時間が ぜんぶで ${v >= 60 ? `${v / 60}時間` : `${v}ふん`}` },
-  { key: 'unlocked', cat: 'スキル', title: 'スキル かいほう', metric: 'unlocked', steps: [3, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 58], name: (v) => `かいほう ${v}こ`, desc: (v) => `スキルを ${v}こ かいほうする` },
-  { key: 'mastered', cat: 'スキル', title: 'スキル マスター', metric: 'mastered', steps: [1, 3, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 58], name: (v) => `マスター ${v}こ`, desc: (v) => `スキルを ${v}こ マスターする` },
-  { key: 'gradeDone', cat: 'スキル', title: 'ステージ ぜんぶ マスター', items: [1, 2, 3, 4, 5, 6].map((g) => ({ id: `gradeDone-${g}`, metric: `gradeDone${g}`, need: 1, name: `ステージ${g} ぜんぶ マスター`, desc: `ステージ${g}の スキルを ぜんぶ マスターする` })) },
-  { key: 'laneDone', cat: 'スキル', title: 'けいとう ぜんぶ マスター', items: LANES.map((l, i) => ({ id: `laneDone-${i}`, metric: `laneDone${i}`, need: 1, name: `${l} マスター`, desc: `「${l}」の スキルを ぜんぶ マスターする` })) },
-  { key: 'extras', cat: 'エクストラ', title: 'エクストラに いく', metric: 'extras', steps: [1, 3, 5, 10, 20, 30, 50, 100, 200, 300], name: (v) => `エクストラ ${v}回`, desc: (v) => `エクストラに ${v}回 すすむ` },
-  { key: 'extraBest', cat: 'エクストラ', title: 'エクストラ 1回の さいこう', metric: 'extraBest', steps: [3, 5, 7, 10, 12, 15, 18, 20, 23, 25, 30], name: (v) => `1回で ${v}もん`, desc: (v) => `1回の エクストラで ${v}もん とく` },
-  { key: 'extraSolved', cat: 'エクストラ', title: 'エクストラで といた', metric: 'extraSolved', steps: [10, 30, 50, 100, 200, 300, 500, 1000, 2000, 3000], name: (v) => `エクストラ ${fmt(v)}もん`, desc: (v) => `エクストラで ぜんぶで ${fmt(v)}もん とく` },
-  { key: 'combo', cat: 'コンボ', title: 'コンボ', metric: 'maxCombo', steps: [5, 10, 15, 20, 30, 40, 50, 75, 100, 150, 200, 300], name: (v) => `${v}コンボ`, desc: (v) => `${v}コンボを だす` },
-  { key: 'perfects', cat: 'せいかく', title: 'ノーミスで かんそう', metric: 'perfects', steps: [1, 3, 5, 10, 20, 30, 50, 100, 200, 300], name: (v) => `ノーミス ${v}回`, desc: (v) => `初回正解率100%で ${v}回 さいごまで とく` },
-  { key: 'firstTry', cat: 'せいかく', title: '初回正解', metric: 'firstTry', steps: [10, 50, 100, 300, 500, 1000, 3000, 5000, 10000, 30000], name: (v) => `初回正解 ${fmt(v)}もん`, desc: (v) => `いっかいで 正解した もんだいが ${fmt(v)}もん` },
-  { key: 'dopa', cat: 'スコア', title: 'スコア', metric: 'bestDopaL', steps: [2, 3, 4, 5, 6, 7, 8, 9], name: (v) => `${DOPA_LABEL[v]}スコア`, desc: (v) => `1回の プレイで スコア ${DOPA_LABEL[v]}を こえる` },
-  { key: 'review', cat: 'ふくしゅう', title: 'ふくしゅう', metric: 'reviewSolved', steps: [1, 5, 10, 30, 50, 100, 200, 300], name: (v) => `ふくしゅう ${v}もん`, desc: (v) => `まちがえた もんだいを ${v}もん やりなおす` },
-  ...[1, 2, 3, 4, 5, 6].map((g) => ({ key: `grade${g}`, cat: 'ステージ', title: `ステージ${g}で あそぶ`, metric: `gradePlays${g}`, steps: [1, 10, 30], name: (v) => `ステージ${g} ${v}回`, desc: (v) => `「ステージ${g}」で ${v}回 あそぶ` })),
-  { key: 'secret', cat: 'ひみつ', title: 'ひみつ', items: [
-    { id: 'secret-perfect14', metric: 'flag:perfect14', need: 1, name: '14もん パーフェクト', desc: '14もんを おしい 0回で とく', secret: true },
-    { id: 'secret-extraClean', metric: 'flag:extraClean', need: 1, name: 'エクストラ ノーミス', desc: 'エクストラで 5もん いじょう、おしい 0回', secret: true },
-    { id: 'secret-sunday', metric: 'flag:sunday', need: 1, name: 'にちようびの さんすう', desc: 'にちようびに あそぶ', secret: true },
-    { id: 'secret-newyear', metric: 'flag:newyear', need: 1, name: 'おしょうがつ ドリル', desc: '1月1日に あそぶ', secret: true },
-    { id: 'secret-comeback', metric: 'flag:comeback', need: 1, name: 'おかえり！', desc: '1しゅうかん いじょう あいてから また あそぶ', secret: true },
-    { id: 'secret-allmodes', metric: 'allModes', need: 1, name: 'ぜんぶの あそびかた', desc: 'じぶんレベル・ステージべつ・れんしゅう・ふくしゅうを ぜんぶ あそぶ', secret: true },
+  { key: 'streak', cat: '継続', title: '連続で学習', metric: 'bestStreak', steps: [3, 5, 7, 10, 14, 21, 30, 50, 75, 100, 150, 200, 365], name: (v) => `${v}日連続`, desc: (v) => `${v}日続けて学習する` },
+  { key: 'days', cat: '継続', title: '学習した日', metric: 'days', steps: [1, 3, 5, 7, 10, 15, 20, 30, 40, 50, 75, 100, 150, 200, 300, 365, 500, 730, 1000], name: (v) => `学習した日 ${fmt(v)}日`, desc: (v) => `学習した日が合計${fmt(v)}日になる` },
+  { key: 'stickers', cat: '継続', title: 'ログインシール', metric: 'stickers', steps: [1, 7, 14, 30, 50, 100, 200, 365], name: (v) => `シール${v}枚`, desc: (v) => `ログインボーナスのシールを${v}枚集める` },
+  { key: 'crowns', cat: '継続', title: '王冠シール', metric: 'crowns', steps: [1, 3, 5, 10, 20, 52], name: (v) => `王冠${v}個`, desc: (v) => `7日目の王冠シールを${v}枚集める` },
+  { key: 'problems', cat: '回数', title: '解いた問題', metric: 'problems', steps: [10, 30, 50, 100, 200, 300, 500, 750, 1000, 1500, 2000, 3000, 5000, 7500, 10000, 20000, 30000, 50000, 100000], name: (v) => `${fmt(v)}問解く`, desc: (v) => `問題を合計${fmt(v)}問解く` },
+  { key: 'cells', cat: '回数', title: '入力した答え', metric: 'cells', steps: [100, 500, 1000, 3000, 5000, 10000, 30000, 50000, 100000, 300000], name: (v) => `正解入力${fmt(v)}回`, desc: (v) => `正しい答えを合計${fmt(v)}回入力する` },
+  { key: 'plays', cat: '回数', title: '学習した回数', metric: 'plays', steps: [1, 3, 5, 10, 20, 30, 50, 100, 200, 300, 500, 1000, 2000], name: (v) => `${fmt(v)}回学習`, desc: (v) => `ドリルを合計${fmt(v)}回最後まで解く` },
+  { key: 'minutes', cat: '回数', title: '学習した時間', metric: 'minutes', steps: [10, 30, 60, 120, 300, 600, 1200, 3000], name: (v) => (v >= 60 ? `合計${v / 60}時間` : `合計${v}分`), desc: (v) => `学習した時間が合計${v >= 60 ? `${v / 60}時間` : `${v}分`}になる` },
+  { key: 'unlocked', cat: 'スキル', title: 'スキル解放', metric: 'unlocked', steps: [3, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 58], name: (v) => `解放${v}個`, desc: (v) => `スキルを${v}個解放する` },
+  { key: 'mastered', cat: 'スキル', title: 'スキルマスター', metric: 'mastered', steps: [1, 3, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 58], name: (v) => `マスター${v}個`, desc: (v) => `スキルを${v}個マスターする` },
+  { key: 'gradeDone', cat: 'スキル', title: 'ステージ全マスター', items: [1, 2, 3, 4, 5, 6].map((g) => ({ id: `gradeDone-${g}`, metric: `gradeDone${g}`, need: 1, name: `ステージ${g}全マスター`, desc: `ステージ${g}のスキルをすべてマスターする` })) },
+  { key: 'laneDone', cat: 'スキル', title: '分野全マスター', items: LANES.map((l, i) => ({ id: `laneDone-${i}`, metric: `laneDone${i}`, need: 1, name: `${l}マスター`, desc: `「${l}」のスキルをすべてマスターする` })) },
+  { key: 'extras', cat: 'エクストラ', title: 'エクストラ到達', metric: 'extras', steps: [1, 3, 5, 10, 20, 30, 50, 100, 200, 300], name: (v) => `エクストラ${v}回`, desc: (v) => `エクストラに${v}回進む` },
+  { key: 'extraBest', cat: 'エクストラ', title: 'エクストラ1回の最高', metric: 'extraBest', steps: [3, 5, 7, 10, 12, 15, 18, 20, 23, 25, 30], name: (v) => `1回で${v}問`, desc: (v) => `1回のエクストラで${v}問解く` },
+  { key: 'extraSolved', cat: 'エクストラ', title: 'エクストラで解いた問題', metric: 'extraSolved', steps: [10, 30, 50, 100, 200, 300, 500, 1000, 2000, 3000], name: (v) => `エクストラ${fmt(v)}問`, desc: (v) => `エクストラで合計${fmt(v)}問解く` },
+  { key: 'combo', cat: 'コンボ', title: 'コンボ', metric: 'maxCombo', steps: [5, 10, 15, 20, 30, 40, 50, 75, 100, 150, 200, 300], name: (v) => `${v}コンボ`, desc: (v) => `${v}コンボを出す` },
+  { key: 'perfects', cat: '正確さ', title: 'ノーミスで完走', metric: 'perfects', steps: [1, 3, 5, 10, 20, 30, 50, 100, 200, 300], name: (v) => `ノーミス${v}回`, desc: (v) => `初回正解率100%で${v}回最後まで解く` },
+  { key: 'firstTry', cat: '正確さ', title: '初回正解', metric: 'firstTry', steps: [10, 50, 100, 300, 500, 1000, 3000, 5000, 10000, 30000], name: (v) => `初回正解${fmt(v)}問`, desc: (v) => `1回目で正解した問題が${fmt(v)}問になる` },
+  { key: 'dopa', cat: 'スコア', title: 'スコア', metric: 'bestDopaL', steps: [2, 3, 4, 5, 6, 7, 8, 9], name: (v) => `${DOPA_LABEL[v]}スコア`, desc: (v) => `1回のプレイでスコア${DOPA_LABEL[v]}を超える` },
+  { key: 'review', cat: '復習', title: '復習', metric: 'reviewSolved', steps: [1, 5, 10, 30, 50, 100, 200, 300], name: (v) => `復習${v}問`, desc: (v) => `間違えた問題を${v}問やり直す` },
+  ...[1, 2, 3, 4, 5, 6].map((g) => ({ key: `grade${g}`, cat: 'ステージ', title: `ステージ${g}で学習`, metric: `gradePlays${g}`, steps: [1, 10, 30], name: (v) => `ステージ${g}を${v}回`, desc: (v) => `「ステージ${g}」で${v}回学習する` })),
+  { key: 'secret', cat: '秘密', title: '秘密', items: [
+    { id: 'secret-perfect14', metric: 'flag:perfect14', need: 1, name: '14問パーフェクト', desc: '14問をミスなしで解く', secret: true },
+    { id: 'secret-extraClean', metric: 'flag:extraClean', need: 1, name: 'エクストラノーミス', desc: 'エクストラで5問以上、ミスなし', secret: true },
+    { id: 'secret-sunday', metric: 'flag:sunday', need: 1, name: '日曜日の勉強', desc: '日曜日に学習する', secret: true },
+    { id: 'secret-newyear', metric: 'flag:newyear', need: 1, name: 'お正月ドリル', desc: '1月1日に学習する', secret: true },
+    { id: 'secret-comeback', metric: 'flag:comeback', need: 1, name: 'おかえり！', desc: '1週間以上あいてから、また学習する', secret: true },
+    { id: 'secret-allmodes', metric: 'allModes', need: 1, name: 'すべてのモード', desc: '自分のレベル・ステージ別・練習・復習をすべて遊ぶ', secret: true },
   ] },
 ];
 
@@ -72,18 +72,18 @@ SERIES_DEFS.forEach(addSeries);
 // id045: the features added after id036 (stars, quests, hammer, rust,
 // time capsule, "のびたよ", collection).
 [
-  { key: 'questDays', cat: 'つづける', title: 'クエスト コンプリート', metric: 'questDays', steps: [1, 3, 7, 14, 30, 50, 100, 200, 365], name: (v) => `コンプリート ${v}日`, desc: (v) => `きょうの クエストを ぜんぶ クリアした日が ${v}日` },
-  { key: 'questRun', cat: 'つづける', title: 'クエスト れんぞく', metric: 'questRun', steps: [2, 3, 5, 7, 14, 30], name: (v) => `クエスト ${v}日 れんぞく`, desc: (v) => `${v}日 つづけて クエストを ぜんぶ クリアする` },
-  { key: 'hammer', cat: 'つづける', title: 'ノーカンハンマー', metric: 'hammerUsed', steps: [1, 3, 10], name: (v) => (v === 1 ? 'はじめての ノーカン' : `ノーカン ${v}回`), desc: (v) => `ノーカンハンマーを ${v}回 つかう` },
-  { key: 'starsTotal', cat: 'スキル', title: 'ほしの かず', metric: 'starsTotal', steps: [5, 10, 25, 50, 75, 100, 150, 200, 250, 290], name: (v) => `ほし ${v}こ`, desc: (v) => `スキルの ほしを ぜんぶで ${v}こ あつめる` },
-  { key: 'star5', cat: 'スキル', title: '☆5の スキル', metric: 'star5', steps: [1, 3, 5, 10, 20, 30, 58], name: (v) => `☆5 ${v}こ`, desc: (v) => `☆5の スキルを ${v}こ つくる` },
-  { key: 'gradeStar3', cat: 'スキル', title: 'ステージ ぜんぶ ☆3', items: [1, 2, 3, 4, 5, 6].map((g) => ({ id: `gradeStar3-${g}`, metric: `gradeStar3${g}`, need: 1, name: `ステージ${g} ぜんぶ ☆3`, desc: `ステージ${g}の スキルを ぜんぶ ☆3 いじょうに する` })) },
-  { key: 'polished', cat: 'せいちょう', title: 'さびを みがく', metric: 'polished', steps: [1, 3, 5, 10, 30, 50], name: (v) => `ピカピカ ${v}回`, desc: (v) => `さびた スキルを ${v}回 みがく` },
-  { key: 'capsules', cat: 'せいちょう', title: 'タイムカプセル', metric: 'capsules', steps: [1, 3, 5, 10, 30], name: (v) => `カプセル ${v}こ`, desc: (v) => `タイムカプセルを ${v}こ あける` },
-  { key: 'capsuleFaster', cat: 'せいちょう', title: 'あの日より はやい', metric: 'capsuleFaster', steps: [1, 5, 10], name: (v) => `あの日より はやく ${v}回`, desc: (v) => `タイムカプセルで あの日より はやく とく（${v}回）` },
-  { key: 'grew', cat: 'せいちょう', title: 'のびたよ！', metric: 'grew', steps: [1, 5, 10, 30, 50, 100], name: (v) => `のびた ${v}回`, desc: (v) => `けっかで「のびたよ！」が ${v}回 でる` },
-  { key: 'items', cat: 'コレクション', title: 'コレクション', metric: 'itemsOwned', steps: [10, 20, 30, 40, 47], name: (v) => `コレクション ${v}こ`, desc: (v) => `コレクションを ${v}こ あつめる` },
-  { key: 'catComplete', cat: 'コレクション', title: 'ぜんぶ そろえた', metric: 'catComplete', steps: [1, 3, 5, 8], name: (v) => `${v}しゅるい コンプリート`, desc: (v) => `コレクションの ${v}しゅるいを ぜんぶ そろえる` },
+  { key: 'questDays', cat: '継続', title: 'クエストコンプリート', metric: 'questDays', steps: [1, 3, 7, 14, 30, 50, 100, 200, 365], name: (v) => `コンプリート${v}日`, desc: (v) => `今日のクエストをすべてクリアした日が${v}日になる` },
+  { key: 'questRun', cat: '継続', title: 'クエスト連続', metric: 'questRun', steps: [2, 3, 5, 7, 14, 30], name: (v) => `クエスト${v}日連続`, desc: (v) => `${v}日続けてクエストをすべてクリアする` },
+  { key: 'hammer', cat: '継続', title: 'ノーカンハンマー', metric: 'hammerUsed', steps: [1, 3, 10], name: (v) => (v === 1 ? '初めてのノーカン' : `ノーカン${v}回`), desc: (v) => `ノーカンハンマーを${v}回使う` },
+  { key: 'starsTotal', cat: 'スキル', title: '星の数', metric: 'starsTotal', steps: [5, 10, 25, 50, 75, 100, 150, 200, 250, 290], name: (v) => `星${v}個`, desc: (v) => `スキルの星を合計${v}個集める` },
+  { key: 'star5', cat: 'スキル', title: '☆5のスキル', metric: 'star5', steps: [1, 3, 5, 10, 20, 30, 58], name: (v) => `☆5を${v}個`, desc: (v) => `☆5のスキルを${v}個にする` },
+  { key: 'gradeStar3', cat: 'スキル', title: 'ステージ全☆3', items: [1, 2, 3, 4, 5, 6].map((g) => ({ id: `gradeStar3-${g}`, metric: `gradeStar3${g}`, need: 1, name: `ステージ${g}全☆3`, desc: `ステージ${g}のスキルをすべて☆3以上にする` })) },
+  { key: 'polished', cat: '成長', title: 'さびを磨く', metric: 'polished', steps: [1, 3, 5, 10, 30, 50], name: (v) => `ピカピカ${v}回`, desc: (v) => `さびたスキルを${v}回磨く` },
+  { key: 'capsules', cat: '成長', title: 'タイムカプセル', metric: 'capsules', steps: [1, 3, 5, 10, 30], name: (v) => `カプセル${v}個`, desc: (v) => `タイムカプセルを${v}個開ける` },
+  { key: 'capsuleFaster', cat: '成長', title: 'あの日より速い', metric: 'capsuleFaster', steps: [1, 5, 10], name: (v) => `あの日より速く${v}回`, desc: (v) => `タイムカプセルで、あの日より速く解く（${v}回）` },
+  { key: 'grew', cat: '成長', title: '伸びた！', metric: 'grew', steps: [1, 5, 10, 30, 50, 100], name: (v) => `伸びた${v}回`, desc: (v) => `結果で「伸びた！」が${v}回出る` },
+  { key: 'items', cat: 'コレクション', title: 'コレクション', metric: 'itemsOwned', steps: [10, 20, 30, 40, 47], name: (v) => `コレクション${v}個`, desc: (v) => `コレクションを${v}個集める` },
+  { key: 'catComplete', cat: 'コレクション', title: '全種そろえた', metric: 'catComplete', steps: [1, 3, 5, 8], name: (v) => `${v}種類コンプリート`, desc: (v) => `コレクションの${v}種類をすべてそろえる` },
 ].forEach(addSeries);
 
 // Numbers every trophy is measured against, from the saved state.

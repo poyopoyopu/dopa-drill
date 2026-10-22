@@ -36,9 +36,9 @@ export function buildQuiz(item, rng, title = '') {
     kind: 'quiz', title, text: item.q, choices, explain: item.e || '', source: item.s || '',
     rows: 1, cols: 1, lines: [], bracket: null,
     cells: [{ id: 'x0', r: 0, c: 0, text: '', kind: 'input' }],
-    steps: [{ cell: 'x0', digit: String(right), label: '正しいものを えらぼう', after: [], help: { ids: [`ch${right}`], text: item.e || '' } }],
+    steps: [{ cell: 'x0', digit: String(right), label: '正しいものを選んでください', after: [], help: { ids: [`ch${right}`], text: item.e || '' } }],
     answer: `${CHOICE_MARK[right - 1]} ${choices[right - 1]}`,
-    answerText: `せいかい ${CHOICE_MARK[right - 1]}`,
+    answerText: `正解 ${CHOICE_MARK[right - 1]}`,
   };
 }
 
