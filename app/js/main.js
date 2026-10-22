@@ -12,7 +12,7 @@ import { createGuide } from './guide.js';
 import { SKILLS, SKILL, LANES, DEPTH } from './skills.js';
 import { ORDER, emptyProgress, recordResult, stateOf, masteryRatio, starsOf, nextStar, STAR_MAX, pickCapsule, useCapsule, rustyOf, gradePlan, levelPlan, reviewPlan, problemFor, frontier, isUnlocked, relockTargets, relockSkill, TREE_LAYOUT } from './session.js';
 import * as growth from './growth.js';
-import { buildExam, judgeExam, EXAM } from './exam.js';
+import { buildExam, judgeExam, EXAM, EXAM_MS, PASS_RATE, examRecord, examTrend } from './exam.js';
 import * as qs from './quests.js';
 import * as tr from './trophies.js';
 import * as ul from './unlocks.js';
@@ -391,9 +391,13 @@ function startGame(kind = 'level', arg) {
   Object.assign(S, { endT: 0, qi: 0, firstTry: 0, solved: 0, misses: 0, combo: 0, comboPeak: 0, mode: 'basic', reach: false });
   showCombo();
   S.dopa = { L: 0, shown: 0, unit: '' };
+  $('#dopa').textContent = '0';
   S.extra = { score: 0, solved: 0, misses: 0, end: 0, over: false };
   S.targetMs = Math.ceil((S.N * 40) / 10) * 10 * 1000;
+  S.timeUp = false;
   $('#clock-label').textContent = `目標 ${fmtTime(S.targetMs)}`;
+  // The mock exam has the real 90-minute limit, counted down.
+  if (S.plan.mode === 'exam') { S.targetMs = EXAM_MS; $('#clock-label').textContent = 'のこり'; }
   $('.clock').classList.remove('over', 'extra', 'hurry');
   $('#ok-total').textContent = `/${S.N}`;
   const pips = $('#pips');
@@ -651,7 +655,7 @@ function noteProblem(p, firstTry) {
     else S.wrongList.push(p);
   }
   if (S.plan.placement && S.mode !== 'extra') S.plan.answer(firstTry);
-  if (S.plan.mode === 'exam' && S.mode !== 'extra' && p.examField != null) S.examLog.push({ field: p.examField, ok: firstTry });
+  if (S.plan.mode === 'exam' && S.mode !== 'extra' && p.examField != null) S.examLog.push({ field: p.examField, ok: firstTry, pool: p.pool });
   const timing = { at: Date.now(), day: store.dayKey(), ms: S.qMs, cells: p.steps.length, misses: S.qMisses || 0, problem: stripProblem(p) };
   questNote({ type: 'solve', firstTry, review: S.plan.mode === 'review', extra: S.mode === 'extra', skill: p.skill, skillState: p.skill && SKILL[p.skill] ? stateOf(prog, p.skill) : null });
   if (recording()) {
@@ -1215,23 +1219,38 @@ function bigStamp(text) {
   })();
 }
 
+// The mock exam's 90 minutes ran out: the questions left count as wrong.
+async function examTimeUp() {
+  S.run += 1; // cancels the answer flow that was under way
+  const run = S.run;
+  S.timeUp = true;
+  S.ready = false;
+  S.endT = now();
+  if (S.reach) endReach();
+  audio.gong();
+  bigStamp('時間切れ');
+  S.flash = 0.6;
+  await wait(1700);
+  if (run === S.run) showResult();
+}
+
 function showResult() {
   const rate = S.firstTry / S.N;
   $('#r-score').textContent = String(BASIC_SCORE);
   $('#r-ok').innerHTML = `${S.solved}<small>問</small>`;
   $('#r-ng').innerHTML = `${S.misses}<small>回</small>`;
   $('#r-rate').textContent = `${Math.round(rate * 100)}%`;
-  const t = S.endT - S.startT;
+  const t = S.timeUp ? S.targetMs : S.endT - S.startT;
   $('#r-time').textContent = fmtTime(t);
   $('#r-dopa').textContent = fmtDopa(S.dopa.L);
   const review = S.plan.mode === 'review';
   const exam = S.plan.mode === 'exam' ? judgeExam(S.plan.exam, S.examLog) : null;
   const ok = rate >= 0.8 && !review && !exam;
   if (S.plan.placement && !S.demo) { progress().placed = true; store.save(); }
-  S.record = S.demo ? null : store.addRecord({ mode: S.plan.mode, grade: S.plan.grade, skill: S.plan.skill, count: S.N, score: BASIC_SCORE, ok: S.solved, ng: S.misses, firstRate: rate, timeMs: Math.round(t), dopaL: S.dopa.L });
+  S.record = S.demo ? null : store.addRecord({ mode: S.plan.mode, grade: S.plan.grade, skill: S.plan.skill, count: S.N, score: BASIC_SCORE, ok: S.solved, ng: S.misses, firstRate: rate, timeMs: Math.round(t), dopaL: S.dopa.L, ...(exam ? examRecord(exam) : {}) });
   if (recording()) { growth.notePlay(stats(), { mode: S.plan.mode, day: store.dayKey(), timeMs: Math.round(t), dopaL: S.dopa.L, firstRate: rate }); store.save(); }
   questNote({ type: 'play', mode: S.plan.mode });
-  $('#result-title').textContent = review ? 'ふくしゅう クリア' : exam ? `模擬試験(${exam.name}) ${exam.pass ? '合格' : '不合格'}` : `${modeName(S.plan)} クリア`;
+  $('#result-title').textContent = review ? 'ふくしゅう クリア' : exam ? `模擬試験(${exam.name}) ${exam.pass ? '合格' : '不合格'}${S.timeUp ? '（時間切れ）' : ''}` : `${modeName(S.plan)} クリア`;
   renderExamResult($('#r-exam'), exam);
   const un = $('#r-unlock');
   un.textContent = review || exam ? '' : ok ? 'エクストラ解放' : '初回正解率80%以上でエクストラ';
@@ -1493,6 +1512,29 @@ function renderSkillNews(el) {
   if (S.plan.placement) items.unshift(`<p>じつりょくチェック おわり　${SKILLS.filter((x) => stateOf(progress(), x.id) === 'mastered').length}こ クリア</p>`);
   el.innerHTML = items.slice(0, 5).join('');
 }
+// Weakest field of this exam, with a button straight to practice its skill.
+function weakHtml(w) {
+  if (!w || !w.skill || !SKILL[w.skill]) return '';
+  return `<div class="exam-weak"><p>いちばん弱いのは <b>${w.label}</b>（${w.ok}/${w.n}問）${w.misses ? `。とくに「${SKILL[w.skill].name}」で${w.misses}問まちがえました` : ''}</p>`
+    + `<button type="button" class="sub-btn exam-practice" data-skill="${w.skill}">ここを練習：${SKILL[w.skill].name}</button></div>`;
+}
+const BAR_PX = 50;
+// Score trend of the last mock exams of this kind (this one included).
+function trendHtml(list) {
+  if (!list.length) return '';
+  const bars = list.map((h, i) => {
+    const d = new Date(h.at);
+    const pct = Math.round((h.total / h.max) * 100);
+    const last = i === list.length - 1;
+    return `<li class="${h.pass ? 'pass' : 'fail'}${last ? ' now' : ''}" aria-label="${d.getMonth() + 1}月${d.getDate()}日 ${h.total}問${h.pass ? ' 合格' : ''}"><b>${h.total}</b><i style="height:${Math.round(BAR_PX * pct / 100)}px"></i><small>${d.getMonth() + 1}/${d.getDate()}</small></li>`;
+  }).join('');
+  const line = Math.round(BAR_PX * PASS_RATE);
+  const best = Math.max(...list.map((h) => h.total));
+  const passes = list.filter((h) => h.pass).length;
+  return `<div class="exam-trend"><p class="exam-trend-head">これまでの模擬試験（最近${list.length}回）<span>さいこう ${best}問・合格 ${passes}回</span></p>`
+    + `<ol class="exam-bars" style="--line:${line}px">${bars}</ol></div>`;
+}
+
 // Mock exam verdict: total against the pass line, then each field against its minimum.
 function renderExamResult(box, exam) {
   box.hidden = !exam;
@@ -1501,7 +1543,10 @@ function renderExamResult(box, exam) {
   box.innerHTML = `<p class="exam-verdict ${exam.pass ? 'pass' : 'fail'}">${exam.pass ? '合格ライン クリア' : '合格ラインに とどかず'}</p>`
     + `<p class="exam-total">初回正解 <b>${exam.total}</b>/${exam.max}問（合格は${exam.line}問以上、かつ各分野の基準）</p>`
     + `<ol class="exam-fields">${rows}</ol>`
-    + '<p class="exam-note">本試験と同じ分野・問題数（運行管理者試験センターの受験概要による）。はじめに正解した問題だけを得点にしています。</p>';
+    + (exam.answered < exam.max ? `<p class="exam-timeup">時間切れ：${exam.max - exam.answered}問が未回答（不正解あつかい）</p>` : '')
+    + weakHtml(exam.weak)
+    + trendHtml(examTrend(store.load().history, exam.kind))
+    + '<p class="exam-note">本試験と同じ分野・問題数・試験時間90分（運行管理者試験センターの受験概要による）。はじめに正解した問題だけを得点にしています。</p>';
 }
 
 function setReviewButton(btn, n) {
@@ -1521,6 +1566,10 @@ function refreshTitle() {
   $('#level-sub').textContent = prog.placed ? `つぎは「${SKILL[frontier(prog)[0] || ORDER[ORDER.length - 1]].name}」` : 'はじめは じつりょくチェック';
   const done = SKILLS.filter((x) => stateOf(prog, x.id) === 'mastered').length;
   $('#tree-badge').textContent = `${done}/${SKILLS.length}`;
+  $$('.exam-row button').forEach((b) => {
+    const last = examTrend(store.load().history, b.dataset.exam, 1)[0];
+    b.querySelector('small').textContent = last ? `30問・前回 ${last.total}問${last.pass ? ' 合格' : ''}` : '30問・90分';
+  });
   renderQuests();
   refreshTrophyBadge();
   const got = gotTrophies();
@@ -1577,6 +1626,11 @@ onFrame((dt, t) => {
         if (sec !== S.lastTick) { S.lastTick = sec; audio.tick(sec <= 1); }
       }
       if (left <= 0 && !S.extra.over) endExtra();
+    } else if (S.plan.mode === 'exam') {
+      const left = Math.max(0, S.targetMs - ((S.endT || t) - S.startT));
+      txt = fmtTime(left + 999);
+      $('.clock').classList.toggle('hurry', left < 5 * 60 * 1000);
+      if (left <= 0 && !S.endT && !S.timeUp) examTimeUp();
     } else {
       const el = (S.endT || t) - S.startT;
       txt = fmtTime(el);
@@ -1966,7 +2020,7 @@ function toast(msg) {
 
 // ---------------------------------------------------------------- calendar
 const cal = { y: new Date().getFullYear(), m: new Date().getMonth(), seen: new Set() };
-const MODE_NAMES = { drill: (h) => `${h.count || ''}問ドリル`, level: () => 'じぶんレベル', grade: (h) => `ステージ${h.grade}`, review: () => 'ふくしゅう', practice: (h) => `れんしゅう（${SKILL[h.skill]?.name || ''}）` };
+const MODE_NAMES = { drill: (h) => `${h.count || ''}問ドリル`, level: () => 'じぶんレベル', grade: (h) => `ステージ${h.grade}`, review: () => 'ふくしゅう', practice: (h) => `れんしゅう（${SKILL[h.skill]?.name || ''}）`, exam: (h) => `模擬試験（${EXAM[h.exam]?.name || ''}）${Number.isFinite(h.total) ? ` ${h.total}/${h.max}問${h.pass ? ' 合格' : ''}` : ''}` };
 const stampSvg = (score) => {
   const gold = score > 100;
   const col = gold ? '#ffb000' : '#ff4f6d';
@@ -2597,6 +2651,7 @@ $('#f-review').addEventListener('click', startReview);
 $('#start-review').addEventListener('click', startReview);
 $$('.grades button').forEach((b) => b.addEventListener('click', () => startGame('grade', Number(b.dataset.grade))));
 $$('.exam-row button').forEach((b) => b.addEventListener('click', () => { if (EXAM[b.dataset.exam]) startGame('exam', b.dataset.exam); }));
+$('#r-exam').addEventListener('click', (e) => { const b = e.target.closest('.exam-practice'); if (b && SKILL[b.dataset.skill]) { audio.play('blip', audio.now(), { m: 84, v: 0.12 }); startGame('practice', b.dataset.skill); } });
 $('#open-tree').addEventListener('click', () => openTree());
 $('#tree').addEventListener('pointerdown', startHold);
 $('#tree').addEventListener('contextmenu', (e) => { if (e.target.closest('.node')) e.preventDefault(); });

@@ -3,9 +3,12 @@
 //   cargo: 貨物自動車運送事業法 8 / 道路運送車両法 4 / 道路交通法 5 / 労働基準法 6 / 実務 7
 //   bus:   道路運送法 8 / 道路運送車両法 4 / 道路交通法 5 / 労働基準法 6 / 実務 7
 //   pass:  total >= 60% (18 of 30), fields (1)-(4) at least 1 correct, field (5) at least 2.
-// A question counts as correct when it is answered right on the first try.
+//   time:  90 minutes (CBT).
+// A question counts as correct when it is answered right on the first try;
+// a question left unanswered when time runs out counts as wrong.
 import { POOLS } from './bank.js';
 import { buildQuiz, FIELD } from './problems.js';
+import { SKILLS } from './skills.js';
 
 const pre = (p, drop = []) => Object.keys(POOLS).filter((n) => n.startsWith(p) && !drop.includes(n));
 const VH = () => ({ label: '道路運送車両法関係', n: 4, need: 1, pools: pre('vh_') });
@@ -35,6 +38,7 @@ export const EXAM = {
   },
 };
 export const PASS_RATE = 0.6;
+export const EXAM_MS = 90 * 60 * 1000;
 export const examSize = (kind) => EXAM[kind].fields.reduce((a, f) => a + f.n, 0);
 export const passLine = (kind) => Math.ceil(examSize(kind) * PASS_RATE);
 
@@ -64,7 +68,10 @@ export function buildExam(kind, rng) {
   return out;
 }
 
-// log: [{ field, ok }] for every answered problem.
+// The skill whose pool is `pool` (every pool belongs to exactly one skill).
+export const skillOfPool = (pool) => (SKILLS.find((s) => s.gen[1].pool === pool) || {}).id || null;
+
+// log: [{ field, ok, pool }] for every answered problem.
 export function judgeExam(kind, log) {
   const exam = EXAM[kind];
   const fields = exam.fields.map((f, i) => {
@@ -74,5 +81,29 @@ export function judgeExam(kind, log) {
   const total = fields.reduce((a, f) => a + f.ok, 0);
   const max = examSize(kind);
   const line = passLine(kind);
-  return { name: exam.name, total, max, line, fields, pass: total >= line && fields.every((f) => f.pass) };
+  const answered = log.length;
+  return { kind, name: exam.name, total, max, line, fields, answered, pass: total >= line && fields.every((f) => f.pass), weak: weakSpot(kind, log, fields) };
 }
+
+// The weakest field (a failed field first, then the lowest share correct;
+// ties go to the larger field) and, inside it, the skill with the most misses.
+// null when every question was right.
+export function weakSpot(kind, log, fields = judgeExam(kind, log).fields) {
+  const rank = fields.map((f, i) => ({ i, f, short: f.pass ? 0 : 1, rate: f.ok / f.n })).filter((x) => x.f.ok < x.f.n);
+  if (!rank.length) return null;
+  rank.sort((a, b) => b.short - a.short || a.rate - b.rate || b.f.n - a.f.n || a.i - b.i);
+  const { i, f } = rank[0];
+  const miss = {};
+  for (const e of log) if (e.field === i && !e.ok && e.pool) miss[e.pool] = (miss[e.pool] || 0) + 1;
+  // No answered misses (time ran out): fall back to the field's biggest pool.
+  const pools = EXAM[kind].fields[i].pools;
+  const pool = Object.keys(miss).sort((a, b) => miss[b] - miss[a] || pools.indexOf(a) - pools.indexOf(b))[0]
+    || pools.slice().sort((a, b) => POOLS[b].length - POOLS[a].length)[0];
+  return { field: i, label: f.label, ok: f.ok, n: f.n, pool, skill: skillOfPool(pool), misses: miss[pool] || 0 };
+}
+
+// What is kept in the play history for one mock exam.
+export const examRecord = (r) => ({ exam: r.kind, total: r.total, max: r.max, pass: r.pass, fields: r.fields.map((f) => f.ok), answered: r.answered });
+
+// The last `n` mock exams of one kind from the play history, oldest first.
+export const examTrend = (history, kind, n = 10) => history.filter((h) => h.mode === 'exam' && h.exam === kind && Number.isFinite(h.total)).slice(-n);

@@ -788,3 +788,19 @@ body:not([data-screen="title"]) #actors { display: none; }
 .exam-fields li.ok em { color: #1f9e6b; }
 .exam-fields li.ng em { color: #d6334f; }
 .exam-note { margin: 8px 0 0; font-size: 11px; opacity: .7; }
+.exam-timeup { margin: 8px 0 0; font-size: 12px; font-weight: 900; color: #d6334f; text-align: center; }
+.exam-weak { margin: 10px 0 0; padding: 8px 10px; border-radius: 10px; background: rgba(255, 122, 182, .12); }
+.exam-weak p { margin: 0 0 6px; font-size: 13px; line-height: 1.5; }
+.exam-weak .sub-btn { width: 100%; }
+.exam-trend { margin: 12px 0 0; }
+.exam-trend-head { margin: 0 0 6px; font-size: 12px; font-weight: 900; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.exam-trend-head span { font-weight: 700; opacity: .7; }
+.exam-bars { --line: 30px; list-style: none; margin: 0; padding: 0; height: 84px; display: flex; align-items: flex-end; gap: 4px; position: relative; }
+.exam-bars::before { content: ''; position: absolute; left: 0; right: 0; bottom: calc(16px + var(--line)); border-top: 1.5px dashed rgba(214, 51, 79, .6); }
+.exam-bars::after { content: '合格ライン'; position: absolute; right: 0; bottom: calc(17px + var(--line)); font-size: 9px; font-weight: 900; color: #d6334f; }
+.exam-bars li { flex: 1 1 0; max-width: 34px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; position: relative; padding-bottom: 16px; }
+.exam-bars li i { display: block; width: 100%; min-height: 2px; border-radius: 4px 4px 0 0; background: #b8bbd9; }
+.exam-bars li.pass i { background: var(--pink); }
+.exam-bars li.now i { outline: 2px solid #1b1d4d; outline-offset: 1px; }
+.exam-bars li b { font-size: 11px; line-height: 1.2; }
+.exam-bars li small { position: absolute; bottom: 0; font-size: 9px; opacity: .7; white-space: nowrap; }
