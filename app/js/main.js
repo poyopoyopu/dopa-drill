@@ -576,7 +576,7 @@ function burstKinds(E) {
   if (E > 0.18) k.push('star');
   if (E > 0.4) k.push('spark', 'spark');
   if (E > 0.58) k.push('coin');
-  if (E > 0.72) k.push('mini', 'heart');
+  if (E > 0.72) k.push('heart', 'heart');
   return k;
 }
 
@@ -782,9 +782,9 @@ function celebrate(E, big, lastBasic) {
   if (E > 0.25) fxBack.burst(cx, cy, { count: Math.round(100 * Math.min(1.2, E)), speed: 900 + 400 * E, kinds: burstKinds(E), up: 400 });
   if (E > 0.3) fx.streamers(W, H, Math.round(2 + 6 * E));
   if (E > 0.5) { fxBack.fireworks(W, H, Math.round(2 + 6 * E) + (big ? 4 : 0), 0.06, 0.3); S.flash = Math.max(S.flash, 0.25 * E); }
-  if (E > 0.62) fxBack.rain(W, Math.round(20 + 30 * E), { kinds: ['confetti', 'confetti', 'mini', 'coin'] });
+  if (E > 0.62) fxBack.rain(W, Math.round(20 + 30 * E), { kinds: ['confetti', 'confetti', 'heart', 'coin'] });
   if (E > 0.74 || big) parade(E, big);
-  if (big) { S.flash = 1; fx.burst(cx, cy, { count: 50, speed: 900, kinds: ['spark', 'star', 'coin'], up: 100, life: 0.6 }); fxBack.burst(cx, cy, { count: 120, speed: 1300, kinds: ['spark', 'star', 'mini', 'coin'], up: 300 }); }
+  if (big) { S.flash = 1; fx.burst(cx, cy, { count: 50, speed: 900, kinds: ['spark', 'star', 'coin'], up: 100, life: 0.6 }); fxBack.burst(cx, cy, { count: 120, speed: 1300, kinds: ['spark', 'star', 'heart', 'coin'], up: 300 }); }
   S.shake = Math.max(S.shake, 3 + 9 * E + (big ? 6 : 0));
   tween(260, (k) => { card.style.transform = `scale(${1 + Math.sin(k * Math.PI) * 0.04 * E})`; }).then(() => { card.style.transform = ''; });
 }
@@ -1119,8 +1119,8 @@ const FINALES = {
     S.flash = 1;
     fxBack.fireworks(W, H, 10, 0.06, 0.45);
     fx.streamers(W, H, 12);
-    fxBack.rain(W, 70, { kinds: ['confetti', 'confetti', 'mini', 'star', 'coin'] });
-    fx.burst(W / 2, H * 0.4, { count: 70, speed: 1200, kinds: ['confetti', 'star', 'spark', 'coin', 'mini'], up: 300, life: 0.7 });
+    fxBack.rain(W, 70, { kinds: ['confetti', 'confetti', 'heart', 'star', 'coin'] });
+    fx.burst(W / 2, H * 0.4, { count: 70, speed: 1200, kinds: ['confetti', 'star', 'spark', 'coin', 'heart'], up: 300, life: 0.7 });
     const giant = heroLike(Math.min(2.2, W / 200));
     giant.place(W / 2, H + 380 * giant.S / 3);
     giant.setFace('happy', 'grin', true);
@@ -1144,7 +1144,7 @@ const FINALES = {
     bigStamp('100点');
     S.shake = 16; S.flash = 1;
     const cx = W / 2; const cy = H * 0.3;
-    for (let i = 0; i < 16; i++) { const a = (i / 16) * Math.PI * 2; fx.burst(cx + Math.cos(a) * 120, cy + Math.sin(a) * 120, { count: 6, kinds: ['mini', 'star'], speed: 260, up: 60 }); }
+    for (let i = 0; i < 16; i++) { const a = (i / 16) * Math.PI * 2; fx.burst(cx + Math.cos(a) * 120, cy + Math.sin(a) * 120, { count: 6, kinds: ['heart', 'star'], speed: 260, up: 60 }); }
     parade(1, true);
     await wait(1100);
     fxBack.fireworks(W, H, 8, 0.05, 0.4);
@@ -1277,7 +1277,7 @@ function countUp(el, to, dur, from = 0) {
   if (S.reduced) { el.textContent = to.toLocaleString('ja-JP'); return; }
   let lastV = -1;
   tween(dur, (k) => { const v = Math.round(lerp(from, to, k)); if (v !== lastV) { el.textContent = v.toLocaleString('ja-JP'); lastV = v; if (v % 5 === 0 || to > 400) audio.play('blip', audio.now(), { m: 72 + Math.floor((v / Math.max(1, to)) * 24), v: 0.06 }); } }, easeOutCubic)
-    .then(() => { audio.clear(1); const c = centerOf(el); fx.burst(c.x, c.y, { count: 40, kinds: ['confetti', 'star', 'coin'], speed: 700, up: 200, life: 0.6 }); fxBack.burst(c.x, c.y, { count: 90, kinds: ['confetti', 'star', 'coin', 'mini'], speed: 1100, up: 300 }); hero.celebrate(1, { big: true, audio }); });
+    .then(() => { audio.clear(1); const c = centerOf(el); fx.burst(c.x, c.y, { count: 40, kinds: ['confetti', 'star', 'coin'], speed: 700, up: 200, life: 0.6 }); fxBack.burst(c.x, c.y, { count: 90, kinds: ['confetti', 'star', 'coin', 'heart'], speed: 1100, up: 300 }); hero.celebrate(1, { big: true, audio }); });
 }
 
 function startExtra() {
