@@ -744,6 +744,27 @@ body.reduced #guide-help-ring, body.reduced .guide-help-fallback::after { animat
 .sheet.quiz.answered .qz-ch:not(.right) { display: none; }
 .qz-exp { margin: 8px 0 0; padding: 7px 10px; border-radius: 12px; background: #fff3b8; font-size: calc(clamp(12px, 3.3vw, 13.5px) * var(--qzs, 1)); line-height: 1.5; font-weight: 700; text-align: left; }
 .qz-exp[hidden] { display: none; }
+/* Touch feedback while the finger is down (the answer comes when it lifts). */
+.qz-ch.touching { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.pad button.touching { transform: translateY(4px) scale(.97); box-shadow: 0 1px 0 var(--ink); }
+/* "選んでから決定": the marked choice, and the button that answers with it. */
+.qz-ch.sel { background: #fff3b8; border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue); }
+.pad button.sel { background: var(--yellow); }
+/* In this mode the choices themselves are the buttons, so 「これで回答」 takes the place of ①〜④. */
+.pad .pick-ok { display: none; grid-column: 1 / -1; font-family: var(--round); font-size: 18px; font-weight: 900; background: var(--blue); color: #fff; }
+.pad .pick-ok:disabled { background: #fff; color: var(--ink); opacity: .6; }
+body.pick-first .pad .pick-ok { display: block; }
+body.pick-first .pad button[data-key] { display: none; }
+#pick-mode button { width: 46%; max-width: 150px; height: 60px; font-family: var(--round); font-weight: 900; font-size: 16px; line-height: 1.2; }
+#pick-mode button small { display: block; margin: 0; font-size: 13px; }
+/* On short screens the card gives way (its question area scrolls) instead of pushing the
+   answer buttons off the bottom. */
+#screen-play:has(.sheet.quiz) .card { display: flex; flex-direction: column; min-height: 0; flex: 0 1 auto; }
+#screen-play:has(.sheet.quiz) .sheet-wrap { flex: 0 1 auto; min-height: 0; }
+#screen-play .pad, #screen-play .hud, #screen-play .hud2 { flex: none; }
+/* Nothing on the play screen should bounce or drag the page. */
+html, body { overscroll-behavior: none; }
+.sheet-wrap:has(.sheet.quiz) { overscroll-behavior: contain; }
 @media (max-height: 840px) { .pad button { height: 46px; } }
 .grades button { display: flex; align-items: baseline; justify-content: center; gap: 3px; padding: 0 4px; white-space: nowrap; }
 @media (max-width: 360px) { .grades button { font-size: 20px; } .grades button small { font-size: 11px; } }

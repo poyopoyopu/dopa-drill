@@ -37,7 +37,7 @@ const body = document.body;
 const sheet = $('#sheet');
 const card = $('#card');
 const stage = $('#stage');
-const padButtons = Object.fromEntries($$('#pad button').map((b) => [b.dataset.key, b]));
+const padButtons = Object.fromEntries($$('#pad button[data-key]').map((b) => [b.dataset.key, b]));
 
 const S = {
   screen: 'title', N: 10, rng: null, qi: 0, problems: [], problem: null, step: 0,
@@ -130,7 +130,7 @@ const stats = () => { const st = store.load(); if (!st.stats) st.stats = growth.
 const recording = () => !S.demo && !params.has('skill') && !(S.plan && S.plan.legacy);
 
 // ---------------------------------------------------------------- daily quests (id035)
-const pickedCount = () => Number(($('.pick [aria-checked="true"]') || {}).dataset?.count || 10);
+const pickedCount = () => Number(($('.pick [data-count][aria-checked="true"]') || {}).dataset?.count || 10);
 function questCtx() {
   const prog = progress();
   const st = stats();
@@ -276,7 +276,8 @@ function renderQuiz(p) {
     b.dataset.n = String(i + 1);
     b.innerHTML = `<b>${CHOICE_MARK[i]}</b><span></span>`;
     b.lastChild.textContent = t;
-    b.addEventListener('pointerdown', (e) => { e.preventDefault(); audio.unlock(); press(String(i + 1), padButtons[String(i + 1)]); });
+    onTap(b, () => choose(String(i + 1)));
+    b.addEventListener('click', (e) => { if (e.detail === 0) choose(String(i + 1)); }); // keyboard (Enter / Space on a focused choice)
     list.appendChild(b);
     S.cells[`ch${i + 1}`] = b;
   });
@@ -331,9 +332,13 @@ function renderSheet(p) {
 // stage below a small margin (long questions stay at the base size).
 function fitQuiz() {
   const wrap = sheet.parentElement;
-  for (let s = 1.6; s >= 1; s -= 0.05) {
+  const scr = $('#screen-play');
+  // Shrink a little below the normal size before letting the card scroll: a card that
+  // needs no scrolling is one nobody swipes on (and mis-taps a choice) by habit.
+  // The answer buttons at the bottom must stay on screen too.
+  for (let s = 1.6; s >= 0.88; s -= 0.04) {
     sheet.style.setProperty('--qzs', s.toFixed(2));
-    if (stage.clientHeight >= 24 && wrap.scrollHeight <= wrap.clientHeight + 1) return;
+    if (stage.clientHeight >= (s >= 1 ? 24 : 0) && wrap.scrollHeight <= wrap.clientHeight + 1 && scr.scrollHeight <= scr.clientHeight + 1) return;
   }
 }
 
@@ -406,7 +411,7 @@ function startGame(kind = 'level', arg, introDone = false) {
   audio.unlock();
   S.run += 1;
   if (S.bonusOpen) { $('#bonus').hidden = true; S.bonusOpen = false; }
-  S.N = Number($('.pick [aria-checked="true"]').dataset.count);
+  S.N = Number($('.pick [data-count][aria-checked="true"]').dataset.count);
   S.rng = makeRng(Number(params.get('seed') || Math.floor(Math.random() * 1e9)));
   S.sessionSigs = new Set();
   S.kind = kind; S.kindArg = arg;
@@ -484,6 +489,7 @@ async function setupProblem() {
   S.ready = true;
   // Answer time counts only while input is open (id033).
   S.qStart = now(); S.qMisses = 0; S.qMs = 0; S.firstPick = null;
+  setPick(null);
   activate(0);
 }
 
@@ -505,6 +511,56 @@ async function cardEnter(E) {
 }
 
 // ---------------------------------------------------------------- input
+// A tap counts only when the finger lifts close to where it went down, and soon.
+// A swipe to scroll, or a thumb resting on a choice while reading, is not an answer.
+const TAP_SLOP = 10; // px the finger may move
+const TAP_MAX_MS = 800; // longer than this is a resting thumb, not a tap
+const isTap = (t, e) => Math.hypot(e.clientX - t.x, e.clientY - t.y) <= TAP_SLOP && now() - t.at <= TAP_MAX_MS;
+function onTap(el, fn) {
+  let t = null;
+  const cancel = () => { t = null; el.classList.remove('touching'); };
+  el.addEventListener('pointerdown', (e) => {
+    if (e.button > 0) return;
+    e.preventDefault();
+    audio.unlock();
+    t = { id: e.pointerId, x: e.clientX, y: e.clientY, at: now() };
+    el.classList.add('touching');
+  });
+  el.addEventListener('pointermove', (e) => { if (t && e.pointerId === t.id && !isTap({ ...t, at: now() }, e)) cancel(); });
+  el.addEventListener('pointerup', (e) => {
+    if (!t || e.pointerId !== t.id) return;
+    const ok = isTap(t, e);
+    cancel();
+    if (ok) fn(e);
+  });
+  el.addEventListener('pointercancel', cancel); // the browser took the touch for scrolling
+  el.addEventListener('pointerleave', cancel);
+}
+
+// "選んでから決定": a tap only marks a choice, and 「これで回答」 answers with it.
+function choose(key) {
+  if (!S.pickFirst) { press(key); return; }
+  if (S.screen !== 'play' || S.confirm || !S.ready || !S.problem || S.problem.kind !== 'quiz') return;
+  const ch = S.cells[`ch${key}`];
+  if (!ch || ch.classList.contains('nope')) return;
+  setPick(key);
+  audio.play('blip', audio.now(), { m: 76 + Number(key) * 2, v: 0.08 });
+}
+function setPick(key) {
+  S.pick = key;
+  for (const [k, b] of Object.entries(padButtons)) b.classList.toggle('sel', k === key);
+  for (let i = 1; i <= 4; i++) S.cells[`ch${i}`]?.classList.toggle('sel', String(i) === key);
+  const ok = $('#pick-ok');
+  ok.disabled = !key;
+  ok.textContent = key ? `${CHOICE_MARK[Number(key) - 1]} で回答する` : '答えを選んでください';
+}
+function confirmPick() {
+  const key = S.pick;
+  if (!key) return;
+  setPick(null);
+  press(key);
+}
+
 function pressVisual(btn) {
   if (!btn) return;
   btn.classList.add('press');
@@ -790,11 +846,16 @@ function waitOrTap(ms) {
   return new Promise((resolve) => {
     const scr = $('#screen-play');
     let done = false;
-    const end = () => { if (done) return; done = true; clearTimeout(t); scr.removeEventListener('pointerdown', end, true); removeEventListener('keydown', onKey, true); resolve(); };
+    let tap = null; // a swipe (to read a long explanation) does not move on
+    const down = (e) => { tap = { x: e.clientX, y: e.clientY, at: now() }; };
+    const up = (e) => { const ok = tap && isTap(tap, e); tap = null; if (ok) end(); };
+    const drop = () => { tap = null; };
+    const on = [['pointerdown', down], ['pointerup', up], ['pointercancel', drop]];
+    const end = () => { if (done) return; done = true; clearTimeout(t); on.forEach(([n, f]) => scr.removeEventListener(n, f, true)); removeEventListener('keydown', onKey, true); resolve(); };
     const onKey = (e) => { if (e.key === 'Enter' || e.key === ' ') end(); };
     const t = setTimeout(end, ms);
     // Ignore the tap that answered the question itself.
-    setTimeout(() => { if (!done) { scr.addEventListener('pointerdown', end, true); addEventListener('keydown', onKey, true); } }, 500);
+    setTimeout(() => { if (!done) { on.forEach(([n, f]) => scr.addEventListener(n, f, true)); addEventListener('keydown', onKey, true); } }, 500);
   });
 }
 
@@ -1804,8 +1865,15 @@ function setVolume(v, { persist = true } = {}) {
   if (persist) store.updateSettings({ volume: v });
 }
 function setCount(n, { persist = true } = {}) {
-  $$('.pick button').forEach((x) => x.setAttribute('aria-checked', String(Number(x.dataset.count) === n)));
+  $$('.pick button[data-count]').forEach((x) => x.setAttribute('aria-checked', String(Number(x.dataset.count) === n)));
   if (persist) store.updateSettings({ count: n });
+}
+function setPickFirst(on, { persist = true } = {}) {
+  S.pickFirst = on;
+  document.body.classList.toggle('pick-first', on);
+  $$('#pick-mode button').forEach((x) => x.setAttribute('aria-checked', String((x.dataset.pickmode === 'confirm') === on)));
+  setPick(null);
+  if (persist) store.updateSettings({ pickFirst: on });
 }
 
 // ---------------------------------------------------------------- skill tree
@@ -2672,11 +2740,16 @@ function motionSliderFx(v) {
   }
 }
 
-$$('.pick button').forEach((b) => b.addEventListener('click', () => {
+$$('.pick button[data-count]').forEach((b) => b.addEventListener('click', () => {
   setCount(Number(b.dataset.count));
   audio.unlock();
   audio.play('blip', audio.now(), { m: 76 + Number(b.dataset.count) / 2, v: 0.12 });
   if (!S.reduced) hero.hop(20 + Number(b.dataset.count) * 2 * S.motion, 320, { audio });
+}));
+$$('#pick-mode button').forEach((b) => b.addEventListener('click', () => {
+  setPickFirst(b.dataset.pickmode === 'confirm');
+  audio.unlock();
+  audio.play('blip', audio.now(), { m: b.dataset.pickmode === 'confirm' ? 86 : 79, v: 0.12 });
 }));
 $('#start').addEventListener('click', () => startGame('level'));
 $('#quest-list').addEventListener('click', (e) => { const li = e.target.closest('li.go'); if (li && SKILL[li.dataset.skill]) { audio.unlock(); audio.play('blip', audio.now(), { m: 84, v: 0.12 }); startGame('practice', li.dataset.skill); } });
@@ -2756,9 +2829,11 @@ $('#f-tree').addEventListener('click', () => openTree(S.newUnlocks, Object.keys(
 $('#tree-back').addEventListener('click', () => { audio.play('blip', audio.now(), { m: 72, v: 0.08 }); toTitle(); });
 
 for (const [key, b] of Object.entries(padButtons)) {
-  b.addEventListener('pointerdown', (e) => { e.preventDefault(); audio.unlock(); press(key, b); });
-  b.addEventListener('click', (e) => { if (e.detail === 0) press(key, b); });
+  onTap(b, () => choose(key));
+  b.addEventListener('click', (e) => { if (e.detail === 0) choose(key); });
 }
+onTap($('#pick-ok'), confirmPick);
+$('#pick-ok').addEventListener('click', (e) => { if (e.detail === 0) confirmPick(); });
 addEventListener('keydown', (e) => {
   if (guide.keydown(e)) return;
   if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
@@ -2800,6 +2875,7 @@ setCount(params.has('count') ? Number(params.get('count')) : saved.count, { pers
 setMotion(saved.motion ?? (prefersReduced ? 0 : 1), { persist: false });
 setMuted(!saved.sound, { persist: false });
 setVolume(saved.volume, { persist: false });
+setPickFirst(!!saved.pickFirst, { persist: false });
 applyLook(titleLook());
 renderCalendar();
 refreshTitle();
