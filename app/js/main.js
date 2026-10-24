@@ -14,6 +14,8 @@ import { ORDER, emptyProgress, recordResult, stateOf, masteryRatio, starsOf, nex
 import * as growth from './growth.js';
 import { buildExam, judgeExam, EXAM, EXAM_MS, PASS_RATE, examRecord, examTrend, examMissed } from './exam.js';
 import { BOOKS } from './affiliate.js';
+import { lawCheckedLabel, reportHref } from './trust.js';
+import { loadAnalytics } from './analytics.js';
 import * as qs from './quests.js';
 import * as tr from './trophies.js';
 import * as ul from './unlocks.js';
@@ -21,6 +23,10 @@ import { BASIC_SCORE, extraPoints, basicDopaL, extraProblemGain, addDopa, comboM
 
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
+
+// 法令・告示の確認日(タイトル画面の下に出す)と、利用状況の計測(トークンが空なら何もしない)。
+$$('.law-date-text').forEach((el) => { el.textContent = lawCheckedLabel(); });
+loadAnalytics();
 
 const capture = params.has('capture');
 const EXTRA_MS = Number(params.get('extra') || 150) * 1000;
@@ -834,6 +840,11 @@ function showExplain(p) {
   const parts = [p.explain, p.source ? `（${p.source}）` : ''].filter(Boolean);
   if (!parts.length) return 0;
   exp.textContent = parts.join('');
+  const report = document.createElement('a'); // 誤りの報告(メールアプリが開くだけ。押しても次の問題へは進まない)
+  report.className = 'qz-report';
+  report.href = reportHref(p);
+  report.textContent = '誤りを報告';
+  exp.append(' ', report);
   exp.hidden = false;
   sheet.classList.add('answered');
   const wrap = sheet.parentElement;
@@ -847,7 +858,8 @@ function waitOrTap(ms) {
     const scr = $('#screen-play');
     let done = false;
     let tap = null; // a swipe (to read a long explanation) does not move on
-    const down = (e) => { tap = { x: e.clientX, y: e.clientY, at: now() }; };
+    const onLink = (e) => !!(e.target && e.target.closest && e.target.closest('a'));
+    const down = (e) => { tap = onLink(e) ? null : { x: e.clientX, y: e.clientY, at: now() }; };
     const up = (e) => { const ok = tap && isTap(tap, e); tap = null; if (ok) end(); };
     const drop = () => { tap = null; };
     const on = [['pointerdown', down], ['pointerup', up], ['pointercancel', drop]];
@@ -1622,7 +1634,8 @@ function missedHtml(list, exam) {
       + `<p class="mx-q">${esc(p.text)}</p>${yours}`
       + `<p class="mx-right">正解　${CHOICE_MARK[right - 1]} ${esc(p.choices[right - 1])}</p>`
       + (p.explain ? `<p class="mx-explain">${esc(p.explain)}</p>` : '')
-      + (p.source ? `<p class="mx-source">出典：${esc(p.source)}</p>` : '') + '</li>';
+      + (p.source ? `<p class="mx-source">出典：${esc(p.source)}</p>` : '')
+      + `<p class="mx-report"><a href="${esc(reportHref(p))}">この問題の誤りを報告</a></p>` + '</li>';
   }).join('');
   return `<details class="exam-missed"><summary>間違えた問題を見直す（${list.length}問）</summary><ol>${items}</ol></details>`;
 }

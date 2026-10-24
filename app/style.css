@@ -744,6 +744,7 @@ body.reduced #guide-help-ring, body.reduced .guide-help-fallback::after { animat
 .sheet.quiz.answered .qz-ch:not(.right) { display: none; }
 .qz-exp { margin: 8px 0 0; padding: 7px 10px; border-radius: 12px; background: #fff3b8; font-size: calc(clamp(12px, 3.3vw, 13.5px) * var(--qzs, 1)); line-height: 1.5; font-weight: 700; text-align: left; }
 .qz-exp[hidden] { display: none; }
+.qz-report { display: inline-block; margin-left: 4px; padding: 0 6px; font-size: .85em; font-weight: 900; color: #5b5f8f; text-decoration: underline; }
 /* Touch feedback while the finger is down (the answer comes when it lifts). */
 .qz-ch.touching { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
 .pad button.touching { transform: translateY(4px) scale(.97); box-shadow: 0 1px 0 var(--ink); }
@@ -826,6 +827,8 @@ a.sub-btn { display: inline-flex; flex-direction: column; align-items: center; j
 .mx-right { color: #1f9e6b; font-weight: 900; }
 .mx-explain { opacity: .85; }
 .mx-source { font-size: 11px; opacity: .6; }
+.exam-missed li p.mx-report { font-size: 11px; }
+.mx-report a { color: #5b5f8f; font-weight: 900; }
 .exam-book { margin: 12px 0 0; padding: 10px 12px; border-radius: 10px; border: 2px dashed #c9cbe8; }
 .exam-book-head { margin: 0 0 6px; font-size: 12px; font-weight: 900; display: flex; align-items: center; gap: 6px; }
 .exam-book .pr { padding: 0 6px; border-radius: 4px; background: #5b5f8f; color: #fff; font-size: 10px; line-height: 1.6; }
@@ -836,3 +839,4 @@ a.sub-btn { display: inline-flex; flex-direction: column; align-items: center; j
 .exam-share { display: flex; align-items: center; justify-content: center; width: 100%; margin: 10px 0 0; height: 44px; color: var(--ink); font-size: 15px; font-weight: 900; text-decoration: none; }
 .title-foot { margin: 4px 0 0; font-size: 12px; }
 .title-foot a, .about-row a { color: var(--ink); font-weight: 700; }
+.title-foot.law-date { opacity: .75; }
