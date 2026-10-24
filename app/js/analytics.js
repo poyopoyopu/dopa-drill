@@ -1,9 +1,9 @@
-// 利用状況の計測(Cloudflare Web Analytics)。トークンが空のあいだは何もしない。
+// 利用状況の計測(Cloudflare Web Analytics)。2026年10月24日に有効化。トークンを空にすると止まる。
 //
 // 使い方は docs/analytics.md。トークンを入れたら、about.html のプライバシーポリシーと
 // README の記述も同時に直す(tests/app_trust.test.mjs が食い違いを見つける)。
 // Cookie は使わず、個人を特定する情報も集めない。ブラウザの「トラッキング拒否」がオンなら読み込まない。
-export const ANALYTICS_TOKEN = '';
+export const ANALYTICS_TOKEN = '80027b5521b14348af74dc31331d9102';
 
 const BEACON = 'https://static.cloudflareinsights.com/beacon.min.js';
 
