@@ -11,6 +11,7 @@ import { SKILLS, LANES } from '../app/js/skills.js';
 import { NOTES } from './notes/index.mjs';
 import { GROUPS } from './build_text.mjs';
 import { insertWbr } from './budoux/phrase.mjs';
+import { BOOKS, booksFor } from '../app/js/affiliate.js';
 
 const SRC_DIR = fileURLToPath(new URL('./kyokasho/', import.meta.url));
 const OUT_DIR = fileURLToPath(new URL('../app/kyokasho/', import.meta.url));
@@ -45,6 +46,27 @@ export function readChapter(id) {
 
 export function chapters() {
   return ORDER.map((s) => ({ skill: s, ch: readChapter(s.id) })).filter((x) => x.ch);
+}
+
+// 章末の「PR」(問題集の紹介)。リンクを押すまで外部とは通信しない(画像なし)。
+// 貨物の章は貨物編、旅客の章は旅客編、共通の章は両方を出す。
+const KIND_LABEL = { cargo: '貨物編', bus: '旅客編' };
+export function renderBooks(id) {
+  const link = (url, ok, label) => (url && ok.test(url) ? `<a class="buy" href="${esc(url)}" target="_blank" rel="nofollow sponsored noopener">${label}</a>` : '');
+  const items = booksFor(id).map((kind) => {
+    const b = BOOKS[kind];
+    if (!b) return null;
+    const rakuten = link(b.url, /^https:\/\/hb\.afl\.rakuten\.co\.jp\//, '楽天ブックスで見る');
+    const amazon = link(b.amazon, /^https:\/\/www\.amazon\.co\.jp\//, 'Amazonで見る');
+    if (!rakuten && !amazon) return null;
+    return { amazon: !!amazon, html: `<li><span class="kind">${KIND_LABEL[kind]}</span><span class="ttl">${esc(b.title)}</span><span class="links">${rakuten}${amazon}</span></li>` };
+  }).filter(Boolean);
+  if (!items.length) return '';
+  return `<aside class="book" aria-label="問題集の紹介(広告)">
+    <p class="head"><span class="pr">PR</span>もっと問題を解きたい人へ</p>
+    <ul>${items.map((x) => x.html).join('')}</ul>${items.some((x) => x.amazon) ? '\n    <p class="note">Amazonのアソシエイトとして、運行管理ドリルは適格販売により収入を得ています。</p>' : ''}
+  </aside>
+  `;
 }
 
 const head = ({ title, desc, path, type = 'article' }) => `<!doctype html>
@@ -86,7 +108,7 @@ ${ch.body}
 
   <a class="cta" href="../">ドリルで確かめる(${esc(skill.name)})</a>
   <p class="src" style="text-align:center;margin:0"><a href="../text.html#${id}">要点ノートで見直す</a></p>
-  <nav class="pager" aria-label="前後の章">${pager(prev, 'prev', '← まえの章')}${pager(next, 'next', 'つぎの章 →')}</nav>
+  ${renderBooks(id)}<nav class="pager" aria-label="前後の章">${pager(prev, 'prev', '← まえの章')}${pager(next, 'next', 'つぎの章 →')}</nav>
   <p class="src">出典：${esc(ch.src)}。${UPDATED}時点の内容です。法令や告示は改正されることがあるので、試験の前には最新の公式資料で確認してください。</p>
 </main>
 </body>

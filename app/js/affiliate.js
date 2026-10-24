@@ -16,3 +16,12 @@ export const BOOKS = {
     amazon: amazonDp('4862753779'),
   },
 };
+
+// 教科書の章末に出す本。章の分野に合う種類だけを出す:
+// 貨物の章とトラックの章は貨物編、旅客の章とバス・タクシーの章は旅客編、共通の章は両方。
+export function booksFor(skillId) {
+  const g = String(skillId).split('-')[0];
+  if (g === 'cg' || skillId === 'lb-truck') return ['cargo'];
+  if (g === 'ps' || skillId === 'lb-bus' || skillId === 'lb-taxi') return ['bus'];
+  return ['cargo', 'bus'];
+}

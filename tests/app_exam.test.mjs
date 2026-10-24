@@ -130,3 +130,25 @@ test('recommended books: only Rakuten/Amazon affiliate links, one slot per exam 
     assert.ok(b.title);
   }
 });
+
+test('kyokasho chapters show only the PR books that fit the chapter, with Amazon disclosure', async () => {
+  const { booksFor } = await import('../app/js/affiliate.js');
+  const { renderBooks } = await import('../tools/build_kyokasho.mjs');
+  assert.deepEqual(booksFor('cg-tenko'), ['cargo']);
+  assert.deepEqual(booksFor('lb-truck'), ['cargo']);
+  assert.deepEqual(booksFor('ps-duty'), ['bus']);
+  assert.deepEqual(booksFor('lb-bus'), ['bus']);
+  assert.deepEqual(booksFor('lb-taxi'), ['bus']);
+  assert.deepEqual(booksFor('tr-speed'), ['cargo', 'bus']);
+  assert.deepEqual(booksFor('mix-final'), ['cargo', 'bus']);
+  for (const id of ['cg-tenko', 'ps-duty', 'pr-calc']) {
+    const html = renderBooks(id);
+    assert.match(html, /class="pr">PR</);
+    assert.match(html, /アソシエイトとして/);
+    for (const m of html.matchAll(/href="([^"]+)"/g)) assert.match(m[1].replace(/&amp;/g, '&'), /^https:\/\/(hb\.afl\.rakuten\.co\.jp|www\.amazon\.co\.jp)\//);
+    for (const m of html.matchAll(/<a [^>]*>/g)) assert.match(m[0], /rel="nofollow sponsored noopener"/);
+  }
+  assert.ok(!renderBooks('cg-tenko').includes('旅客編'));
+  assert.ok(!renderBooks('ps-duty').includes('貨物編'));
+  assert.ok(renderBooks('pr-calc').includes('貨物編') && renderBooks('pr-calc').includes('旅客編'));
+});
