@@ -2800,6 +2800,7 @@ $('#volume').addEventListener('input', (e) => { audio.unlock(); const v = e.targ
 $('#motion').addEventListener('input', (e) => { const v = e.target.value / 100; setMotion(v); motionSliderFx(v); });
 $('#motion').addEventListener('change', () => { S.previewE = 0.04 + 0.3 * S.motion; });
 $('#mute').addEventListener('click', () => setMuted(!S.muted));
+$('#quit-run').addEventListener('click', askToTitle);
 $('#go-extra').addEventListener('click', startExtra);
 $('#go-title').addEventListener('click', toTitle);
 $('#go-again').addEventListener('click', () => startGame(S.kind, S.kindArg));
