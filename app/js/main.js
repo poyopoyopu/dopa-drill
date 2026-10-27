@@ -2182,6 +2182,26 @@ const stampSvg = (score) => {
   const col = gold ? '#ffb000' : '#ff4f6d';
   return `<svg viewBox="-20 -20 40 40" aria-hidden="true"><path d="M-2 -15 C10 -16 16 -6 14 4 C12 13 1 17 -8 13 C-16 9 -16 -4 -8 -11 C-3 -15 5 -14 9 -10" fill="none" stroke="${col}" stroke-width="3" stroke-linecap="round"/>${gold ? '<path d="M0 -19 l2 4 4 .5 -3 3 .8 4 -3.8 -2 -3.8 2 .8 -4 -3 -3 4 -.5z" fill="#ffd23f" stroke="#1b1d4d" stroke-width="1"/>' : ''}</svg>`;
 };
+// Exam-day countdown: the user picks their own exam date (kept on this device only).
+const TARGET_KEY = 'unko-exam-target';
+function examTarget() { try { return localStorage.getItem(TARGET_KEY) || ''; } catch { return ''; } }
+function setExamTarget(v) { try { if (v) localStorage.setItem(TARGET_KEY, v); else localStorage.removeItem(TARGET_KEY); } catch { /* storage off */ } }
+function renderTarget() {
+  const msg = $('#target-msg'); if (!msg) return;
+  const input = $('#target-date'); const clear = $('#target-clear');
+  const t = examTarget();
+  if (input && document.activeElement !== input) input.value = t;
+  if (clear) clear.hidden = !t;
+  if (!t) { msg.innerHTML = '試験日を設定すると、ここにカウントダウンが出ます。<a href="exam.html">試験・申込の案内</a>'; return; }
+  const [ty, tm, td] = t.split('-').map(Number);
+  const target = new Date(ty, tm - 1, td);
+  const now = new Date();
+  const days = Math.round((target - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000);
+  const when = `${tm}月${td}日（${'日月火水木金土'[target.getDay()]}）`;
+  if (days > 0) msg.innerHTML = `試験は <b>${when}</b>。あと <b class="t-days">${days}日</b>`;
+  else if (days === 0) msg.innerHTML = `<b>${when}</b>、今日が試験日。いってらっしゃい！`;
+  else msg.textContent = `設定した試験日（${when}）は過ぎました。次の目標日を設定してください`;
+}
 function renderCalendar(animateNew = false) {
   const { y, m } = cal;
   const today = new Date();
@@ -2190,6 +2210,7 @@ function renderCalendar(animateNew = false) {
   const sum = store.monthSummary(y, m);
   const nocount = store.nocountDays();
   const questDays = (store.load().quests || {}).doneDays || {};
+  const tKey = examTarget();
   const first = new Date(y, m, 1).getDay();
   const days = new Date(y, m + 1, 0).getDate();
   let html = '';
@@ -2199,6 +2220,7 @@ function renderCalendar(animateNew = false) {
     const info = sum[key];
     const cls = ['cal-day'];
     if (key === todayKey) cls.push('today');
+    if (key === tKey) cls.push('target');
     if (info) { cls.push('played'); if (animateNew && !cal.seen.has(`${key}:${info.best}`)) cls.push('pop'); }
     const label = info ? `${m + 1}月${d}日 ${info.plays}回 最高${info.best}点${questDays[key] ? ' クエストコンプリート' : ''}` : `${m + 1}月${d}日`;
     const sticker = store.stickerOn(key);
@@ -2208,9 +2230,10 @@ function renderCalendar(animateNew = false) {
     const qd = questDays[key] ? '<span class="qd" aria-hidden="true">★</span>' : '';
     if (nc) cls.push('nocount');
     const ncStamp = nc ? '<span class="nc">ノーカン</span>' : '';
+    const tg = key === tKey ? '<span class="tg" aria-hidden="true">試験</span>' : '';
     html += info
-      ? `<button type="button" class="${cls.join(' ')}" data-day="${key}" data-key="${key}" aria-label="${label}"><span class="n">${d}</span>${stampSvg(info.best)}<span class="sc${info.best >= 10000 ? ' big' : ''}">${info.best.toLocaleString('ja-JP')}</span>${stk}${qd}</button>`
-      : `<span class="${cls.join(' ')}" data-key="${key}" aria-label="${label}${nc ? ' ノーカン' : ''}"><span class="n">${d}</span>${ncStamp}${stk}</span>`;
+      ? `<button type="button" class="${cls.join(' ')}" data-day="${key}" data-key="${key}" aria-label="${label}"><span class="n">${d}</span>${stampSvg(info.best)}<span class="sc${info.best >= 10000 ? ' big' : ''}">${info.best.toLocaleString('ja-JP')}</span>${stk}${qd}${tg}</button>`
+      : `<span class="${cls.join(' ')}" data-key="${key}" aria-label="${label}${nc ? ' ノーカン' : ''}"><span class="n">${d}</span>${ncStamp}${stk}${tg}</span>`;
     if (info) cal.seen.add(`${key}:${info.best}`);
   }
   $('#cal-grid').innerHTML = html;
@@ -2226,6 +2249,7 @@ function renderCalendar(animateNew = false) {
   const hammers = store.items().hammer;
   badges.push(`<span class="cal-badge hmr" aria-label="ノーカンハンマー ${hammers}本"><i>${HAMMER_SVG}</i><b>${hammers}</b>本</span>`);
   $('#cal-badges').innerHTML = badges.join('');
+  renderTarget();
   $('#cal-next').disabled = y > today.getFullYear() || (y === today.getFullYear() && m >= today.getMonth());
   if (animateNew && !S.reduced) $$('.cal-day.pop').forEach((el, i) => setTimeout(() => { const c = centerOf(el); fx.burst(c.x, c.y, { count: 14, kinds: ['confetti', 'star'], speed: 260, up: 80 }); audio.play('blip', audio.now(), { m: 84, v: 0.08 }); }, 350 + i * 120));
 }
@@ -2771,6 +2795,10 @@ $('#start').addEventListener('click', () => startGame('level'));
 $('#quest-list').addEventListener('click', (e) => { const li = e.target.closest('li.go'); if (li && SKILL[li.dataset.skill]) { audio.unlock(); audio.play('blip', audio.now(), { m: 84, v: 0.12 }); startGame('practice', li.dataset.skill); } });
 $('#cal-prev').addEventListener('click', () => moveMonth(-1));
 $('#cal-next').addEventListener('click', () => moveMonth(1));
+const targetDateInput = $('#target-date');
+if (targetDateInput) targetDateInput.addEventListener('change', () => { if (targetDateInput.value) { setExamTarget(targetDateInput.value); renderTarget(); renderCalendar(); } });
+const targetClearBtn = $('#target-clear');
+if (targetClearBtn) targetClearBtn.addEventListener('click', () => { setExamTarget(''); renderTarget(); renderCalendar(); });
 $('#cal-grid').addEventListener('click', (e) => { const b = e.target.closest('[data-day]'); if (b) openDay(b.dataset.day); });
 $('#close-day').addEventListener('click', () => { $('#day-log').hidden = true; });
 $('#day-log').addEventListener('click', (e) => { if (e.target.id === 'day-log') $('#day-log').hidden = true; });
