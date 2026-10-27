@@ -9,11 +9,15 @@ export const BOOKS = {
     title: '運行管理者試験問題と解説 貨物編 令和9年3月CBT試験受験版(公論出版)',
     url: 'https://hb.afl.rakuten.co.jp/ichiba/58b5583c.cfb6b9a5.58b5583d.74fb07b4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbook%2F18853014%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ%3D%3D',
     amazon: amazonSearch('9784862753939'),
+    kinokuniya: 'https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3785895&pid=892734529',
+    honto: 'https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3785895&pid=892734530',
   },
   bus: {
     title: '運行管理者試験問題と解説 旅客編 令和8年8月CBT試験受験版(公論出版)',
     url: 'https://hb.afl.rakuten.co.jp/ichiba/58b5583c.cfb6b9a5.58b5583d.74fb07b4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbook%2F18624912%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ%3D%3D',
     amazon: amazonDp('4862753779'),
+    kinokuniya: 'https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3785895&pid=892734529',
+    honto: 'https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3785895&pid=892734530',
   },
 };
 

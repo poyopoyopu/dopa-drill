@@ -145,7 +145,7 @@ test('kyokasho chapters show only the PR books that fit the chapter, with Amazon
     const html = renderBooks(id);
     assert.match(html, /class="pr">PR</);
     assert.match(html, /アソシエイトとして/);
-    for (const m of html.matchAll(/href="([^"]+)"/g)) assert.match(m[1].replace(/&amp;/g, '&'), /^https:\/\/(hb\.afl\.rakuten\.co\.jp|www\.amazon\.co\.jp)\//);
+    for (const m of html.matchAll(/href="([^"]+)"/g)) assert.match(m[1].replace(/&amp;/g, '&'), /^https:\/\/(hb\.afl\.rakuten\.co\.jp|www\.amazon\.co\.jp|ck\.jp\.ap\.valuecommerce\.com)\//);
     for (const m of html.matchAll(/<a [^>]*>/g)) assert.match(m[0], /rel="nofollow sponsored noopener"/);
   }
   assert.ok(!renderBooks('cg-tenko').includes('旅客編'));

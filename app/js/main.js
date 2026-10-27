@@ -1651,9 +1651,12 @@ function bookHtml(b) {
   const link = (url, ok, label) => (url && ok.test(url) ? `<a class="buy" href="${esc(url)}" target="_blank" rel="nofollow sponsored noopener">${label}</a>` : '');
   const rakuten = link(b.url, /^https:\/\/hb\.afl\.rakuten\.co\.jp\//, '楽天ブックスで見る');
   const amazon = link(b.amazon, /^https:\/\/www\.amazon\.co\.jp\//, 'Amazonで見る');
-  if (!rakuten && !amazon) return '';
+  const vc = (url, label) => link(url, /^https:\/\/ck\.jp\.ap\.valuecommerce\.com\//, label);
+  const kino = vc(b.kinokuniya, '紀伊國屋で探す');
+  const honto = vc(b.honto, 'hontoで探す');
+  if (!rakuten && !amazon && !kino && !honto) return '';
   return `<div class="exam-book"><p class="exam-book-head"><span class="pr">PR</span>本番前の仕上げに</p>`
-    + `<p class="exam-book-title">${esc(b.title)}</p><p class="exam-book-links">${rakuten}${amazon}</p>`
+    + `<p class="exam-book-title">${esc(b.title)}</p><p class="exam-book-links">${rakuten}${amazon}${kino}${honto}</p>`
     + (amazon ? '<p class="exam-book-note">Amazonのアソシエイトとして、運行管理ドリルは適格販売により収入を得ています。</p>' : '') + '</div>';
 }
 // Weakest field of this exam, with a button straight to practice its skill.
