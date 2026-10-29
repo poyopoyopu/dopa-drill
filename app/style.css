@@ -110,7 +110,7 @@ body.reduced .logo *, body.reduced .sign { animation: none !important; }
 .slider::-moz-range-thumb { width: 26px; height: 26px; border: 3px solid var(--ink); border-radius: 50%; background: var(--yellow); box-shadow: 0 3px 0 var(--ink); }
 .slider.motion::-webkit-slider-runnable-track { background: linear-gradient(90deg, var(--blue-soft), var(--pink) 50%, var(--yellow)) 0 0 / calc(var(--v) * 100%) 100% no-repeat, #fff; }
 .slider.motion::-moz-range-track { background: linear-gradient(90deg, var(--blue-soft), var(--pink) 50%, var(--yellow)) 0 0 / calc(var(--v) * 100%) 100% no-repeat, #fff; }
-.help-btn { display: none; } /* ドパキチ案内ガイドは使わないので「？」も隠す */
+/* 「？」ボタン（#open-guide）はタイトル画面に表示する（2026-10-29 オーナー指示で復活） */
 .title-stage { display: none; } /* ドパキチ非表示。ロゴを大きくして、空いた分は上に詰める */
 .pick { display: flex; gap: 10px; }
 .pick button {
