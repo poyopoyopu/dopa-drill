@@ -469,7 +469,8 @@ body.reduced .demo-tag { animation: none; }
 .bonus-slot.stamping svg { animation: stamp-in .6s cubic-bezier(.3, 1.8, .5, 1) both .35s; }
 @keyframes stamp-in { 0% { transform: scale(2.6) rotate(-25deg); opacity: 0; } 60% { opacity: 1; } 100% { transform: scale(1) rotate(0); } }
 body.reduced .bonus-slot.stamping svg { animation: none; }
-.bonus-note { margin: 0; font-size: 13px; font-weight: 900; opacity: .75; }
+.bonus-note { margin: 0; font-size: 14px; font-weight: 900; opacity: .9; }
+.bonus-lead { margin: 0; font-size: 14px; font-weight: 700; line-height: 1.6; opacity: .8; }
 
 /* ------------------------------------------------------------ no-count hammer (id034) */
 .hammer-card { align-items: center; text-align: center; }
