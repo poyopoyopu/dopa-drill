@@ -2287,7 +2287,7 @@ function openBonus(res) {
     slots.push(`<div class="bonus-slot${got ? ' got' : ''}${i === res.slot ? ' today stamping' : ''}${i === 7 ? ' big' : ''}"><span class="d">${i}日目</span>${got ? stickerSvg(type) : i === 7 ? '？' : i}</div>`);
   }
   $('#bonus-grid').innerHTML = slots.join('');
-  $('#bonus-note').textContent = res.slot === 7 ? '特別シール！ カレンダーに貼りました' : `あと${7 - res.slot}日で特別シール`;
+  $('#bonus-note').textContent = res.slot === 7 ? '特別シール！ カレンダーに貼りました' : `あと${7 - res.slot}日連続で開くと特別シールがもらえます`;
   audio.unlock();
   requestAnimationFrame(() => {
     layoutActors();
