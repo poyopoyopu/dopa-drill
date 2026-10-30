@@ -112,6 +112,14 @@ ${n.points.map((p) => `        <li>${esc(p)}</li>`).join('\n')}
     .cta { justify-self: center; display: inline-flex; padding: 10px 22px; border-radius: 16px; background: var(--pink); color: #fff; text-decoration: none; font-family: var(--round); font-weight: 900; border: 3px solid var(--ink); box-shadow: 0 5px 0 var(--ink); }
     footer { text-align: center; color: var(--muted); font-size: 13px; }
   </style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MX8CVM9VX3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-MX8CVM9VX3');
+  </script>
 </head>
 <body>
   <main class="wrap">

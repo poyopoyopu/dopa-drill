@@ -89,6 +89,14 @@ const head = ({ title, desc, path, type = 'article' }) => `<!doctype html>
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="../icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="kyokasho.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MX8CVM9VX3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-MX8CVM9VX3');
+  </script>
 </head>
 <body>
 <main class="wrap">`;
