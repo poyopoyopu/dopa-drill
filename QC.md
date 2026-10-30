@@ -383,3 +383,12 @@
   - **状態**：Open。mainへのマージは未実施。
 - **mainの問題データ**：`app/js/bank_cargo.js` はSHA `818d54eb21b0dd4f4e84aeabb7bd9f302d73bd9d` のまま。PRの修正はmainに未反映。
 - **次回への引き継ぎ**：PR #2のオーナー確認・マージ後にmainを再取得し、3問の反映と問題バンクのSHAを確認する。追加の未確認問題はなし。
+
+
+## PR #2 最終差分確認（2026-10-30）
+
+- PR #2 headを `24302bbee97c71dc931e6a420ec1184a80ba0804` に更新。問11の選択肢を法令告示の除外条件に沿って具体化し、出典欄に国土交通省告示第1366号 第二章2(3)を追記した。
+- PR差分を再取得し、変更ファイルは `app/js/bank_cargo.js` の1ファイル、対象3問のみ、正解番号の変更なしを確認。
+- PR状態はOpen、mergeable=true、merged=false。main側の `app/js/bank_cargo.js` SHAは引き続き `818d54eb21b0dd4f4e84aeabb7bd9f302d73bd9d`。
+- GitHub Actionsのworkflow runsおよびcombined statusは空。Cloudflare Pages botからBuild in progressのコメントはあるが、成功完了は未確認。CI成功とは扱わない。
+- PR差分の内容レビューでは追加の修正要求なし。マージは未実施。
