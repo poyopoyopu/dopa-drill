@@ -49,7 +49,7 @@ summary { cursor:pointer; font-weight:900; color:var(--pink); }
 .cta { justify-self:center; display:inline-flex; padding:10px 22px; border-radius:16px; background:var(--pink); color:#fff; text-decoration:none; font-weight:900; border:3px solid var(--ink); box-shadow:0 5px 0 var(--ink); }
 .src { color:var(--muted); font-size:13px; }
 a { color:var(--sign); }
-a:focus-visible { outline:3px solid var(--pink); outline-offset:2px; }
+a:focus-visible { outline:3px solid #1d3557; outline-offset:2px; }
 .ok { color:var(--green); font-weight:900; } .ng { color:var(--red); font-weight:900; }
 
 /* 図のわく */
