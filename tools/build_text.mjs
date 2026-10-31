@@ -66,6 +66,8 @@ ${n.points.map((p) => `        <li>${esc(p)}</li>`).join('\n')}
   <meta property="og:url" content="https://unko-drill.pages.dev/text.html">
   <meta property="og:image" content="https://unko-drill.pages.dev/og.png">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/apple-touch-icon.png">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <style>
     @font-face { font-family: "Dela Gothic One"; src: url(fonts/dela-gothic-one.woff2) format("woff2"); font-display: swap; }
