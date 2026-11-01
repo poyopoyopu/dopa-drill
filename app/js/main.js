@@ -1654,9 +1654,10 @@ function bookHtml(b) {
   const vc = (url, label) => link(url, /^https:\/\/ck\.jp\.ap\.valuecommerce\.com\//, label);
   const kino = vc(b.kinokuniya, '紀伊國屋で探す');
   const honto = vc(b.honto, 'hontoで探す');
-  if (!rakuten && !amazon && !kino && !honto) return '';
+  const sevennet = vc(b.sevennet, 'セブンネットで探す');
+  if (!rakuten && !amazon && !kino && !honto && !sevennet) return '';
   return `<div class="exam-book"><p class="exam-book-head"><span class="pr">PR</span>本番前の仕上げに</p>`
-    + `<p class="exam-book-title">${esc(b.title)}</p><p class="exam-book-links">${rakuten}${amazon}${kino}${honto}</p>`
+    + `<p class="exam-book-title">${esc(b.title)}</p><p class="exam-book-links">${rakuten}${amazon}${kino}${honto}${sevennet}</p>`
     + (amazon ? '<p class="exam-book-note">Amazonのアソシエイトとして、運行管理ドリルは適格販売により収入を得ています。</p>' : '') + '</div>';
 }
 // Weakest field of this exam, with a button straight to practice its skill.
