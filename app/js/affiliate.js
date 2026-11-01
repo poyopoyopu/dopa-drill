@@ -11,6 +11,7 @@ export const BOOKS = {
     amazon: amazonSearch('9784862753939'),
     kinokuniya: 'https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3785895&pid=892734529',
     honto: 'https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3785895&pid=892734530',
+    sevennet: 'https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3785895&pid=892738475',
   },
   bus: {
     title: '運行管理者試験問題と解説 旅客編 令和8年8月CBT試験受験版(公論出版)',
@@ -18,6 +19,7 @@ export const BOOKS = {
     amazon: amazonDp('4862753779'),
     kinokuniya: 'https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3785895&pid=892734529',
     honto: 'https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3785895&pid=892734530',
+    sevennet: 'https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3785895&pid=892738475',
   },
 };
 

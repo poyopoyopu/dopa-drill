@@ -60,8 +60,9 @@ export function renderBooks(id) {
     const amazon = link(b.amazon, /^https:\/\/www\.amazon\.co\.jp\//, 'Amazonで見る');
         const kino = link(b.kinokuniya, /^https:\/\/ck\.jp\.ap\.valuecommerce\.com\//, '紀伊國屋で探す');
     const honto = link(b.honto, /^https:\/\/ck\.jp\.ap\.valuecommerce\.com\//, 'hontoで探す');
-    if (!rakuten && !amazon && !kino && !honto) return null;
-    return { amazon: !!amazon, html: `<li><span class="kind">${KIND_LABEL[kind]}</span><span class="ttl">${esc(b.title)}</span><span class="links">${rakuten}${amazon}${kino}${honto}</span></li>` };
+    const sevennet = link(b.sevennet, /^https:\/\/ck\.jp\.ap\.valuecommerce\.com\//, 'セブンネットで探す');
+    if (!rakuten && !amazon && !kino && !honto && !sevennet) return null;
+    return { amazon: !!amazon, html: `<li><span class="kind">${KIND_LABEL[kind]}</span><span class="ttl">${esc(b.title)}</span><span class="links">${rakuten}${amazon}${kino}${honto}${sevennet}</span></li>` };
   }).filter(Boolean);
   if (!items.length) return '';
   return `<aside class="book" aria-label="問題集の紹介(広告)">
