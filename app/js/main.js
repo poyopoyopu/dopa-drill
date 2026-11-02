@@ -2,15 +2,15 @@
 // escalating visuals and sound.
 import { startClock, onFrame, wait, tween, clamp, lerp, rand, pick, chance, centerOf, params,
   easeOutBack, easeOutCubic, easeInCubic, easeInOutCubic, easeOutQuint } from './core.js';
-import { makeRng, makeProblem, signature, CHOICE_MARK } from './problems.js';
+import { makeRng, makeProblem, signature, CHOICE_MARK, divisionOfSig } from './problems.js';
 import { AudioEngine } from './audio.js';
 import { Dopakichi, COSTUMES, dopakichiSVG } from './dopakichi.js';
 import { FX } from './fx.js';
 import { Backdrop } from './bg.js';
 import * as store from './store.js';
 import { createGuide } from './guide.js';
-import { SKILLS, SKILL, LANES, DEPTH } from './skills.js';
-import { ORDER, emptyProgress, recordResult, stateOf, masteryRatio, starsOf, nextStar, STAR_MAX, pickCapsule, useCapsule, rustyOf, gradePlan, levelPlan, reviewPlan, problemFor, frontier, isUnlocked, relockTargets, relockSkill, TREE_LAYOUT } from './session.js';
+import { SKILLS, SKILL, LANES, DEPTH, DIVISIONS, divOfSkill, divOfPool } from './skills.js';
+import { ORDER, emptyProgress, recordResult, stateOf, masteryRatio, starsOf, nextStar, STAR_MAX, pickCapsule, useCapsule, rustyOf, gradePlan, levelPlan, reviewPlan, problemFor, frontier, isUnlocked, isUnlockedFor, relockTargets, relockSkill, TREE_LAYOUT } from './session.js';
 import * as growth from './growth.js';
 import { buildExam, judgeExam, EXAM, EXAM_MS, PASS_RATE, examRecord, examTrend, examMissed } from './exam.js';
 import { BOOKS } from './affiliate.js';
@@ -209,13 +209,40 @@ function questPop(q) {
 const REVIEW_MAX = 40;
 const MODE_LABEL = { level: '自分のレベル', grade: (g) => `ステージ${g}`, review: '復習', practice: '練習', drill: 'ドリル', exam: '模擬試験' };
 
+// ---------------------------------------------------------------- division filter
+// 区分(貨物/旅客)の絞り込みは表示と出題だけ。記録は共通のまま、保存形式も変えない。
+const divSel = () => store.settings().division || 'all';
+const divVisible = (sk) => { const d = divSel(); return d === 'all' || !sk || divOfSkill(sk) === 'common' || divOfSkill(sk) === d; };
+// 表示専用の解放判定: 絞り込みで隠れた前提スキルは解放の邪魔をしない(記録自体は共通)。
+// 判定そのものは session.js の isUnlockedFor と共通(自動学習の frontier も同じ物差し)。
+const dispStateOf = (prog, id) => {
+  const st = stateOf(prog, id);
+  if (st !== 'locked') return st;
+  return isUnlockedFor(prog, id, onlyForDiv()) ? ((prog.skills[id] && prog.skills[id].n) ? 'learning' : 'new') : 'locked';
+};
+const divEvent = (name, v) => { try { if (typeof globalThis.gtag === 'function') globalThis.gtag('event', name, { division: v }); } catch { /* analytics off */ } };
+function setDivision(v, { persist = true } = {}) {
+  const prev = store.settings().division;
+  $$('.pick button[data-div]').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.div === v)));
+  if (persist) { store.updateSettings({ division: v }); if (prev !== v) divEvent(prev ? 'division_change' : 'division_select', v); }
+}
+// プランナーへ渡す区分の絞り込み(両方表示のときは絞らない)。
+const onlyForDiv = () => (divSel() === 'all' ? null : (id) => divVisible(SKILL[id]));
+// 復習リストも区分で絞る(記録自体は共通のまま、出すかどうかだけ)。
+// 絞り込みはスキル単位ではなく問題単位(プール内の区分上書きも効く)。
+const reviewItems = (prog) => {
+  const d = divSel();
+  if (d === 'all') return prog.review;
+  return prog.review.filter((it) => { const dv = it.sig ? divisionOfSig(it.sig) : 'common'; return dv === 'common' || dv === d; });
+};
+
 // kind: 'level' | 'grade' | 'review' | 'practice' | 'drill'
 function makePlan(kind, arg) {
   const prog = progress();
-  if (kind === 'grade') return gradePlan(arg, S.N, S.rng);
-  if (kind === 'review') { const items = prog.review.slice(-Math.min(S.N, 10)); return reviewPlan(items); }
+  if (kind === 'grade') return gradePlan(arg, S.N, S.rng, onlyForDiv());
+  if (kind === 'review') { const items = reviewItems(prog).slice(-Math.min(S.N, 10)); return reviewPlan(items); }
   if (kind === 'exam') { const items = buildExam(arg, S.rng); return { mode: 'exam', exam: arg, items, basic: items.map(() => null) }; }
-  if (kind === 'practice') return { mode: 'practice', skill: arg, basic: Array.from({ length: S.N }, () => arg), extra: () => { const kids = SKILLS.filter((x) => x.req.includes(arg) && isUnlocked(prog, x.id)); return kids.length ? kids[Math.floor(S.rng() * kids.length)].id : arg; } };
+  if (kind === 'practice') return { mode: 'practice', skill: arg, basic: Array.from({ length: S.N }, () => arg), extra: () => { const kids = SKILLS.filter((x) => x.req.includes(arg) && isUnlockedFor(prog, x.id, onlyForDiv()) && divVisible(x)); return kids.length ? kids[Math.floor(S.rng() * kids.length)].id : arg; } };
   if (kind === 'demo') {
     // Random skills from every grade, ordered easy -> hard so the show escalates.
     const pool = SKILLS.slice();
@@ -224,7 +251,7 @@ function makePlan(kind, arg) {
     const upper = SKILLS.filter((x) => x.grade >= 4).map((x) => x.id);
     return { mode: 'demo', basic, extra: () => upper[Math.floor(S.rng() * upper.length)] };
   }
-  return levelPlan(prog, S.N, S.rng);
+  return levelPlan(prog, S.N, S.rng, Date.now(), onlyForDiv());
 }
 
 function nextProblem(i) {
@@ -238,7 +265,7 @@ function sessionProblem(skill) {
   const prog = progress();
   const r = prog.skills[skill];
   const recent = new Set([...(r ? r.recent : []), ...S.sessionSigs]);
-  let p = makeProblem(skill, S.rng, recent);
+  let p = makeProblem(skill, S.rng, recent, divSel() === 'all' ? null : divSel());
   S.sessionSigs.add(signature(p));
   return p;
 }
@@ -396,7 +423,7 @@ function newSkillsFor(kind, arg) {
   const prog = progress();
   let ids = [];
   if (kind === 'practice') ids = [arg];
-  else if (kind === 'level' && prog.placed) ids = frontier(prog).slice(0, 4);
+  else if (kind === 'level' && prog.placed) ids = frontier(prog, onlyForDiv()).slice(0, 4);
   const seen = introSeen();
   return ids.filter((id) => SKILL[id] && !(prog.skills[id] && prog.skills[id].n) && !seen.has(id));
 }
@@ -478,6 +505,7 @@ async function setupProblem() {
   S.step = 0; S.wrongInQ = false; S.shownWrong = null;
   $$('.pip').forEach((pp, i) => pp.classList.toggle('now', !extra && i === S.qi));
   $('#qtitle').textContent = p.title;
+  { const qd = $('#qdiv'); if (qd) { const dv = p.div || (p.pool ? divOfPool(p.pool) : null); qd.textContent = dv === 'common' ? '共通' : `${DIVISIONS[dv]}のみ`; qd.hidden = !dv; } }
   $('#qno').textContent = extra ? `EX ${S.extra.solved + 1}` : `第${S.qi + 1}問`;
   renderSheet(p);
   $('#step-label').innerHTML = '&nbsp;';
@@ -1707,14 +1735,15 @@ function setReviewButton(btn, n) {
 function startReview() {
   const prog = progress();
   if (!prog.review.length) return;
+  if (!reviewItems(prog).length) { toast('いまの区分で復習できる問題はありません'); return; }
   startGame('review');
 }
 function refreshTitle() {
   const prog = progress();
-  const n = prog.review.length;
+  const n = reviewItems(prog).length;
   $('#start-review').hidden = !n;
   $('#review-count').textContent = n;
-  $('#level-sub').textContent = prog.placed ? `次は「${SKILL[frontier(prog)[0] || ORDER[ORDER.length - 1]].name}」` : '最初は実力チェック';
+  $('#level-sub').textContent = prog.placed ? `次は「${SKILL[frontier(prog, onlyForDiv())[0] || ORDER.filter((id) => divVisible(SKILL[id])).at(-1) || ORDER[ORDER.length - 1]].name}」` : '最初は実力チェック';
   const done = SKILLS.filter((x) => stateOf(prog, x.id) === 'mastered').length;
   $('#tree-badge').textContent = `${done}/${SKILLS.length}`;
   $$('.exam-row button').forEach((b) => {
@@ -1907,13 +1936,14 @@ const NODE_H = 58; const ROW_H = 80;
 // sharing a gap get separate tracks so each line can still be followed.
 const GAP = 14;
 const TRACKS = [0, -4, 4];
-function treeLinks(pos, colW, nodeW) {
+function treeLinks(pos, colW, nodeW, visSet = null) {
   const bez = (t, p0, p1, p2, p3) => (1 - t) ** 3 * p0 + 3 * (1 - t) ** 2 * t * p1 + 3 * (1 - t) * t ** 2 * p2 + t ** 3 * p3;
   const out = []; const detours = [];
   for (const sk of SKILLS) for (const q of sk.req) {
+    if (visSet && !(visSet.has(q) && visSet.has(sk.id))) continue;
     const a = pos[q]; const b = pos[sk.id];
     const x1 = a.x + nodeW / 2; const y1 = a.y + NODE_H; const x2 = b.x + nodeW / 2; const y2 = b.y;
-    const hits = (x, y) => SKILLS.some((o) => o.id !== q && o.id !== sk.id && x > pos[o.id].x - 2 && x < pos[o.id].x + nodeW + 2 && y > pos[o.id].y - 2 && y < pos[o.id].y + NODE_H + 2);
+    const hits = (x, y) => SKILLS.some((o) => o.id !== q && o.id !== sk.id && (!visSet || visSet.has(o.id)) && x > pos[o.id].x - 2 && x < pos[o.id].x + nodeW + 2 && y > pos[o.id].y - 2 && y < pos[o.id].y + NODE_H + 2);
     let blocked = false;
     for (let i = 1; i < 40 && !blocked; i++) { const t = i / 40; blocked = hits(bez(t, x1, x1, x2, x2), bez(t, y1, y1 + 34, y2 - 34, y2)); }
     const link = { from: q, to: sk.id, x1, y1, x2, y2 };
@@ -1954,18 +1984,20 @@ function renderTree(justIds = [], starIds = []) {
   lanes.style.width = `${colW * TREE.cols}px`;
   lanes.innerHTML = LANES.map((l) => `<span>${l}</span>`).join('');
   tree.querySelectorAll('.node').forEach((n) => n.remove());
+  const visSkills = SKILLS.filter(divVisible);
+  const visSet = new Set(visSkills.map((x) => x.id));
   const pos = {};
   const rustSet = new Set(rustyOf(prog));
   for (const sk of SKILLS) pos[sk.id] = { x: TREE.col[sk.id] * colW + GAP / 2, y: TREE.row[sk.id] * ROW_H + 14 };
   let links = '';
-  for (const l of treeLinks(pos, colW, nodeW)) {
+  for (const l of treeLinks(pos, colW, nodeW, visSet)) {
     const on = stateOf(prog, l.from) === 'mastered';
     const grow = justIds.includes(l.to);
     links += `<path class="${on ? 'on' : ''}${grow ? ' grow' : ''}" data-to="${l.to}" d="${l.d}"/>`;
   }
   $('#tree-links').innerHTML = links;
-  for (const sk of SKILLS) {
-    const st = stateOf(prog, sk.id);
+  for (const sk of visSkills) {
+    const st = dispStateOf(prog, sk.id);
     const b = document.createElement('button');
     b.type = 'button';
     const stars = starsOf(prog, sk.id);
@@ -1973,12 +2005,13 @@ function renderTree(justIds = [], starIds = []) {
     b.className = `node ${st}${justIds.includes(sk.id) ? ' just' : ''}${starIds.includes(sk.id) ? ' star-up' : ''}${rusty ? ' rusty' : ''}`;
     b.dataset.id = sk.id;
     b.style.cssText = `left:${pos[sk.id].x}px;top:${pos[sk.id].y}px;width:${nodeW}px;height:${NODE_H}px;--p:${masteryRatio(prog, sk.id)}`;
-    b.innerHTML = `<i class="hold"></i><span class="g">S${sk.grade}</span><span>${sk.name}</span>${st === 'learning' ? '<i class="ring"></i>' : ''}${st === 'mastered' ? `<i class="stars s${stars}">${starRow(stars)}</i>` : ''}${rusty ? '<i class="rust" aria-hidden="true">さび</i>' : ''}`;
+    b.innerHTML = `<i class="hold"></i><span class="g">S${sk.grade}</span><span>${sk.name}</span><i class="dv dv-${divOfSkill(sk)}">${divOfSkill(sk) === 'common' ? '共通' : `${DIVISIONS[divOfSkill(sk)]}のみ`}</i>${st === 'learning' ? '<i class="ring"></i>' : ''}${st === 'mastered' ? `<i class="stars s${stars}">${starRow(stars)}</i>` : ''}${rusty ? '<i class="rust" aria-hidden="true">さび</i>' : ''}`;
     b.setAttribute('aria-label', `${sk.name} ${{ locked: '未解放', new: '新しい', learning: '練習中', mastered: `マスター 星${stars}個${rusty ? ' さびている' : ''}` }[st]}`);
     tree.appendChild(b);
   }
-  $('#tree-count').textContent = `${SKILLS.filter((x) => stateOf(prog, x.id) === 'mastered').length} / ${SKILLS.length}`;
-  $('#tree-stars').innerHTML = `${starRow(1, 1)}<b>${SKILLS.reduce((a, x) => a + starsOf(prog, x.id), 0)}</b> / ${SKILLS.length * STAR_MAX}`;
+  $('#tree-count').textContent = `${visSkills.filter((x) => stateOf(prog, x.id) === 'mastered').length} / ${visSkills.length}`;
+  $('#tree-stars').innerHTML = `${starRow(1, 1)}<b>${visSkills.reduce((a, x) => a + starsOf(prog, x.id), 0)}</b> / ${visSkills.length * STAR_MAX}`;
+  { const td = $('#tree-div'); if (td) td.textContent = divSel() === 'all' ? '区分：両方を表示中（設定で変えられます）' : `区分：${DIVISIONS[divSel()]}と共通だけ表示中（設定で変えられます）`; }
   // Animate new branches growing.
   if (!S.reduced) tree.querySelectorAll('.tree-links path.grow').forEach((path) => {
     const L = path.getTotalLength();
@@ -1994,7 +2027,7 @@ function openTree(justIds = [], starIds = []) {
   requestAnimationFrame(() => {
     renderTree(justIds, starIds);
     const prog = progress();
-    const focus = justIds[0] || starIds[0] || frontier(prog)[0];
+    const focus = justIds[0] || starIds[0] || frontier(prog, onlyForDiv())[0];
     const el = focus && $(`.node[data-id="${focus}"]`);
     const sc = $('#tree-scroll');
     if (el) { sc.scrollTop = Math.max(0, el.offsetTop - 140); sc.scrollLeft = Math.max(0, el.offsetLeft + el.offsetWidth / 2 - sc.clientWidth / 2); }
@@ -2715,6 +2748,10 @@ function openDay(key) {
   $('#close-day').focus({ preventScroll: true });
 }
 
+// ---------------------------------------------------------------- division chooser (first run)
+function openDivChooser() { if (S.demo) return; const m = $('#div-chooser'); if (m) m.hidden = false; }
+function closeDivChooser() { const m = $('#div-chooser'); if (m) m.hidden = true; }
+
 // ---------------------------------------------------------------- settings panel
 S.previewE = 0.04;
 function openSettings() {
@@ -2781,6 +2818,17 @@ function motionSliderFx(v) {
   }
 }
 
+$$('.pick button[data-div]').forEach((b) => b.addEventListener('click', () => {
+  setDivision(b.dataset.div);
+  audio.unlock();
+  audio.play('blip', audio.now(), { m: 80, v: 0.12 });
+}));
+$$('#div-chooser [data-div-choice]').forEach((b) => b.addEventListener('click', () => {
+  setDivision(b.dataset.divChoice);
+  closeDivChooser();
+  audio.unlock();
+  audio.play('blip', audio.now(), { m: 84, v: 0.12 });
+}));
 $$('.pick button[data-count]').forEach((b) => b.addEventListener('click', () => {
   setCount(Number(b.dataset.count));
   audio.unlock();
@@ -2858,9 +2906,9 @@ $('#tree').addEventListener('click', (e) => {
   if (!b) return;
   // The click that ends a long press, or a drag across the tree, does nothing.
   if (hold.fired || hold.dragged) { hold.fired = false; hold.dragged = false; return; }
-  const id = b.dataset.id; const st = stateOf(progress(), id);
+  const id = b.dataset.id; const st = dispStateOf(progress(), id);
   if (st === 'locked') {
-    const need = SKILL[id].req.filter((q) => stateOf(progress(), q) !== 'mastered').map((q) => `「${SKILL[q].name}」`);
+    const need = SKILL[id].req.filter((q) => divVisible(SKILL[q]) && stateOf(progress(), q) !== 'mastered').map((q) => `「${SKILL[q].name}」`);
     toast(`${need.join('と')}をマスターすると解放されます`);
     audio.play('boing', audio.now(), { v: 0.12 });
     if (!S.reduced) tween(300, (k) => { b.style.translate = `${Math.sin(k * 20) * 5 * (1 - k)}px 0`; }).then(() => { b.style.translate = ''; });
@@ -2922,6 +2970,8 @@ setMotion(saved.motion ?? (prefersReduced ? 0 : 1), { persist: false });
 setMuted(!saved.sound, { persist: false });
 setVolume(saved.volume, { persist: false });
 setPickFirst(!!saved.pickFirst, { persist: false });
+setDivision(saved.division || 'all', { persist: false });
+if (!saved.division && !params.has('demo')) openDivChooser();
 applyLook(titleLook());
 renderCalendar();
 refreshTitle();

@@ -6,8 +6,9 @@
 //   q question, c choices, a index of the correct choice in c,
 //   e short explanation, s source, fix: keep the listed order (for "ア・イ・ウ"
 //   style choices); otherwise the choices are shuffled for every problem.
-import { SKILL } from './skills.js';
+import { SKILL , divOfPool, divOfSkill } from './skills.js';
 import { POOLS } from './bank.js';
+import { DIV_OVERRIDES } from './divoverrides.js';
 
 export function makeRng(seed) {
   let s = seed >>> 0;
@@ -49,18 +50,38 @@ export const signature = (p) => `${p.skill || p.title}|${p.text}`;
 // Field label shown on the chip over the card, from the pool id prefix.
 export const FIELD = { lb: '労働', vh: '車両法', tr: '道交法', cg: '貨物', ps: '旅客', pr: '実務' };
 
-// Every question a skill can ask, as { item, pool }.
-const poolOf = (sk) => {
+// Division of one bank entry: a per-question override (divoverrides.js)
+// wins over the pool's own division.
+export const divOfEntry = (e) => (DIV_OVERRIDES[e.pool] && DIV_OVERRIDES[e.pool][e.idx]) || divOfPool(e.pool);
+
+// Division of a saved question, given its signature (`skillId|question`).
+// Used for the review list, whose saved records carry no division of their
+// own. Falls back to the skill's division when the question is not found.
+export function divisionOfSig(sig) {
+  const i = String(sig).indexOf('|');
+  if (i < 0) return 'common';
+  const sk = SKILL[String(sig).slice(0, i)];
+  if (!sk) return 'common';
+  const q = String(sig).slice(i + 1);
+  for (const e of poolOf(sk)) if (e.item.q === q) return divOfEntry(e);
+  return divOfSkill(sk);
+}
+
+// Every question a skill can ask, as { item, pool, idx }.
+const poolOf = (sk, div = null) => {
   const g = sk.gen[1];
   const names = g.all ? Object.keys(POOLS) : (g.pools || [g.pool]);
-  return names.flatMap((n) => (POOLS[n] || []).map((item) => ({ item, pool: n })));
+  const all = names.flatMap((n) => (POOLS[n] || []).map((item, idx) => ({ item, pool: n, idx })));
+  if (!div || div === 'all') return all;
+  const filtered = all.filter((e) => { const d = divOfEntry(e); return d === 'common' || d === div; });
+  return filtered.length ? filtered : all;
 };
 
 // Make one problem for a skill, avoiding signatures in `recent` when possible.
-export function makeProblem(skillId, rng, recent = null) {
+export function makeProblem(skillId, rng, recent = null, div = null) {
   const sk = SKILL[skillId];
   if (!sk) throw new Error(`unknown skill ${skillId}`);
-  const pool = poolOf(sk);
+  const pool = poolOf(sk, div);
   if (!pool.length) throw new Error(`empty pool for ${skillId}`);
   // Prefer a question not asked lately; when every one has been, take the one
   // asked longest ago (`recent` keeps its insertion order, oldest first).
@@ -75,6 +96,7 @@ export function makeProblem(skillId, rng, recent = null) {
   const p = buildQuiz(pick.item, rng, multi ? FIELD[pick.pool.slice(0, 2)] || sk.name : sk.name);
   p.skill = skillId;
   p.pool = pick.pool;
+  p.div = divOfEntry(pick);
   return p;
 }
 

@@ -132,6 +132,7 @@
       </header>
       <p class="tree-stars" id="tree-stars"></p>
       <p class="tree-note">タップで練習（マスター後は☆の条件）　長押しで記録を消す</p>
+      <p class="tree-note" id="tree-div"></p>
       <div class="tree-scroll" id="tree-scroll"><div class="tree-lanes" id="tree-lanes" aria-hidden="true"></div><div class="tree" id="tree"><svg class="tree-links" id="tree-links" aria-hidden="true"></svg></div></div>
       <p class="toast" id="toast" role="status" hidden></p>
     </section>
@@ -182,7 +183,7 @@
       </div>
       <section class="card" id="card" aria-labelledby="qtitle">
         <div class="marquee" aria-hidden="true"></div>
-        <div class="card-top"><span class="chip" id="qtitle">問題</span><span class="qno" id="qno">第1問</span></div>
+        <div class="card-top"><span class="chip" id="qtitle">問題</span><span class="chip div-chip" id="qdiv" hidden></span><span class="qno" id="qno">第1問</span></div>
         <div class="sheet-wrap"><div class="sheet" id="sheet" role="group" aria-label="問題"></div></div>
         <p class="step-label" id="step-label" aria-live="polite">一の位</p>
         <div class="stamp" id="stamp" aria-hidden="true"></div>
@@ -246,6 +247,17 @@
   </main>
 
   <!-- Settings (above #app, below particles and actors) -->
+  <div class="modal" id="div-chooser" role="dialog" aria-modal="true" aria-labelledby="div-chooser-title" hidden>
+    <div class="modal-card">
+      <h2 id="div-chooser-title" class="chip">どちらの試験を受けますか？</h2>
+      <p class="set-note">選んだ区分と「共通」のスキルだけを表示します。進み具合の記録は共通で、あとから「設定」でいつでも変えられます。</p>
+      <div class="div-choices">
+        <button type="button" class="div-choice" data-div-choice="cargo">貨物</button>
+        <button type="button" class="div-choice" data-div-choice="bus">旅客</button>
+      </div>
+      <button type="button" class="div-choice-all" data-div-choice="all">両方とも表示する</button>
+    </div>
+  </div>
   <div class="modal" id="settings" role="dialog" aria-modal="true" aria-labelledby="settings-title" hidden>
     <div class="modal-card">
       <h2 id="settings-title" class="chip">設定</h2>
@@ -264,6 +276,15 @@
           <button type="button" role="radio" data-pickmode="confirm" aria-checked="false">選んでから<small>決定</small></button>
         </div>
         <p class="set-note">誤タップが気になる人は「選んでから決定」に。選択肢をタップすると印が付き、「これで回答する」で答えます</p>
+      </div>
+      <div class="set-row">
+        <span class="set-label">受ける試験</span>
+        <div class="pick" role="radiogroup" aria-label="受ける試験" id="pick-div">
+          <button type="button" role="radio" data-div="cargo" aria-checked="false">貨物</button>
+          <button type="button" role="radio" data-div="bus" aria-checked="false">旅客</button>
+          <button type="button" role="radio" data-div="all" aria-checked="true">両方</button>
+        </div>
+        <p class="set-note">選んだ区分と共通のスキルだけが、スキルツリーと要点ノートに出ます。進み具合の記録は共通のままです</p>
       </div>
       <div class="set-row">
         <span class="set-label">音</span>
