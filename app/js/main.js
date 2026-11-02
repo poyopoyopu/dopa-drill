@@ -235,7 +235,7 @@ document.addEventListener('click', (e) => {
 function setDivision(v, { persist = true } = {}) {
   const prev = store.settings().division;
   $$('.pick button[data-div]').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.div === v)));
-  if (persist) { store.updateSettings({ division: v }); if (prev !== v) divEvent(prev ? 'division_change' : 'division_select', v); }
+  if (persist) { store.updateSettings({ division: v }); if (prev !== v) divEvent(prev ? 'division_change' : 'division_select', v); refreshTitle(); }
 }
 // プランナーへ渡す区分の絞り込み(両方表示のときは絞らない)。
 const onlyForDiv = () => (divSel() === 'all' ? null : (id) => divVisible(SKILL[id]));
@@ -1756,8 +1756,9 @@ function refreshTitle() {
   $('#review-count').textContent = n;
   $('#level-sub').textContent = prog.placed ? `次は「${SKILL[frontier(prog, onlyForDiv())[0] || ORDER.filter((id) => divVisible(SKILL[id])).at(-1) || ORDER[ORDER.length - 1]].name}」` : '最初は実力チェック';
   $('#level-main').textContent = prog.placed ? '自分のレベル' : 'まずここから';
-  const done = SKILLS.filter((x) => stateOf(prog, x.id) === 'mastered').length;
-  $('#tree-badge').textContent = `${done}/${SKILLS.length}`;
+  const vis = SKILLS.filter((x) => divVisible(x));
+  const done = vis.filter((x) => stateOf(prog, x.id) === 'mastered').length;
+  $('#tree-badge').textContent = `${done}/${vis.length}`;
   $$('.exam-row button').forEach((b) => {
     const last = examTrend(store.load().history, b.dataset.exam, 1)[0];
     b.querySelector('small').textContent = last ? `30問・前回 ${last.total}問${last.pass ? ' 合格' : ''}` : '30問・90分';
