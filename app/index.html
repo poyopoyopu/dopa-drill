@@ -56,7 +56,7 @@
       </h1>
       <div class="title-stage" id="title-stage" aria-hidden="true"></div>
       <div class="modes" id="modes">
-        <button type="button" id="start" class="big-btn level-btn">自分のレベル<small id="level-sub">最初は実力チェック</small></button>
+        <button type="button" id="start" class="big-btn level-btn"><span id="level-main">自分のレベル</span><small id="level-sub">最初は実力チェック</small></button>
         <button type="button" id="start-review" class="sub-btn review-btn review-main" hidden>復習 <b id="review-count">0</b></button>
         <div class="grades" role="group" aria-label="ステージ別">
           <button type="button" data-grade="1"><small>ステージ</small>1</button><button type="button" data-grade="2"><small>ステージ</small>2</button><button type="button" data-grade="3"><small>ステージ</small>3</button>
@@ -250,7 +250,7 @@
   <div class="modal" id="div-chooser" role="dialog" aria-modal="true" aria-labelledby="div-chooser-title" hidden>
     <div class="modal-card">
       <h2 id="div-chooser-title" class="chip">どちらの試験を受けますか？</h2>
-      <p class="set-note">選んだ区分と「共通」のスキルだけを表示します。進み具合の記録は共通で、あとから「設定」でいつでも変えられます。</p>
+      <p class="set-note">選んだ区分と「共通」のスキルだけを表示します。記録は共通で、あとから設定で変えられます。</p>
       <div class="div-choices">
         <button type="button" class="div-choice" data-div-choice="cargo">貨物</button>
         <button type="button" class="div-choice" data-div-choice="bus">旅客</button>
