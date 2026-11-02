@@ -402,7 +402,7 @@ function newSkillsFor(kind, arg) {
 }
 function offerKyokasho(ids, kind, arg) {
   markIntro(ids);
-  const list = ids.map((id) => `<li><a href="kyokasho/${id}.html">${SKILL[id].name}</a></li>`).join('');
+  const list = ids.map((id) => `<li><a href="kyokasho/${id}">${SKILL[id].name}</a></li>`).join('');
   openConfirm({
     title: '初めてのスキル',
     msg: '解く前に教科書を読むと、<br>ぐっとわかりやすくなります',
@@ -1642,7 +1642,7 @@ function missedHtml(list, exam) {
 // Post this result on X (opens X's compose screen only when tapped).
 function shareHtml(exam) {
   const text = `運行管理ドリルの模擬試験(${exam.name})で ${exam.total}/${exam.max}問${exam.pass ? '、合格ラインクリア！' : '。'}\n#運行管理者試験 #運行管理ドリル`;
-  const url = `https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent('https://unko-drill.pages.dev/')}`;
+  const url = `https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent('https://unkou.shikaku-drill.net/')}`;
   return `<a class="sub-btn exam-share" href="${esc(url)}" target="_blank" rel="noopener">結果をXでシェア</a>`;
 }
 // A recommended book for this kind of exam (affiliate links, marked as PR).
@@ -2026,7 +2026,7 @@ function openSkillInfo(id) {
   $('#si-next').innerHTML = next ? `<p class="si-label">次の☆${next.n}</p><p class="si-text">${next.text}</p><p class="si-now">${next.now}</p>` : '<p class="si-text done">☆5達成！</p>';
   $('#si-note').textContent = `${rustyOf(prog).includes(id) ? '少しさびています。1問初回正解でピカピカに！　' : ''}解いた問題 ${r.n || 0}問${best != null ? `　最速 1問${(best / 1000).toFixed(1)}秒` : ''}`;
   $('#si-text').href = `text.html#${id}`;
-  $('#si-kyokasho').href = `kyokasho/${id}.html`;
+  $('#si-kyokasho').href = `kyokasho/${id}`;
   $('#skill-info').hidden = false;
   const cardEl = $('#skill-info .modal-card');
   if (!S.reduced) tween(260, (k) => { cardEl.style.transform = `translateY(${(1 - k) * 30}px) scale(${0.92 + 0.08 * k})`; }, easeOutBack).then(() => { cardEl.style.transform = ''; });
@@ -2193,7 +2193,7 @@ function renderTarget() {
   const t = examTarget();
   if (input && document.activeElement !== input) input.value = t;
   if (clear) clear.hidden = !t;
-  if (!t) { msg.innerHTML = '試験日を設定すると、ここにカウントダウンが出ます。<a href="exam.html">試験・申込の案内</a>'; return; }
+  if (!t) { msg.innerHTML = '試験日を設定すると、ここにカウントダウンが出ます。<a href="exam">試験・申込の案内</a>'; return; }
   const [ty, tm, td] = t.split('-').map(Number);
   const target = new Date(ty, tm - 1, td);
   const now = new Date();
