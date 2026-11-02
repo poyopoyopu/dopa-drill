@@ -48,7 +48,7 @@ test('kyokasho chapters only link to pages that exist', () => {
     for (const m of ch.body.matchAll(/href="([^"#]+)(#[^"]*)?"/g)) {
       const href = m[1];
       if (href.startsWith('../') || href === './') continue;
-      assert.ok(pages.has(href), `${skill.id}: broken link ${href}`);
+      assert.ok(pages.has(href) || pages.has(`${href}.html`), `${skill.id}: broken link ${href}`);
     }
   }
 });

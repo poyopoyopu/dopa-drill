@@ -45,7 +45,7 @@ ${skillsIn(g.key).map((s) => {
 ${n.points.map((p) => `        <li>${esc(p)}</li>`).join('\n')}
       </ul>
       <p class="src">出典の目安：${esc(n.src)}</p>${hasKyokasho(s.id) ? `
-      <a class="kai" href="kyokasho/${s.id}.html">教科書で図と例題を見る →</a>` : ''}
+      <a class="kai" href="kyokasho/${s.id}">教科書で図と例題を見る →</a>` : ''}
       <a class="up" href="#toc">もくじへ</a>
     </section>`;
   }).join('\n')}`).join('\n');
@@ -58,13 +58,13 @@ ${n.points.map((p) => `        <li>${esc(p)}</li>`).join('\n')}
   <meta name="theme-color" content="#2552c9">
   <title>要点ノート(運行管理者試験のテキスト)｜運行管理ドリル</title>
   <meta name="description" content="運行管理者試験(貨物・旅客)の要点を、48のスキルごとにまとめた無料のテキスト。貨物自動車運送事業法・道路運送法、道路運送車両法、道路交通法、労働基準法(改善基準告示)、実務上の知識の覚えるポイント。">
-  <link rel="canonical" href="https://unko-drill.pages.dev/text.html">
+  <link rel="canonical" href="https://unkou.shikaku-drill.net/text">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="運行管理ドリル">
   <meta property="og:title" content="要点ノート(運行管理者試験のテキスト)｜運行管理ドリル">
   <meta property="og:description" content="運行管理者試験の覚えるポイントを、48スキルごとにまとめた無料のテキスト。">
-  <meta property="og:url" content="https://unko-drill.pages.dev/text.html">
-  <meta property="og:image" content="https://unko-drill.pages.dev/og.png">
+  <meta property="og:url" content="https://unkou.shikaku-drill.net/text">
+  <meta property="og:image" content="https://unkou.shikaku-drill.net/og.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" href="/apple-touch-icon.png">
@@ -140,7 +140,7 @@ ${n.points.map((p) => `        <li>${esc(p)}</li>`).join('\n')}
 ${body}
 
     <a class="cta" href="./">ドリルで問題を解く</a>
-    <footer><a href="about.html">このサイトについて・プライバシーポリシー</a></footer>
+    <footer><a href="about">このサイトについて・プライバシーポリシー</a></footer>
   </main>
 </body>
 </html>

@@ -110,15 +110,15 @@ export function renderChapter(id) {
   const prev = list[i - 1];
   const next = list[i + 1];
   const desc = `運行管理者試験の教科書「${ch.title}」。${NOTES[id].lead}`;
-  const pager = (x, cls, label) => (x ? `<a class="${cls}" href="${x.skill.id}.html"><small>${label}</small>${insertWbr(esc(x.ch.title))}</a>` : '');
-  return `${head({ title: `${ch.title}｜教科書｜運行管理ドリル`, desc, path: `kyokasho/${id}.html` })}
+  const pager = (x, cls, label) => (x ? `<a class="${cls}" href="${x.skill.id}"><small>${label}</small>${insertWbr(esc(x.ch.title))}</a>` : '');
+  return `${head({ title: `${ch.title}｜教科書｜運行管理ドリル`, desc, path: `kyokasho/${id}` })}
   <nav class="topnav" aria-label="ページ移動"><a href="./">← 教科書のもくじ</a><a href="../">ドリル</a></nav>
   <div class="plate"><p>${esc(g.title)} ・ ステージ${skill.grade}</p><h1>${insertWbr(esc(ch.title))}</h1></div>
 
 ${ch.body}
 
   <a class="cta" href="../">ドリルで確かめる(${esc(skill.name)})</a>
-  <p class="src" style="text-align:center;margin:0"><a href="../text.html#${id}">要点ノートで見直す</a></p>
+  <p class="src" style="text-align:center;margin:0"><a href="../text#${id}">要点ノートで見直す</a></p>
   ${renderBooks(id)}<nav class="pager" aria-label="前後の章">${pager(prev, 'prev', '← まえの章')}${pager(next, 'next', 'つぎの章 →')}</nav>
   <p class="src">出典：${esc(ch.src)}。${UPDATED}時点の内容です。法令や告示は改正されることがあるので、試験の前には最新の公式資料で確認してください。</p>
 </main>
@@ -136,13 +136,13 @@ export function renderIndex() {
   <section class="card toc-group" id="g-${g.key}">
     <h2 class="plain">${esc(g.title)} <small>${esc(g.sub)}</small></h2>
     <ul class="toc-list">
-${items.map((x) => `      <li><a href="${x.skill.id}.html"><span class="st">${x.skill.grade}</span><span>${insertWbr(esc(x.ch.title))}<small>スキル「${esc(x.skill.name)}」・${esc(LANES[x.skill.lane])}</small></span></a></li>`).join('\n')}
+${items.map((x) => `      <li><a href="${x.skill.id}"><span class="st">${x.skill.grade}</span><span>${insertWbr(esc(x.ch.title))}<small>スキル「${esc(x.skill.name)}」・${esc(LANES[x.skill.lane])}</small></span></a></li>`).join('\n')}
     </ul>
   </section>`;
   }).join('');
   const desc = '運行管理者試験(貨物・旅客)の無料の教科書。図と例題で、改善基準告示・貨物自動車運送事業法・道路運送法・道路運送車両法・道路交通法・実務上の知識をわかりやすく解説。';
   return `${head({ title: '教科書(運行管理者試験)｜運行管理ドリル', desc, path: 'kyokasho/', type: 'website' })}
-  <nav class="topnav" aria-label="ページ移動"><a href="../">← ドリルにもどる</a><a href="../text.html">要点ノート</a></nav>
+  <nav class="topnav" aria-label="ページ移動"><a href="../">← ドリルにもどる</a><a href="../text">要点ノート</a></nav>
   <div class="plate"><p>運行管理者試験</p><h1>教科書</h1></div>
   <section class="card">
     <p style="margin:0">ドリルの48スキルを、1スキル1章で学ぶ教科書です。問題を解く前に読んでおくと、ぐっと解きやすくなります。「なぜそう決まっているのか」から入って、図で見て、例題で確かめます。</p>
@@ -151,10 +151,10 @@ ${items.map((x) => `      <li><a href="${x.skill.id}.html"><span class="st">${x.
       <li><b>ドリルで復習</b>(4択の問題をくり返す)</li>
       <li><b>模擬試験で本番練習</b>(30問・90分)</li>
     </ul>
-    <p class="src">数字だけ見直したいときは<a href="../text.html">要点ノート</a>が便利です。${UPDATED}時点の内容です。</p>
+    <p class="src">数字だけ見直したいときは<a href="../text">要点ノート</a>が便利です。${UPDATED}時点の内容です。</p>
   </section>${groups}
   <a class="cta" href="../">ドリルで問題を解く</a>
-  <footer><a href="../about.html">このサイトについて・プライバシーポリシー</a></footer>
+  <footer><a href="../about">このサイトについて・プライバシーポリシー</a></footer>
 </main>
 </body>
 </html>
@@ -164,7 +164,7 @@ ${items.map((x) => `      <li><a href="${x.skill.id}.html"><span class="st">${x.
 // サイトマップ(app/sitemap.xml)も、教科書の章に合わせて作り直す
 const SITEMAP = fileURLToPath(new URL('../app/sitemap.xml', import.meta.url));
 export function renderSitemap() {
-  const paths = ['', 'kyokasho/', ...chapters().map((x) => `kyokasho/${x.skill.id}.html`), 'text.html', 'help.html', 'about.html', 'exam.html'];
+  const paths = ['', 'kyokasho/', ...chapters().map((x) => `kyokasho/${x.skill.id}`), 'text', 'help', 'about', 'exam'];
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${paths.map((p) => `  <url><loc>${SITE}/${p}</loc></url>`).join('\n')}
