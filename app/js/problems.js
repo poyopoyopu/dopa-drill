@@ -6,7 +6,7 @@
 //   q question, c choices, a index of the correct choice in c,
 //   e short explanation, s source, fix: keep the listed order (for "ア・イ・ウ"
 //   style choices); otherwise the choices are shuffled for every problem.
-import { SKILL } from './skills.js';
+import { SKILL , divOfPool } from './skills.js';
 import { POOLS } from './bank.js';
 
 export function makeRng(seed) {
@@ -50,17 +50,20 @@ export const signature = (p) => `${p.skill || p.title}|${p.text}`;
 export const FIELD = { lb: '労働', vh: '車両法', tr: '道交法', cg: '貨物', ps: '旅客', pr: '実務' };
 
 // Every question a skill can ask, as { item, pool }.
-const poolOf = (sk) => {
+const poolOf = (sk, div = null) => {
   const g = sk.gen[1];
   const names = g.all ? Object.keys(POOLS) : (g.pools || [g.pool]);
-  return names.flatMap((n) => (POOLS[n] || []).map((item) => ({ item, pool: n })));
+  const all = names.flatMap((n) => (POOLS[n] || []).map((item) => ({ item, pool: n })));
+  if (!div || div === 'all') return all;
+  const filtered = all.filter((e) => { const d = divOfPool(e.pool); return d === 'common' || d === div; });
+  return filtered.length ? filtered : all;
 };
 
 // Make one problem for a skill, avoiding signatures in `recent` when possible.
-export function makeProblem(skillId, rng, recent = null) {
+export function makeProblem(skillId, rng, recent = null, div = null) {
   const sk = SKILL[skillId];
   if (!sk) throw new Error(`unknown skill ${skillId}`);
-  const pool = poolOf(sk);
+  const pool = poolOf(sk, div);
   if (!pool.length) throw new Error(`empty pool for ${skillId}`);
   // Prefer a question not asked lately; when every one has been, take the one
   // asked longest ago (`recent` keeps its insertion order, oldest first).

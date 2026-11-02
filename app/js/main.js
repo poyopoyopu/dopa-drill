@@ -226,21 +226,20 @@ function setDivision(v, { persist = true } = {}) {
   $$('.pick button[data-div]').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.div === v)));
   if (persist) { store.updateSettings({ division: v }); if (prev !== v) divEvent(prev ? 'division_change' : 'division_select', v); }
 }
-// grade/levelプランの出題スキルを、表示中の区分に寄せる。
-function filterPlan(plan) {
-  if (!plan || !Array.isArray(plan.basic) || divSel() === 'all') return plan;
-  const vis = (id) => !id || divVisible(SKILL[id]);
-  const firstVis = plan.basic.find((id) => id && vis(id));
-  if (firstVis) plan.basic = plan.basic.map((id) => (vis(id) ? id : firstVis));
-  if (typeof plan.extra === 'function') { const ex = plan.extra; plan.extra = (k) => { const id = ex(k); return vis(id) ? id : firstVis || id; }; }
-  return plan;
-}
+// プランナーへ渡す区分の絞り込み(両方表示のときは絞らない)。
+const onlyForDiv = () => (divSel() === 'all' ? null : (id) => divVisible(SKILL[id]));
+// 復習リストも区分で絞る(記録自体は共通のまま、出すかどうかだけ)。
+const reviewItems = (prog) => {
+  const d = divSel();
+  if (d === 'all') return prog.review;
+  return prog.review.filter((it) => { const sk = it.skill && SKILL[it.skill]; return !sk || divOfSkill(sk) === 'common' || divOfSkill(sk) === d; });
+};
 
 // kind: 'level' | 'grade' | 'review' | 'practice' | 'drill'
 function makePlan(kind, arg) {
   const prog = progress();
-  if (kind === 'grade') return filterPlan(gradePlan(arg, S.N, S.rng));
-  if (kind === 'review') { const items = prog.review.slice(-Math.min(S.N, 10)); return reviewPlan(items); }
+  if (kind === 'grade') return gradePlan(arg, S.N, S.rng, onlyForDiv());
+  if (kind === 'review') { const items = reviewItems(prog).slice(-Math.min(S.N, 10)); return reviewPlan(items); }
   if (kind === 'exam') { const items = buildExam(arg, S.rng); return { mode: 'exam', exam: arg, items, basic: items.map(() => null) }; }
   if (kind === 'practice') return { mode: 'practice', skill: arg, basic: Array.from({ length: S.N }, () => arg), extra: () => { const kids = SKILLS.filter((x) => x.req.includes(arg) && isUnlocked(prog, x.id) && divVisible(x)); return kids.length ? kids[Math.floor(S.rng() * kids.length)].id : arg; } };
   if (kind === 'demo') {
@@ -251,7 +250,7 @@ function makePlan(kind, arg) {
     const upper = SKILLS.filter((x) => x.grade >= 4).map((x) => x.id);
     return { mode: 'demo', basic, extra: () => upper[Math.floor(S.rng() * upper.length)] };
   }
-  return filterPlan(levelPlan(prog, S.N, S.rng));
+  return levelPlan(prog, S.N, S.rng, Date.now(), onlyForDiv());
 }
 
 function nextProblem(i) {
@@ -265,7 +264,7 @@ function sessionProblem(skill) {
   const prog = progress();
   const r = prog.skills[skill];
   const recent = new Set([...(r ? r.recent : []), ...S.sessionSigs]);
-  let p = makeProblem(skill, S.rng, recent);
+  let p = makeProblem(skill, S.rng, recent, divSel() === 'all' ? null : divSel());
   S.sessionSigs.add(signature(p));
   return p;
 }
@@ -1735,14 +1734,15 @@ function setReviewButton(btn, n) {
 function startReview() {
   const prog = progress();
   if (!prog.review.length) return;
+  if (!reviewItems(prog).length) { toast('いまの区分で復習できる問題はありません'); return; }
   startGame('review');
 }
 function refreshTitle() {
   const prog = progress();
-  const n = prog.review.length;
+  const n = reviewItems(prog).length;
   $('#start-review').hidden = !n;
   $('#review-count').textContent = n;
-  $('#level-sub').textContent = prog.placed ? `次は「${SKILL[frontier(prog)[0] || ORDER[ORDER.length - 1]].name}」` : '最初は実力チェック';
+  $('#level-sub').textContent = prog.placed ? `次は「${SKILL[frontier(prog, onlyForDiv())[0] || ORDER.filter((id) => divVisible(SKILL[id])).at(-1) || ORDER[ORDER.length - 1]].name}」` : '最初は実力チェック';
   const done = SKILLS.filter((x) => stateOf(prog, x.id) === 'mastered').length;
   $('#tree-badge').textContent = `${done}/${SKILLS.length}`;
   $$('.exam-row button').forEach((b) => {

@@ -229,9 +229,12 @@ export function masteryRatio(prog, id) {
 // A plan answers: which skill for basic problem i, and for extra problem k.
 // "adaptive" plans also react to answers (placement walk).
 
-export function gradePlan(grade, N, rng) {
-  const list = skillsOfGrade(grade).sort((a, b) => DEPTH[a.id] - DEPTH[b.id]).map((s) => s.id);
-  const next = skillsOfGrade(Math.min(6, grade + 1)).sort((a, b) => DEPTH[a.id] - DEPTH[b.id]).map((s) => s.id);
+export function gradePlan(grade, N, rng, only = null) {
+  const inDiv = (s) => !only || only(s.id);
+  let list = skillsOfGrade(grade).filter(inDiv).sort((a, b) => DEPTH[a.id] - DEPTH[b.id]).map((s) => s.id);
+  if (!list.length) list = skillsOfGrade(grade).sort((a, b) => DEPTH[a.id] - DEPTH[b.id]).map((s) => s.id);
+  let next = skillsOfGrade(Math.min(6, grade + 1)).filter(inDiv).sort((a, b) => DEPTH[a.id] - DEPTH[b.id]).map((s) => s.id);
+  if (!next.length) next = list;
   const basic = Array.from({ length: N }, (_, i) => {
     // Walk from easy to hard across the grade with a little jitter.
     const t = N <= 1 ? 1 : i / (N - 1);
@@ -246,12 +249,12 @@ export function gradePlan(grade, N, rng) {
 }
 
 // Frontier = unlocked but not mastered; "warm" = mastered (light review).
-export function frontier(prog) { return ORDER.filter((id) => isUnlocked(prog, id) && !isMastered(prog, id)); }
+export function frontier(prog, only = null) { return ORDER.filter((id) => (!only || only(id)) && isUnlocked(prog, id) && !isMastered(prog, id)); }
 
-export function levelPlan(prog, N, rng, now = Date.now()) {
-  if (!prog.placed) return placementPlan(prog, N);
-  const front = frontier(prog);
-  const warm = ORDER.filter((id) => isMastered(prog, id));
+export function levelPlan(prog, N, rng, now = Date.now(), only = null) {
+  if (!prog.placed) return placementPlan(prog, N, only);
+  const front = frontier(prog, only);
+  const warm = ORDER.filter((id) => (!only || only(id)) && isMastered(prog, id));
   // Rusty skills (id040) take the review slots first; the share does not change.
   const rusty = rustyOf(prog, now);
   // Recent mastered skills first, then the frontier (least practised first).
@@ -268,24 +271,25 @@ export function levelPlan(prog, N, rng, now = Date.now()) {
 // First session: walk along PLACEMENT, jumping ahead after clean answers and
 // easing back after slips. A clean answer grants that skill and its ancestors,
 // so a skill may be asked before it is unlocked (skipping ahead).
-export function placementPlan(prog, N) {
+export function placementPlan(prog, N, only = null) {
+  const LIST = only ? PLACEMENT.filter(only) : PLACEMENT;
   const walk = { p: 0, jump: 6, lastOk: -1 };
   return {
     mode: 'level', placement: true, walk,
     basic: Array.from({ length: N }, () => null),
-    pick() { return PLACEMENT[Math.min(PLACEMENT.length - 1, walk.p)]; },
+    pick() { return LIST[Math.min(LIST.length - 1, walk.p)]; },
     answer(firstTry) {
       if (firstTry) {
-        masterWithAncestors(prog, PLACEMENT[walk.p]);
+        masterWithAncestors(prog, LIST[walk.p]);
         walk.lastOk = walk.p;
-        walk.p = Math.min(PLACEMENT.length - 1, walk.p + walk.jump);
+        walk.p = Math.min(LIST.length - 1, walk.p + walk.jump);
         walk.jump = Math.min(12, Math.ceil(walk.jump * 1.3));
       } else {
         walk.jump = Math.max(1, Math.floor(walk.jump / 2));
         walk.p = Math.min(walk.p, Math.max(walk.lastOk + 1, walk.p - walk.jump));
       }
     },
-    extra: () => { const f = frontier(prog); return f.length ? f[0] : PLACEMENT[walk.p]; },
+    extra: () => { const f = frontier(prog, only); return f.length ? f[0] : LIST[walk.p]; },
   };
 }
 
@@ -294,10 +298,10 @@ export function reviewPlan(items) {
 }
 
 // Problem factory honouring per-skill recent signatures.
-export function problemFor(prog, skillId, rng) {
+export function problemFor(prog, skillId, rng, div = null) {
   const r = prog.skills[skillId];
   const recent = new Set(r ? r.recent : []);
-  const p = makeProblem(skillId, rng, recent);
+  const p = makeProblem(skillId, rng, recent, div);
   return p;
 }
 
