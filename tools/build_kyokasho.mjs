@@ -15,7 +15,7 @@ import { BOOKS, booksFor } from '../app/js/affiliate.js';
 
 const SRC_DIR = fileURLToPath(new URL('./kyokasho/', import.meta.url));
 const OUT_DIR = fileURLToPath(new URL('../app/kyokasho/', import.meta.url));
-const SITE = 'https://unko-drill.pages.dev';
+const SITE = 'https://unkou.shikaku-drill.net';
 const UPDATED = '2026年10月';
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
