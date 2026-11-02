@@ -2,7 +2,7 @@
 // 使い方: node tools/build_text.mjs   (ノートを書き換えたら実行して、生成物もコミットする)
 import { writeFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { SKILLS, LANES } from '../app/js/skills.js';
+import { SKILLS, LANES, divOfSkill } from '../app/js/skills.js';
 import { NOTES } from './notes/index.mjs';
 
 const OUT = fileURLToPath(new URL('../app/text.html', import.meta.url));
@@ -10,8 +10,8 @@ const UPDATED = '2026年10月';
 
 // 分野ごとにまとめる(スキルIDの先頭で分ける)。並びは試験の科目順。
 export const GROUPS = [
-  { key: 'cg', title: '貨物自動車運送事業法', sub: '貨物の試験' },
-  { key: 'ps', title: '道路運送法', sub: '旅客の試験' },
+  { key: 'cg', title: '貨物自動車運送事業法', sub: '貨物の試験', div: 'cargo' },
+  { key: 'ps', title: '道路運送法', sub: '旅客の試験', div: 'bus' },
   { key: 'vh', title: '道路運送車両法', sub: '貨物・旅客 共通' },
   { key: 'tr', title: '道路交通法', sub: '貨物・旅客 共通' },
   { key: 'lb', title: '労働基準法・改善基準告示', sub: 'トラック・バス・タクシー' },
@@ -28,16 +28,16 @@ const skillsIn = (key) => SKILLS.filter((s) => groupOf(s.id) === key).sort((a, b
 
 export function renderText() {
   const toc = GROUPS.map((g) => `
-      <div class="toc-group">
+      <div class="toc-group"${g.div ? ` data-div="${g.div}"` : ''}>
         <a class="toc-head" href="#g-${g.key}">${esc(g.title)}<small>${esc(g.sub)}</small></a>
-        <ul>${skillsIn(g.key).map((s) => `<li><a href="#${s.id}"><span class="st">${s.grade}</span>${esc(s.name)}</a></li>`).join('')}</ul>
+        <ul>${skillsIn(g.key).map((s) => `<li${divOfSkill(s) !== 'common' ? ` data-div="${divOfSkill(s)}"` : ''}><a href="#${s.id}"><span class="st">${s.grade}</span>${esc(s.name)}</a></li>`).join('')}</ul>
       </div>`).join('');
 
   const body = GROUPS.map((g) => `
-    <h2 class="group" id="g-${g.key}">${esc(g.title)}<small>${esc(g.sub)}</small></h2>
+    <h2 class="group" id="g-${g.key}"${g.div ? ` data-div="${g.div}"` : ''}>${esc(g.title)}<small>${esc(g.sub)}</small></h2>
 ${skillsIn(g.key).map((s) => {
     const n = NOTES[s.id];
-    return `    <section class="note" id="${s.id}" aria-labelledby="h-${s.id}">
+    return `    <section class="note" id="${s.id}"${divOfSkill(s) !== 'common' ? ` data-div="${divOfSkill(s)}"` : ''} aria-labelledby="h-${s.id}">
       <p class="meta"><span class="stage">ステージ${s.grade}</span>${esc(LANES[s.lane])}</p>
       <h3 id="h-${s.id}">${esc(s.name)}</h3>
       <p class="lead">${esc(n.lead)}</p>
@@ -142,6 +142,21 @@ ${body}
     <a class="cta" href="./">ドリルで問題を解く</a>
     <footer><a href="about">このサイトについて・プライバシーポリシー</a></footer>
   </main>
+  <script>
+    // ドリルで選んだ区分(貨物/旅客)に合わせ、もう一方だけの内容を隠す。記録は共通のまま。
+    try {
+      var d = (JSON.parse(localStorage.getItem('dopa-drill:v1') || '{}').settings || {}).division;
+      if (d === 'cargo' || d === 'bus') {
+        var hide = d === 'cargo' ? 'bus' : 'cargo';
+        document.querySelectorAll('[data-div="' + hide + '"]').forEach(function (el) { el.hidden = true; });
+        var n = document.createElement('p');
+        n.className = 'card';
+        n.textContent = 'ドリルで選んだ区分(' + (d === 'cargo' ? '貨物' : '旅客') + ')に合わせて、もう一方の区分だけの内容を隠しています。区分はドリルの「設定」から変えられます。';
+        var toc = document.getElementById('toc');
+        if (toc) toc.before(n);
+      }
+    } catch (e) { /* storage off: show everything */ }
+  </script>
 </body>
 </html>
 `;
