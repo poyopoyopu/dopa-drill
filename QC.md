@@ -392,3 +392,8 @@
 - PR状態はOpen、mergeable=true、merged=false。main側の `app/js/bank_cargo.js` SHAは引き続き `818d54eb21b0dd4f4e84aeabb7bd9f302d73bd9d`。
 - GitHub Actionsのworkflow runsおよびcombined statusは空。Cloudflare Pages botからBuild in progressのコメントはあるが、成功完了は未確認。CI成功とは扱わない。
 - PR差分の内容レビューでは追加の修正要求なし。マージは未実施。
+
+---
+
+## 訂正（2026-11-03）
+「PR #2 最終差分確認（マージ前）」の「マージは未実施」は当時点の記述です。PR #2 はその後マージ済みで、貨物3問の修正は本番（unkou.shikaku-drill.net）の bank_cargo.js に反映されています。2026-11-03、検品担当の指摘を受けて記録を更新しました。
