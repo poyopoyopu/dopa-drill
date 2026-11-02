@@ -1755,6 +1755,7 @@ function refreshTitle() {
   $('#start-review').hidden = !n;
   $('#review-count').textContent = n;
   $('#level-sub').textContent = prog.placed ? `次は「${SKILL[frontier(prog, onlyForDiv())[0] || ORDER.filter((id) => divVisible(SKILL[id])).at(-1) || ORDER[ORDER.length - 1]].name}」` : '最初は実力チェック';
+  $('#level-main').textContent = prog.placed ? '自分のレベル' : 'まずここから';
   const done = SKILLS.filter((x) => stateOf(prog, x.id) === 'mastered').length;
   $('#tree-badge').textContent = `${done}/${SKILLS.length}`;
   $$('.exam-row button').forEach((b) => {
