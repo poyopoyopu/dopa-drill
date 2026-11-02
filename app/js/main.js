@@ -2,7 +2,7 @@
 // escalating visuals and sound.
 import { startClock, onFrame, wait, tween, clamp, lerp, rand, pick, chance, centerOf, params,
   easeOutBack, easeOutCubic, easeInCubic, easeInOutCubic, easeOutQuint } from './core.js';
-import { makeRng, makeProblem, signature, CHOICE_MARK } from './problems.js';
+import { makeRng, makeProblem, signature, CHOICE_MARK, divisionOfSig } from './problems.js';
 import { AudioEngine } from './audio.js';
 import { Dopakichi, COSTUMES, dopakichiSVG } from './dopakichi.js';
 import { FX } from './fx.js';
@@ -229,10 +229,11 @@ function setDivision(v, { persist = true } = {}) {
 // プランナーへ渡す区分の絞り込み(両方表示のときは絞らない)。
 const onlyForDiv = () => (divSel() === 'all' ? null : (id) => divVisible(SKILL[id]));
 // 復習リストも区分で絞る(記録自体は共通のまま、出すかどうかだけ)。
+// 絞り込みはスキル単位ではなく問題単位(プール内の区分上書きも効く)。
 const reviewItems = (prog) => {
   const d = divSel();
   if (d === 'all') return prog.review;
-  return prog.review.filter((it) => { const sk = it.skill && SKILL[it.skill]; return !sk || divOfSkill(sk) === 'common' || divOfSkill(sk) === d; });
+  return prog.review.filter((it) => { const dv = it.sig ? divisionOfSig(it.sig) : 'common'; return dv === 'common' || dv === d; });
 };
 
 // kind: 'level' | 'grade' | 'review' | 'practice' | 'drill'
@@ -504,7 +505,7 @@ async function setupProblem() {
   S.step = 0; S.wrongInQ = false; S.shownWrong = null;
   $$('.pip').forEach((pp, i) => pp.classList.toggle('now', !extra && i === S.qi));
   $('#qtitle').textContent = p.title;
-  { const qd = $('#qdiv'); if (qd) { const dv = p.pool ? divOfPool(p.pool) : null; qd.textContent = dv === 'common' ? '共通' : `${DIVISIONS[dv]}のみ`; qd.hidden = !dv; } }
+  { const qd = $('#qdiv'); if (qd) { const dv = p.div || (p.pool ? divOfPool(p.pool) : null); qd.textContent = dv === 'common' ? '共通' : `${DIVISIONS[dv]}のみ`; qd.hidden = !dv; } }
   $('#qno').textContent = extra ? `EX ${S.extra.solved + 1}` : `第${S.qi + 1}問`;
   renderSheet(p);
   $('#step-label').innerHTML = '&nbsp;';
