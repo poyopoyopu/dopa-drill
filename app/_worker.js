@@ -9,6 +9,8 @@ export default {
     }
     const res = await env.ASSETS.fetch(request);
     const out = new Response(res.body, res);
+    // JS/CSS/JSON はプラットフォーム既定の max-age=14400 を上書きし、毎回再確認させる（コード・問題データの修正を即時反映するため）
+    if (/\.(?:js|css|json)$/.test(url.pathname)) out.headers.set('Cache-Control', 'public, max-age=0, must-revalidate, no-transform');
     if (!out.headers.has('Cache-Control')) out.headers.set('Cache-Control', 'public, max-age=0, must-revalidate, no-transform');
     if (!out.headers.has('X-Content-Type-Options')) out.headers.set('X-Content-Type-Options', 'nosniff');
     return out;
