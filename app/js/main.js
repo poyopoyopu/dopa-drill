@@ -235,7 +235,7 @@ document.addEventListener('click', (e) => {
 function setDivision(v, { persist = true } = {}) {
   const prev = store.settings().division;
   $$('.pick button[data-div]').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.div === v)));
-  if (persist) { store.updateSettings({ division: v }); if (prev !== v) divEvent(prev ? 'division_change' : 'division_select', v); }
+  if (persist) { store.updateSettings({ division: v }); if (prev !== v) divEvent(prev ? 'division_change' : 'division_select', v); refreshTitle(); }
 }
 // プランナーへ渡す区分の絞り込み(両方表示のときは絞らない)。
 const onlyForDiv = () => (divSel() === 'all' ? null : (id) => divVisible(SKILL[id]));
