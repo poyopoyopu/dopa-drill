@@ -1,6 +1,6 @@
-// 内容の信頼性に関する設定。法令・告示の「確認日」と、問題の誤りの報告先。
+// 内容の信頼性に関する設定。問題の「点検日」と、問題の誤りの報告先。
 //
-// LAW_CHECKED は、全問を条文や公開資料と照らして点検した日(確かめきれなかった項目は
+// LAW_CHECKED は、全924問について、問題文・正解・解説・出典の食い違いを点検した日(確かめきれなかった項目は
 // docs/ の確認記録に残す)。次に点検したら、この日付と about.html・help.html・index.html の
 // 表示を同じ日に書きかえる(tests/app_trust.test.mjs が食い違いを見つける)。
 export const LAW_CHECKED = '2026-10-24';
@@ -26,7 +26,7 @@ export function reportHref(p) {
     `問題：${cut(p && p.text, 110)}`,
     p && p.source ? `出典：${cut(p.source, 50)}` : '',
     `正解として表示された選択肢：${cut(p && p.answer, 50)}`,
-    `法令の確認日（画面の表示）：${lawCheckedLabel()}`,
+    `問題の点検日（画面の表示）：${lawCheckedLabel()}`,
     '',
     '気づいた点（どこが、どう違うか。根拠の条文や資料があれば）：',
     '',
