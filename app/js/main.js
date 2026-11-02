@@ -10,7 +10,7 @@ import { Backdrop } from './bg.js';
 import * as store from './store.js';
 import { createGuide } from './guide.js';
 import { SKILLS, SKILL, LANES, DEPTH, DIVISIONS, divOfSkill, divOfPool } from './skills.js';
-import { ORDER, emptyProgress, recordResult, stateOf, masteryRatio, starsOf, nextStar, STAR_MAX, pickCapsule, useCapsule, rustyOf, gradePlan, levelPlan, reviewPlan, problemFor, frontier, isUnlocked, relockTargets, relockSkill, TREE_LAYOUT } from './session.js';
+import { ORDER, emptyProgress, recordResult, stateOf, masteryRatio, starsOf, nextStar, STAR_MAX, pickCapsule, useCapsule, rustyOf, gradePlan, levelPlan, reviewPlan, problemFor, frontier, isUnlocked, isUnlockedFor, relockTargets, relockSkill, TREE_LAYOUT } from './session.js';
 import * as growth from './growth.js';
 import { buildExam, judgeExam, EXAM, EXAM_MS, PASS_RATE, examRecord, examTrend, examMissed } from './exam.js';
 import { BOOKS } from './affiliate.js';
@@ -214,11 +214,11 @@ const MODE_LABEL = { level: '自分のレベル', grade: (g) => `ステージ${g
 const divSel = () => store.settings().division || 'all';
 const divVisible = (sk) => { const d = divSel(); return d === 'all' || !sk || divOfSkill(sk) === 'common' || divOfSkill(sk) === d; };
 // 表示専用の解放判定: 絞り込みで隠れた前提スキルは解放の邪魔をしない(記録自体は共通)。
+// 判定そのものは session.js の isUnlockedFor と共通(自動学習の frontier も同じ物差し)。
 const dispStateOf = (prog, id) => {
   const st = stateOf(prog, id);
   if (st !== 'locked') return st;
-  const vis = SKILL[id].req.filter((r) => divVisible(SKILL[r]));
-  return vis.every((r) => stateOf(prog, r) === 'mastered') ? ((prog.skills[id] && prog.skills[id].n) ? 'learning' : 'new') : 'locked';
+  return isUnlockedFor(prog, id, onlyForDiv()) ? ((prog.skills[id] && prog.skills[id].n) ? 'learning' : 'new') : 'locked';
 };
 const divEvent = (name, v) => { try { if (typeof globalThis.gtag === 'function') globalThis.gtag('event', name, { division: v }); } catch { /* analytics off */ } };
 function setDivision(v, { persist = true } = {}) {
@@ -242,7 +242,7 @@ function makePlan(kind, arg) {
   if (kind === 'grade') return gradePlan(arg, S.N, S.rng, onlyForDiv());
   if (kind === 'review') { const items = reviewItems(prog).slice(-Math.min(S.N, 10)); return reviewPlan(items); }
   if (kind === 'exam') { const items = buildExam(arg, S.rng); return { mode: 'exam', exam: arg, items, basic: items.map(() => null) }; }
-  if (kind === 'practice') return { mode: 'practice', skill: arg, basic: Array.from({ length: S.N }, () => arg), extra: () => { const kids = SKILLS.filter((x) => x.req.includes(arg) && isUnlocked(prog, x.id) && divVisible(x)); return kids.length ? kids[Math.floor(S.rng() * kids.length)].id : arg; } };
+  if (kind === 'practice') return { mode: 'practice', skill: arg, basic: Array.from({ length: S.N }, () => arg), extra: () => { const kids = SKILLS.filter((x) => x.req.includes(arg) && isUnlockedFor(prog, x.id, onlyForDiv()) && divVisible(x)); return kids.length ? kids[Math.floor(S.rng() * kids.length)].id : arg; } };
   if (kind === 'demo') {
     // Random skills from every grade, ordered easy -> hard so the show escalates.
     const pool = SKILLS.slice();
@@ -423,7 +423,7 @@ function newSkillsFor(kind, arg) {
   const prog = progress();
   let ids = [];
   if (kind === 'practice') ids = [arg];
-  else if (kind === 'level' && prog.placed) ids = frontier(prog).slice(0, 4);
+  else if (kind === 'level' && prog.placed) ids = frontier(prog, onlyForDiv()).slice(0, 4);
   const seen = introSeen();
   return ids.filter((id) => SKILL[id] && !(prog.skills[id] && prog.skills[id].n) && !seen.has(id));
 }
@@ -2027,7 +2027,7 @@ function openTree(justIds = [], starIds = []) {
   requestAnimationFrame(() => {
     renderTree(justIds, starIds);
     const prog = progress();
-    const focus = justIds[0] || starIds[0] || frontier(prog).filter((id) => divVisible(SKILL[id]))[0];
+    const focus = justIds[0] || starIds[0] || frontier(prog, onlyForDiv())[0];
     const el = focus && $(`.node[data-id="${focus}"]`);
     const sc = $('#tree-scroll');
     if (el) { sc.scrollTop = Math.max(0, el.offsetTop - 140); sc.scrollLeft = Math.max(0, el.offsetLeft + el.offsetWidth / 2 - sc.clientWidth / 2); }

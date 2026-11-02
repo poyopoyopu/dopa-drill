@@ -23,15 +23,17 @@ export const DIV_OVERRIDES = {
   // 検査と登録: 旅客運送事業用の有効期間は旅客、貨物(8トン基準)は貨物
   vh_shaken: { 0: 'bus', 1: 'cargo', 2: 'cargo', 7: 'cargo', 16: 'cargo', 17: 'cargo' },
   // 保安基準: 貨物運送用に限る装置・基準は貨物、定員11人以上の消火器は旅客
-  vh_standard: { 0: 'cargo', 2: 'cargo', 3: 'cargo', 5: 'cargo', 7: 'cargo', 24: 'cargo', 25: 'cargo', 26: 'cargo', 29: 'cargo', 31: 'cargo', 46: 'cargo', 53: 'bus' },
+  // (被牽引自動車の制動装置・後部反射器は一般規定なので共通のまま)
+  vh_standard: { 0: 'cargo', 2: 'cargo', 3: 'cargo', 5: 'cargo', 24: 'cargo', 25: 'cargo', 26: 'cargo', 29: 'cargo', 31: 'cargo', 53: 'bus' },
   // 免許と飲酒: 事業用トラックの免許は貨物、旅客の二種は旅客
   tr_alcohol: { 3: 'cargo', 4: 'bus' },
   // 標識と通行: 大型貨物自動車等通行止めだけ
   tr_basic: { 34: 'cargo' },
-  // 免許の区分: 第二種免許の問題は旅客、牽引免許は貨物
-  tr_license: { 9: 'bus', 10: 'bus', 11: 'bus', 12: 'cargo' },
+  // 免許の区分: 第二種免許の問題は旅客 (牽引免許は一般規定なので共通のまま)
+  tr_license: { 9: 'bus', 10: 'bus', 11: 'bus' },
   // 速度と積載: 積載物の制限は貨物、大型バスの高速速度は旅客
-  tr_speed: { 1: 'cargo', 2: 'cargo', 3: 'bus', 4: 'cargo', 5: 'cargo', 6: 'cargo', 7: 'cargo', 8: 'cargo', 10: 'cargo', 11: 'cargo', 12: 'cargo' },
+  // (牽引時の高速速度は車種を問わない一般規定なので共通のまま)
+  tr_speed: { 2: 'cargo', 3: 'bus', 4: 'cargo', 5: 'cargo', 6: 'cargo', 7: 'cargo', 8: 'cargo', 10: 'cargo', 11: 'cargo', 12: 'cargo' },
   // 事故と対応: 貨物事業者の転覆は貨物、旅客の死者・転覆の速報は旅客
   pr_accident: { 12: 'cargo', 13: 'bus', 17: 'bus' },
   // 運行計画の検証: 月の拘束時間(290時間)と2週平均44時間は貨物

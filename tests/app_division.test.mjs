@@ -138,3 +138,34 @@ test('divisionOfSig resolves saved review questions per question', () => {
   assert.equal(divisionOfSig(`tr-speed|${POOLS.tr_speed[4].q}`), 'cargo');
   assert.equal(divisionOfSig('no-such-skill|x'), 'common');
 });
+
+// --- Unlock judgement under a division filter (frontier) ---
+import { frontier, isUnlockedFor, isUnlocked } from '../app/js/session.js';
+
+test('frontier: a prerequisite hidden by the filter does not block (lb-bus case)', () => {
+  const prog = emptyProgress();
+  // lb-bus requires lb-truck (cargo-only). Unfiltered, it stays locked.
+  assert.equal(isUnlocked(prog, 'lb-bus'), false);
+  assert.ok(!frontier(prog).includes('lb-bus'));
+  assert.ok(!frontier(prog, onlyCargo).includes('lb-bus')); // hidden itself under cargo
+  // Under the bus filter the hidden prerequisite must not block it.
+  assert.equal(isUnlockedFor(prog, 'lb-bus', onlyBus), true);
+  assert.ok(frontier(prog, onlyBus).includes('lb-bus'));
+  assert.ok(frontier(prog, onlyBus).includes('lb-taxi'));
+  // A visible prerequisite still blocks: lb-drive needs lb-truck too, but
+  // lb-36 needs lb-pay (common, visible under bus) which is not mastered.
+  assert.equal(isUnlockedFor(prog, 'lb-36', onlyBus), false);
+  assert.ok(!frontier(prog, onlyBus).includes('lb-36'));
+  // Mastering the hidden prerequisite changes nothing under the filter,
+  // and the unfiltered judgement agrees once it is mastered.
+  prog.skills['lb-truck'] = { n: 5, hist: [], mastered: true, recent: [] };
+  assert.equal(isUnlocked(prog, 'lb-bus'), true);
+  assert.ok(frontier(prog).includes('lb-bus'));
+});
+
+test('towing / trailer general rules stay common (QC revert)', () => {
+  assert.equal(divOfEntry({ pool: 'tr_license', idx: 12 }), 'common'); // 牽引免許
+  assert.equal(divOfEntry({ pool: 'tr_speed', idx: 1 }), 'common'); // 牽引時の高速速度
+  assert.equal(divOfEntry({ pool: 'vh_standard', idx: 7 }), 'common'); // 被牽引の制動装置
+  assert.equal(divOfEntry({ pool: 'vh_standard', idx: 46 }), 'common'); // 被牽引の後部反射器
+});

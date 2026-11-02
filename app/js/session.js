@@ -59,6 +59,12 @@ const rec = (prog, id) => prog.skills[id] || (prog.skills[id] = { n: 0, hist: []
 export const isMastered = (prog, id) => !!(prog.skills[id] && prog.skills[id].mastered);
 export const isUnlocked = (prog, id) => SKILL[id].req.every((r) => isMastered(prog, r));
 
+// Unlock check honouring a division filter (`only`, as passed to the
+// planners): a prerequisite the filter hides does not block, mirroring the
+// tree's display rule (dispStateOf in main.js). With no filter this is
+// exactly isUnlocked. Records stay shared; only the judgement changes.
+export const isUnlockedFor = (prog, id, only = null) => SKILL[id].req.every((r) => isMastered(prog, r) || (only && !only(r)));
+
 export function stateOf(prog, id) {
   if (isMastered(prog, id)) return 'mastered';
   if (isUnlocked(prog, id)) return (prog.skills[id] && prog.skills[id].n) ? 'learning' : 'new';
@@ -249,7 +255,7 @@ export function gradePlan(grade, N, rng, only = null) {
 }
 
 // Frontier = unlocked but not mastered; "warm" = mastered (light review).
-export function frontier(prog, only = null) { return ORDER.filter((id) => (!only || only(id)) && isUnlocked(prog, id) && !isMastered(prog, id)); }
+export function frontier(prog, only = null) { return ORDER.filter((id) => (!only || only(id)) && isUnlockedFor(prog, id, only) && !isMastered(prog, id)); }
 
 export function levelPlan(prog, N, rng, now = Date.now(), only = null) {
   if (!prog.placed) return placementPlan(prog, N, only);
