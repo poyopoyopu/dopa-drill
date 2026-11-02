@@ -221,6 +221,17 @@ const dispStateOf = (prog, id) => {
   return isUnlockedFor(prog, id, onlyForDiv()) ? ((prog.skills[id] && prog.skills[id].n) ? 'learning' : 'new') : 'locked';
 };
 const divEvent = (name, v) => { try { if (typeof globalThis.gtag === 'function') globalThis.gtag('event', name, { division: v }); } catch { /* analytics off */ } };
+// 結果画面のPR枠(.exam-book)内のアフィリエイトリンクのクリックを GA4 の affiliate_click で計測する。
+const affProgram = (host) => (host.includes('rakuten') ? 'rakuten' : host.includes('amazon') ? 'amazon' : host.includes('valuecommerce') ? 'valuecommerce' : host.includes('a8.net') ? 'a8' : host);
+document.addEventListener('click', (e) => {
+  const a = e.target && e.target.closest ? e.target.closest('.exam-book a[href]') : null;
+  if (!a) return;
+  try {
+    if (typeof globalThis.gtag !== 'function') return;
+    const host = new URL(a.href).hostname;
+    globalThis.gtag('event', 'affiliate_click', { aff_program: affProgram(host), aff_host: host, page_path: location.pathname });
+  } catch { /* analytics off */ }
+});
 function setDivision(v, { persist = true } = {}) {
   const prev = store.settings().division;
   $$('.pick button[data-div]').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.div === v)));
