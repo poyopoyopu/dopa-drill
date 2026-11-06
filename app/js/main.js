@@ -245,7 +245,8 @@ const applyMuFlag = () => {
 };
 applyMuFlag();
 const isInternal = () => { try { return localStorage.getItem(MU_KEY) === '1'; } catch { return false; } };
-const scoreBand = (rate) => { const pct = Math.round(rate * 100); return pct >= 100 ? '100' : pct >= 80 ? '80_99' : pct >= 60 ? '60_79' : 'under_60'; };
+// 帯の境界は表示用に丸めず、正答率そのもので判定する（59.5%は under_60、100%ちょうどだけ '100'）。
+const scoreBand = (rate) => (rate >= 1 ? '100' : rate >= 0.8 ? '80_99' : rate >= 0.6 ? '60_79' : 'under_60');
 const quizMode = (mode) => (mode === 'exam' ? 'mock' : mode === 'review' ? 'review' : 'normal');
 let resultViewRun = -1;
 const resultViewEvent = (rate) => {
