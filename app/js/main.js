@@ -232,6 +232,30 @@ document.addEventListener('click', (e) => {
     globalThis.gtag('event', 'affiliate_click', { aff_program: affProgram(host), aff_host: host, page_path: location.pathname });
   } catch { /* analytics off */ }
 });
+// 結果画面の表示を GA4 の quiz_result_view で計測する。1実行につき1回だけ送る。
+// パラメータ名 quiz_mode / score_band は GA4 側の登録と一字一句同じこと。
+const MU_KEY = 'unko-mu';
+// ?mu=1 で内部フラグを立て、?mu=0 で解除する。フラグが立っている端末では送らない。
+const applyMuFlag = () => {
+  try {
+    const mu = params.get('mu');
+    if (mu === '1') localStorage.setItem(MU_KEY, '1');
+    else if (mu === '0') localStorage.removeItem(MU_KEY);
+  } catch { /* storage off */ }
+};
+applyMuFlag();
+const isInternal = () => { try { return localStorage.getItem(MU_KEY) === '1'; } catch { return false; } };
+const scoreBand = (rate) => { const pct = Math.round(rate * 100); return pct >= 100 ? '100' : pct >= 80 ? '80_99' : pct >= 60 ? '60_79' : 'under_60'; };
+const quizMode = (mode) => (mode === 'exam' ? 'mock' : mode === 'review' ? 'review' : 'normal');
+let resultViewRun = -1;
+const resultViewEvent = (rate) => {
+  try {
+    if (S.demo || isInternal() || S.run === resultViewRun) return;
+    resultViewRun = S.run;
+    if (typeof globalThis.gtag !== 'function') return;
+    globalThis.gtag('event', 'quiz_result_view', { quiz_mode: quizMode(S.plan.mode), score_band: scoreBand(rate) });
+  } catch { /* analytics off */ }
+};
 function setDivision(v, { persist = true } = {}) {
   const prev = store.settings().division;
   $$('.pick button[data-div]').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.div === v)));
@@ -1413,6 +1437,7 @@ function showResult() {
   $('#go-tree').hidden = !(S.newUnlocks.length || S.newMastered.length || Object.keys(S.newStars).length || S.plan.placement);
   setReviewButton($('#go-review'), ok ? 0 : S.wrongList.length);
   audio.play('musicGain', audio.now(), { v: 0.55, ramp: 0.6 });
+  resultViewEvent(rate);
   showScreen('result');
   $('#r-score').nextElementSibling.textContent = exam ? `/${exam.max}問` : '点';
   countUp($('#r-score'), exam ? exam.total : BASIC_SCORE, 900);
