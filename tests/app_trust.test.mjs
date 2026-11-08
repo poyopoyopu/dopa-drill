@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import { LAW_CHECKED, lawCheckedLabel, reportHref } from '../app/js/trust.js';
 import { ANALYTICS_TOKEN, loadAnalytics } from '../app/js/analytics.js';
 import { POOLS } from '../app/js/bank.js';
+import { availableCount } from '../app/js/exclusions.js';
 
 const read = (p) => readFileSync(new URL(`../${p}`, import.meta.url), 'utf8');
 
@@ -17,7 +18,7 @@ test('the law-checked date is shown the same way everywhere', () => {
 });
 
 test('the question count written on the pages matches the bank', () => {
-  const n = Object.values(POOLS).flat().length;
+  const n = Object.keys(POOLS).reduce((sum, pool) => sum + availableCount(pool), 0); // 公開除外(exclusions.js)を引いた出題可能数
   assert.match(read('app/index.html'), new RegExp(`${n}問と本番`));
   assert.match(read('app/about.html'), new RegExp(`4択問題${n}問`));
   assert.match(read('README.md'), new RegExp(`4択問題 ${n}問`));
