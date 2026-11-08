@@ -9,6 +9,7 @@
 import { SKILL , divOfPool, divOfSkill } from './skills.js';
 import { POOLS } from './bank.js';
 import { DIV_OVERRIDES } from './divoverrides.js';
+import { isExcluded } from './exclusions.js';
 
 export function makeRng(seed) {
   let s = seed >>> 0;
@@ -71,7 +72,8 @@ export function divisionOfSig(sig) {
 const poolOf = (sk, div = null) => {
   const g = sk.gen[1];
   const names = g.all ? Object.keys(POOLS) : (g.pools || [g.pool]);
-  const all = names.flatMap((n) => (POOLS[n] || []).map((item, idx) => ({ item, pool: n, idx })));
+  const all = names.flatMap((n) => (POOLS[n] || []).map((item, idx) => ({ item, pool: n, idx })))
+    .filter((e) => !isExcluded(e.pool, e.idx)); // 公開除外リスト(exclusions.js)は出題しない
   if (!div || div === 'all') return all;
   const filtered = all.filter((e) => { const d = divOfEntry(e); return d === 'common' || d === div; });
   return filtered.length ? filtered : all;

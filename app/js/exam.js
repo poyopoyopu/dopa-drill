@@ -7,6 +7,7 @@
 // A question counts as correct when it is answered right on the first try;
 // a question left unanswered when time runs out counts as wrong.
 import { POOLS } from './bank.js';
+import { isExcluded, availableCount } from './exclusions.js';
 import { buildQuiz, FIELD } from './problems.js';
 import { SKILLS } from './skills.js';
 
@@ -57,7 +58,7 @@ export function buildExam(kind, rng) {
   exam.fields.forEach((f, fi) => {
     const seen = new Set();
     const items = [];
-    for (const pool of f.pools) for (const item of POOLS[pool]) if (!seen.has(item.q)) { seen.add(item.q); items.push({ item, pool }); }
+    for (const pool of f.pools) (POOLS[pool] || []).forEach((item, idx) => { if (isExcluded(pool, idx) || seen.has(item.q)) return; seen.add(item.q); items.push({ item, pool }); });
     for (const { item, pool } of shuffle(items, rng).slice(0, f.n)) {
       const p = buildQuiz(item, rng, FIELD[pool.split('_')[0]] || '');
       p.examField = fi;
@@ -98,7 +99,7 @@ export function weakSpot(kind, log, fields = judgeExam(kind, log).fields) {
   // No answered misses (time ran out): fall back to the field's biggest pool.
   const pools = EXAM[kind].fields[i].pools;
   const pool = Object.keys(miss).sort((a, b) => miss[b] - miss[a] || pools.indexOf(a) - pools.indexOf(b))[0]
-    || pools.slice().sort((a, b) => POOLS[b].length - POOLS[a].length)[0];
+    || pools.slice().sort((a, b) => availableCount(b) - availableCount(a))[0];
   return { field: i, label: f.label, ok: f.ok, n: f.n, pool, skill: skillOfPool(pool), misses: miss[pool] || 0 };
 }
 
