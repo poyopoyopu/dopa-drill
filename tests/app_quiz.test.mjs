@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { makeRng, makeProblem, buildQuiz, signature, _internal } from '../app/js/problems.js';
 import { POOLS, validatePools } from '../app/js/bank.js';
+import { availableCount } from '../app/js/exclusions.js';
 import { SKILLS, SKILL } from '../app/js/skills.js';
 
 test('every bank entry is well formed', () => {
@@ -70,7 +71,7 @@ test('"fix" keeps the written order of the choices', () => {
 
 test('recent questions are avoided until the pool is used up, then the oldest returns', () => {
   const rng = makeRng(5);
-  const size = POOLS.vh_shaken.length;
+  const size = availableCount('vh_shaken'); // 公開除外(exclusions.js)を引いた出題可能な数
   const recent = new Set();
   const seen = [];
   for (let i = 0; i < size; i++) { const p = makeProblem('vh-shaken', rng, recent); seen.push(p.text); recent.add(signature(p)); }
