@@ -897,7 +897,15 @@ async function clearProblem() {
   if (lastBasic && S.cells.nextBtn && !S.cells.nextBtn.hidden) S.cells.nextBtn.textContent = '結果を見る';
   celebrate(E, wasReach, lastBasic);
   const capsuleShown = S.problem.capsule ? capsuleDone(S.problem.capsule) : false;
-  if (lastBasic) { if (capsuleShown) await wait(1600); await waitOrTap(Math.min(expMs, 3500), expMs > 0); await finale(); return; }
+  if (lastBasic) {
+    // With an explanation up, the result button is already on screen, so a real
+    // player must be able to answer it from the start: skip the capsule pause
+    // in manual mode. The no-explanation path and the demo keep the pause.
+    if (capsuleShown && !(expMs > 0 && !S.demo)) await wait(1600);
+    await waitOrTap(Math.min(expMs, 3500), expMs > 0);
+    await finale();
+    return;
+  }
   const run = S.run;
   await waitOrTap(Math.max(extra ? 520 : lerp(600, 1150, clamp(E)), expMs) + (wasReach ? 250 : 0) + (capsuleShown ? 1900 : 0), expMs > 0);
   if (S.screen !== 'play' || run !== S.run || (extra && S.extra.over)) return;
