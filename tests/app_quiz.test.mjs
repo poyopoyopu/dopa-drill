@@ -80,6 +80,20 @@ test('recent questions are avoided until the pool is used up, then the oldest re
   assert.equal(again.text, seen[0]); // asked longest ago
 });
 
+test('ordered mode serves fresh questions in pool order (textbook progression)', () => {
+  const rng = makeRng(5);
+  const pool = _internal.poolOf(SKILL['vh-shaken']);
+  const recent = new Set();
+  for (let i = 0; i < pool.length; i++) {
+    const p = makeProblem('vh-shaken', rng, recent, null, true);
+    assert.equal(p.text, pool[i].item.q);
+    recent.add(signature(p));
+  }
+  // Pool used up: the oldest asked question comes back first, as unordered.
+  const again = makeProblem('vh-shaken', rng, recent, null, true);
+  assert.equal(again.text, pool[0].item.q);
+});
+
 test('the final mix draws from every field', () => {
   const rng = makeRng(3);
   const titles = new Set();
