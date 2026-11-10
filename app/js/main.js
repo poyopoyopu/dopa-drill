@@ -356,6 +356,13 @@ function renderQuiz(p) {
   exp.hidden = true;
   sheet.appendChild(exp);
   S.cells.exp = exp;
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.className = 'qz-next';
+  nextBtn.textContent = '次へ';
+  nextBtn.hidden = true;
+  sheet.appendChild(nextBtn);
+  S.cells.nextBtn = nextBtn;
 }
 
 function renderSheet(p) {
@@ -887,11 +894,12 @@ async function clearProblem() {
   if (wasReach) audio.reachHit(E); else audio.clear(E);
   hanamaru(E);
   const lastBasic = !extra && S.qi === S.N - 1;
+  if (lastBasic && S.cells.nextBtn && !S.cells.nextBtn.hidden) S.cells.nextBtn.textContent = '結果を見る';
   celebrate(E, wasReach, lastBasic);
   const capsuleShown = S.problem.capsule ? capsuleDone(S.problem.capsule) : false;
-  if (lastBasic) { if (capsuleShown) await wait(1600); await waitOrTap(Math.min(expMs, 3500)); await finale(); return; }
+  if (lastBasic) { if (capsuleShown) await wait(1600); await waitOrTap(Math.min(expMs, 3500), expMs > 0); await finale(); return; }
   const run = S.run;
-  await waitOrTap(Math.max(extra ? 520 : lerp(600, 1150, clamp(E)), expMs) + (wasReach ? 250 : 0) + (capsuleShown ? 1900 : 0));
+  await waitOrTap(Math.max(extra ? 520 : lerp(600, 1150, clamp(E)), expMs) + (wasReach ? 250 : 0) + (capsuleShown ? 1900 : 0), expMs > 0);
   if (S.screen !== 'play' || run !== S.run || (extra && S.extra.over)) return;
   if (!extra) S.qi += 1;
   setupProblem();
@@ -910,6 +918,7 @@ function showExplain(p) {
   report.textContent = '誤りを報告';
   exp.append(' ', report);
   exp.hidden = false;
+  if (S.cells.nextBtn) S.cells.nextBtn.hidden = false;
   sheet.classList.add('answered');
   const wrap = sheet.parentElement;
   setTimeout(() => { wrap.scrollTop = wrap.scrollHeight; }, 30);
@@ -917,7 +926,10 @@ function showExplain(p) {
 }
 
 // Wait, but a tap anywhere on the play screen (or Enter / Space) moves on.
-function waitOrTap(ms) {
+// With an explanation up (manual), there is no timeout for a real player: the
+// explanation stays until they tap. The demo keeps the timeout so it can play
+// through by itself.
+function waitOrTap(ms, manual = false) {
   return new Promise((resolve) => {
     const scr = $('#screen-play');
     let done = false;
@@ -929,7 +941,7 @@ function waitOrTap(ms) {
     const on = [['pointerdown', down], ['pointerup', up], ['pointercancel', drop]];
     const end = () => { if (done) return; done = true; clearTimeout(t); on.forEach(([n, f]) => scr.removeEventListener(n, f, true)); removeEventListener('keydown', onKey, true); resolve(); };
     const onKey = (e) => { if (e.key === 'Enter' || e.key === ' ') end(); };
-    const t = setTimeout(end, ms);
+    const t = manual && !S.demo ? null : setTimeout(end, ms);
     // Ignore the tap that answered the question itself.
     setTimeout(() => { if (!done) { on.forEach(([n, f]) => scr.addEventListener(n, f, true)); addEventListener('keydown', onKey, true); } }, 500);
   });
