@@ -754,6 +754,9 @@ body.reduced #guide-help-ring, body.reduced .guide-help-fallback::after { animat
 .sheet.quiz.answered .qz-ch:not(.right) { display: none; }
 .qz-exp { margin: 8px 0 0; padding: 7px 10px; border-radius: 12px; background: #fff3b8; font-size: calc(clamp(12px, 3.3vw, 13.5px) * var(--qzs, 1)); line-height: 1.5; font-weight: 700; text-align: left; }
 .qz-exp[hidden] { display: none; }
+.qz-next { display: block; width: 100%; margin: 10px 0 0; padding: 10px; border: 2.5px solid var(--ink); border-radius: 12px; background: var(--blue); box-shadow: 0 3px 0 var(--ink); font: inherit; font-size: calc(clamp(14px, 3.8vw, 16px) * var(--qzs, 1)); font-weight: 700; color: #fff; touch-action: manipulation; }
+.qz-next:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.qz-next[hidden] { display: none; }
 .qz-report { display: inline-block; margin-left: 4px; padding: 0 6px; font-size: .85em; font-weight: 900; color: #5b5f8f; text-decoration: underline; }
 /* Touch feedback while the finger is down (the answer comes when it lifts). */
 .qz-ch.touching { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
