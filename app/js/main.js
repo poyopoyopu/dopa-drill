@@ -301,7 +301,10 @@ function sessionProblem(skill) {
   const prog = progress();
   const r = prog.skills[skill];
   const recent = new Set([...(r ? r.recent : []), ...S.sessionSigs]);
-  let p = makeProblem(skill, S.rng, recent, divSel() === 'all' ? null : divSel());
+  // Textbook entry (?skill=<chapter>&order=book): serve the chapter's pool in
+  // bank order instead of at random, so the run follows the chapter.
+  const ordered = params.get('order') === 'book' && params.get('skill') === skill;
+  let p = makeProblem(skill, S.rng, recent, divSel() === 'all' ? null : divSel(), ordered);
   S.sessionSigs.add(signature(p));
   return p;
 }
