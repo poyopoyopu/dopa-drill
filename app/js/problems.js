@@ -80,7 +80,10 @@ const poolOf = (sk, div = null) => {
 };
 
 // Make one problem for a skill, avoiding signatures in `recent` when possible.
-export function makeProblem(skillId, rng, recent = null, div = null) {
+// With `ordered` (textbook entry), the fresh questions come in pool order --
+// the bank lists each pool in teaching order, so a run started from a
+// textbook chapter walks the chapter instead of jumping around.
+export function makeProblem(skillId, rng, recent = null, div = null, ordered = false) {
   const sk = SKILL[skillId];
   if (!sk) throw new Error(`unknown skill ${skillId}`);
   const pool = poolOf(sk, div);
@@ -92,7 +95,7 @@ export function makeProblem(skillId, rng, recent = null, div = null) {
   const rank = (e) => { const k = `${sk.id}|${e.item.q}`; return age.has(k) ? age.get(k) : -1; };
   const fresh = pool.filter((e) => rank(e) < 0);
   let pick;
-  if (fresh.length) pick = fresh[Math.floor(rng() * fresh.length)];
+  if (fresh.length) pick = ordered ? fresh[0] : fresh[Math.floor(rng() * fresh.length)];
   else pick = pool.reduce((best, e) => (rank(e) < rank(best) ? e : best), pool[0]);
   const multi = pool.some((e) => e.pool !== pool[0].pool);
   const p = buildQuiz(pick.item, rng, multi ? FIELD[pick.pool.slice(0, 2)] || sk.name : sk.name);

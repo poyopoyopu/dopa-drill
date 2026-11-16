@@ -117,7 +117,7 @@ export function renderChapter(id) {
 
 ${ch.body}
 
-  <a class="cta" href="../">ドリルで確かめる(${esc(skill.name)})</a>
+  <a class="cta" href="../?skill=${id}&amp;order=book">ドリルで確かめる(${esc(skill.name)})</a>
   <p class="src" style="text-align:center;margin:0"><a href="../text#${id}">要点ノートで見直す</a></p>
   ${renderBooks(id)}<nav class="pager" aria-label="前後の章">${pager(prev, 'prev', '← まえの章')}${pager(next, 'next', 'つぎの章 →')}</nav>
   <p class="src">出典：${esc(ch.src)}。${UPDATED}時点の内容です。法令や告示は改正されることがあるので、試験の前には最新の公式資料で確認してください。</p>
