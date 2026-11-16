@@ -133,7 +133,9 @@ const progress = () => { const st = store.load(); if (!st.progress) st.progress 
 // Lifetime statistics (id033); older saves are seeded from their play history.
 const stats = () => { const st = store.load(); if (!st.stats) st.stats = growth.statsFromHistory(st.history); return st.stats; };
 // Demo play and the check-only URL parameters (?skill=, ?demo) leave no growth records.
-const recording = () => !S.demo && !params.has('skill') && !(S.plan && S.plan.legacy);
+// ?skill=&order=book is the textbook chapter entry: a normal run that does record.
+const checkOnly = () => params.has('skill') && params.get('order') !== 'book';
+const recording = () => !S.demo && !checkOnly() && !(S.plan && S.plan.legacy);
 
 // ---------------------------------------------------------------- daily quests (id035)
 const pickedCount = () => Number(($('.pick [data-count][aria-checked="true"]') || {}).dataset?.count || 10);
@@ -827,7 +829,7 @@ function noteProblem(p, firstTry) {
     const e = S.sessionTimes[p.skill] || (S.sessionTimes[p.skill] = { n: 0, ms: 0, c: 0, f: 0 });
     e.n += 1; e.ms += timing.ms; e.c += timing.cells; e.f += firstTry ? 1 : 0;
   }
-  if (p.skill && !params.has('skill')) {
+  if (p.skill && !checkOnly()) {
     const res = recordResult(prog, p.skill, firstTry, signature(p), recording() ? timing : {});
     if (res.mastered) S.newMastered.push(p.skill);
     if (res.stars >= 2) S.newStars[p.skill] = res.stars;
@@ -2424,7 +2426,7 @@ function trophyExtra() {
 }
 S.trophyQueue = [];
 function checkTrophies() {
-  if (S.demo || params.has('skill') || params.has('capture')) return [];
+  if (S.demo || checkOnly() || params.has('capture')) return [];
   const ts = trophyState();
   // The quiet batch is for players who played before trophies existed; a new player's firsts are shown one by one.
   if (!ts.init && !store.load().history.length) ts.init = true;
