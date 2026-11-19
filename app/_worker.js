@@ -3,8 +3,10 @@
 // 下書きファイル（未検品の問題）は公開しない。
 // app/ 配下のファイルはすべてそのまま配信されるため、ページから読み込まれない
 // 下書きでも URL を直接指定すれば取得できてしまう。ここで 404 を返して塞ぐ。
+// 下書き本体は 2026-11-20 に drafts/（app/ の外）へ移設済みだが、旧パス（/js/）と
+// 移設先パス（/drafts/）のどちらへの直接アクセスにも 404 を返す二重防御として残す。
 // 対象パターンの網羅は tests/app_publish_guard.test.mjs が検証する。
-const DRAFT_PATH = /^\/js\/(?:bank_draft_[^/]+|skills_[^/]+_draft)\.js$/;
+const DRAFT_PATH = /^\/(?:js|drafts)\/(?:bank_draft_[^/]+|skills_[^/]+_draft)\.js$/;
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
