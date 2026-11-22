@@ -44,3 +44,14 @@ test('本番ファイルは通常どおり配信される', async () => {
     assert.equal(await res.text(), 'ASSET');
   }
 });
+
+test('/books は存在しない旧パスのため 404、類似パスはブロックしない', async () => {
+  for (const path of ['/books', '/books.html']) {
+    const res = await get(path);
+    assert.equal(res.status, 404, `${path} が配信されてしまう`);
+  }
+  for (const path of ['/bookshelf', '/books/other']) {
+    const res = await get(path);
+    assert.equal(res.status, 200, `${path} がブロックされている`);
+  }
+});
