@@ -7,10 +7,13 @@
 // 移設先パス（/drafts/）のどちらへの直接アクセスにも 404 を返す二重防御として残す。
 // 対象パターンの網羅は tests/app_publish_guard.test.mjs が検証する。
 const DRAFT_PATH = /^\/(?:js|drafts)\/(?:bank_draft_[^/]+|skills_[^/]+_draft)\.js$/;
+// /books は現行サイトに存在しない旧パス。SPAフォールバックでトップが返り、
+// Search Console で重複ページ扱いになるため、明示的に 404 を返す（2026-11-23 SEO監査）。
+const GONE_PATH = /^\/books(?:\.html)?$/;
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (DRAFT_PATH.test(url.pathname)) {
+    if (DRAFT_PATH.test(url.pathname) || GONE_PATH.test(url.pathname)) {
       return new Response('Not Found', {
         status: 404,
         headers: {
